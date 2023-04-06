@@ -11,6 +11,7 @@ const Register = () => {
     const PartsContainerRef = useRef();
     const NextButton = useRef();
     const CreateButtonRef = useRef();
+    const PreviousPartRef = useRef();
 
     // FUNCTIONS
     const showPreviousPart = (e) => {
@@ -22,6 +23,8 @@ const Register = () => {
         NextButton.current.classList.remove(classes.Un_Active)
         // Hide the Create Button
         CreateButtonRef.current.classList.add(classes.Un_Active)
+        // Hide the Previous Part Link
+        PreviousPartRef.current.classList.add(classes.Un_Active)
     }
 
 
@@ -34,8 +37,9 @@ const Register = () => {
         NextButton.current.classList.add(classes.Un_Active)
         // Show the Next Button
         CreateButtonRef.current.classList.remove(classes.Un_Active)
+        // Show the Previous Part Link
+        PreviousPartRef.current.classList.remove(classes.Un_Active)
     }
-
 
 
     return (
@@ -72,22 +76,22 @@ const Register = () => {
                                     </div>
                                     <div className={classes.Input_Container}>
                                         <div className={classes.Input_Group}>
-                                            <label htmlFor={'password'}>PASSWORD</label>
-                                            <input type={'password'} id={'password'} name={'password'}/>
-                                        </div>
-                                        <div className={classes.Input_Group}>
-                                            <label htmlFor={'confirm_password'}>CONFIRM PASSWORD</label>
-                                            <input type={'password'} id={'confirm_password'} name={'confirm password'}/>
-                                        </div>
-                                    </div>
-                                    <div className={classes.Input_Container}>
-                                        <div className={classes.Input_Group}>
                                             <label htmlFor={'phone_number'}>PHONE NUMBER</label>
                                             <input type={'tel'} id={'phone_number'} name={'phone nember'}/>
                                         </div>
                                         <div className={classes.Input_Group}>
                                             <label htmlFor={'gender'}>GENDER</label>
                                             <CustomSelect/>
+                                        </div>
+                                    </div>
+                                    <div className={classes.Input_Container}>
+                                        <div className={classes.Input_Group}>
+                                            <label htmlFor={'password'}>PASSWORD</label>
+                                            <input type={'password'} id={'password'} name={'password'}/>
+                                        </div>
+                                        <div className={classes.Input_Group}>
+                                            <label htmlFor={'confirm_password'}>CONFIRM PASSWORD</label>
+                                            <input type={'password'} id={'confirm_password'} name={'confirm password'}/>
                                         </div>
                                     </div>
                                 </div>
@@ -119,7 +123,8 @@ const Register = () => {
                             </div>
                             <div className={classes.Form_buttons}>
                                 <div className={classes.Links}>
-                                    <Link href={'#'} onClick={showPreviousPart}>
+                                    <Link className={classes.Un_Active} ref={PreviousPartRef} href={'#'}
+                                          onClick={showPreviousPart}>
                                         &#8592; Previous info
                                     </Link>
                                     <Link href={'/auth/login'}>
@@ -131,12 +136,15 @@ const Register = () => {
                                         <span><Image src={'/images/Auth/google-icon.svg'} alt={'Create User'} width={30}
                                                      height={30}/></span>
                                     </button>
-                                    <button onClick={showNextPart} ref={NextButton} className={classes.Next_button} type={'button'}>
+                                    <button onClick={showNextPart} ref={NextButton} className={classes.Next_button}
+                                            type={'button'}>
                                         <span>NEXT</span>
                                         <span><Image src={'/images/Auth/next-icon.svg'} alt={'Create User'} width={20}
                                                      height={20}/></span>
                                     </button>
-                                    <button ref={CreateButtonRef} className={[classes.Create_button, classes.Un_Active].join(' ')} type={'submit'}>
+                                    <button ref={CreateButtonRef}
+                                            className={[classes.Create_button, classes.Un_Active].join(' ')}
+                                            type={'submit'}>
                                         <span>CREATE</span>
                                         <span><Image src={'/images/Auth/next-icon.svg'} alt={'Create User'} width={20}
                                                      height={20}/></span>
@@ -146,9 +154,12 @@ const Register = () => {
                         </form>
                     </div>
                 </div>
-                <button className={classes.Home_Button}>
-                    <span><Image src={'/images/Auth/home-icon.svg'} alt={'home icon'} width={30} height={30}/></span>
-                </button>
+                <Link href={'/'} passHref>
+                    <button className={classes.Home_Button}>
+                        <span><Image src={'/images/Auth/home-icon.svg'} alt={'home icon'} width={30}
+                                     height={30}/></span>
+                    </button>
+                </Link>
             </main>
         </>
     )

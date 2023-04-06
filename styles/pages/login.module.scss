@@ -93,25 +93,6 @@
       -webkit-text-fill-color: transparent;
     }
 
-    .Parts_Container {
-      display: flex;
-      width: 200%;
-      gap: 1rem;
-      transition: transform .4s ease-in-out;
-
-      &.P2_Active {
-        transform: translateX(-50%);
-      }
-    }
-
-    &_P1 {
-      width: 100%;
-    }
-
-    &_P2 {
-      width: 100%;
-    }
-
     .Input_Container {
       width: 100%;
       display: flex;
@@ -170,10 +151,6 @@
       a {
         text-decoration: none;
         color: var(--color-main);
-
-        &.Un_Active{
-          display: none;
-        }
       }
 
       .Buttons_Container {
@@ -182,8 +159,7 @@
         gap: 1rem;
       }
 
-      .Create_button,
-      .Next_button {
+      .Create_button{
         height: 6rem;
         padding: 1rem .5rem 1rem 2rem;
         width: 14rem;
