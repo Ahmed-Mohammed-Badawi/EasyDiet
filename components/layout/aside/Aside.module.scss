@@ -1,0 +1,74 @@
+.Aside{
+    // GRID PART
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+
+    //STYLE
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    background-color: var(--color-white-background);
+    padding: 5rem 3rem;
+
+    &_List{
+        list-style: none;
+    }
+
+    &_List__Item{
+        a{
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: .5rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--color-black-text);
+            padding: 1rem 2rem;
+            width: 100%;
+            background-color: var(--color-white-background);
+
+            &:hover{
+                background-color: var(--color-select-background);
+            }
+        }
+
+        .Logout_Text{
+            color: red;
+        }
+
+        .Image_Container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 3rem;
+            max-width: 3rem;
+        }
+    }
+
+    &_Options{
+        padding: 0 2rem;
+
+        button{
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background-color: var(--color-white-background);
+            border: 1px solid var(--color-input-border);
+            cursor: pointer;
+
+            &:active{
+                box-shadow: inset 0 0 0.4rem rgba(0, 0, 0, 0.16);
+            }
+        }
+    }
+
+
+    // Class to make it Small
+    &.Aside_Mini{
+        .Text{
+            display: none;
+        }
+    }
+}

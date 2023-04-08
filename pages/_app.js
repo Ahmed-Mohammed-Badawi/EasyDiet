@@ -6,12 +6,16 @@ import i18n from "@/i18n";
 import {Provider} from 'react-redux'
 import {createWrapper} from 'next-redux-wrapper'
 import store from '../redux/store'
+// IMPORTS
+import Layout from "@/components/layout/Layout";
 
 function MyApp({Component, pageProps}) {
     return (
         <I18nextProvider i18n={i18n}>
             <Provider store={store}>
-                <Component {...pageProps} />
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
             </Provider>
         </I18nextProvider>
     )
