@@ -1,4 +1,5 @@
 import {useId} from "react";
+import Image from "next/image";
 // SELECT
 import Select from 'react-select';
 
@@ -30,11 +31,8 @@ const customStyles = {
 };
 
 const options = [
-    {value: 'admin', label: 'Admin'},
-    {value: 'branchManager', label: 'Branch Manager'},
-    {value: 'delivery', label: 'Delivery'},
-    {value: 'cashier', label: 'cashier'},
-    {value: 'doctor', label: 'doctor'},
+    {value: 'en', label: `English`},
+    {value: 'ar', label: 'Arabic'},
 ];
 
 const CustomSelect = () => {

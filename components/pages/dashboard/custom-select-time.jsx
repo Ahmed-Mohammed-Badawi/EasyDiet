@@ -30,11 +30,10 @@ const customStyles = {
 };
 
 const options = [
-    {value: 'admin', label: 'Admin'},
-    {value: 'branchManager', label: 'Branch Manager'},
-    {value: 'delivery', label: 'Delivery'},
-    {value: 'cashier', label: 'cashier'},
-    {value: 'doctor', label: 'doctor'},
+    {value: 1, label: '1 Week'},
+    {value: 2, label: '2 Weeks'},
+    {value: 3, label: '3 Weeks'},
+    {value: 4, label: '4 Weeks'},
 ];
 
 const CustomSelect = () => {

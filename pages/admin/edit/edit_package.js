@@ -1,7 +1,19 @@
 import classes from '@/styles/pages/admin/edit_package.module.scss'
 import Image from "next/image";
+import CustomSelectTime from "@/components/pages/dashboard/custom-select-time";
+import CustomSelectLanguage from "@/components/pages/dashboard/custom-select-language";
+import {useState} from "react";
 
 const EditPackage = () => {
+
+    // STATES
+    const [isChecked, setIsChecked] = useState(false);
+
+    const handleToggle = () => {
+        setIsChecked(!isChecked);
+    };
+
+
     return (
         <>
             <main className={classes.Main}>
@@ -22,10 +34,9 @@ const EditPackage = () => {
                             </div>
                         </div>
                         <div className={classes.InputsContainer}>
-                            <div className={classes.InputGroup}>
-                                <label htmlFor={'package_real_time'}>PACKAGE REAL TIME (NUMBER)</label>
-                                <input type={'number'} name={'package_real_time'} id={'package_real_time'}
-                                       placeholder={'EX: 15 DAYS'}/>
+                            <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
+                                <label htmlFor={'package_real_time'}>Package time (Real)</label>
+                                <CustomSelectTime/>
                             </div>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'package_price'}>Package Price (NUMBER)</label>
@@ -35,26 +46,42 @@ const EditPackage = () => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'Breakfast_meals'}>Breakfast Meals (NUMBER)</label>
-                                <input type={'number'} name={'Breakfast_meals'} id={'Breakfast_meals'}
-                                       placeholder={'EX: 2'}/>
-                            </div>
-                            <div className={classes.InputGroup}>
-                                <label htmlFor={'Lunch_meals'}>LUNCH Meals (NUMBER)</label>
-                                <input type={'number'} name={'Lunch_meals'} id={'Lunch_meals'}
-                                       placeholder={'EX: 2'}/>
-                            </div>
-                        </div>
-                        <div className={classes.InputsContainer}>
-                            <div className={classes.InputGroup}>
-                                <label htmlFor={'Dinner_meals'}>Dinner Meals (NUMBER)</label>
-                                <input type={'number'} name={'Dinner_meals'} id={'Dinner_meals'}
-                                       placeholder={'EX: 2'}/>
+                                <label htmlFor={'number_of_meals'}>Number of meals (NUMBER)</label>
+                                <input type={'number'} name={'number_of_meals'} id={'number_of_meals'}
+                                       placeholder={'EX: 5'}/>
                             </div>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'Snacks_meals'}>SNACKS Meals (NUMBER)</label>
                                 <input type={'number'} name={'Snacks_meals'} id={'Snacks_meals'}
                                        placeholder={'EX: 2'}/>
+                            </div>
+                        </div>
+                        <div className={classes.InputsContainer}>
+                            <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
+                                <label htmlFor={'package_real_time'}>Package Language</label>
+                                <CustomSelectLanguage/>
+                            </div>
+                            <div className={classes.InputGroup}>
+                                <label htmlFor={'offers_days'}>Offers Days (NUMBER)</label>
+                                <input type={'number'} name={'offers_days'} id={'offers_days'}
+                                       placeholder={'EX: 2'}/>
+                            </div>
+                        </div>
+                        <div className={classes.InputsContainer}>
+                            <div className={classes.InputGroup}>
+                                <div className={classes.togglerInput}>
+                                    <label htmlFor="package_friday_included">Include Fridays</label>
+                                    <div className={classes.toggler}>
+                                        <input
+                                            type="checkbox"
+                                            id="package_friday_included"
+                                            name="package_friday_included"
+                                            checked={isChecked}
+                                            onChange={handleToggle}
+                                        />
+                                        <div className={classes.slider}></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <button type={'submit'}>

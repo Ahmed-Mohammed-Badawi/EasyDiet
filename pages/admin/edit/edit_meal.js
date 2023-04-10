@@ -3,10 +3,13 @@ import classes from '@/styles/pages/admin/edit_meal.module.scss'
 import Image from "next/image";
 // IMPORT
 import CustomSelectMealType from "@/components/pages/dashboard/custom-select-mealType";
+import CustomSelectLanguage from "@/components/pages/dashboard/custom-select-language";
 
 const EditMeal = () => {
     // STATES
     const [preview, setPreview] = useState(null);
+    const [isChecked, setIsChecked] = useState(false);
+
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -21,6 +24,12 @@ const EditMeal = () => {
             setPreview(null);
         }
     };
+
+
+    const handleToggle = () => {
+        setIsChecked(!isChecked);
+    };
+
 
 
 
@@ -88,6 +97,27 @@ const EditMeal = () => {
                                 <label htmlFor={'number_of_repetitions'}>number of repetitions (number)</label>
                                 <input type={'number'} name={'number_of_repetitions'} id={'number_of_repetitions'}
                                        placeholder={'EX: 3'}/>
+                            </div>
+                        </div>
+                        <div className={classes.InputsContainer}>
+                            <div className={classes.InputGroup}>
+                                <div className={classes.togglerInput}>
+                                    <label htmlFor="package_friday_included">Block Meal</label>
+                                    <div className={classes.toggler}>
+                                        <input
+                                            type="checkbox"
+                                            id="package_friday_included"
+                                            name="package_friday_included"
+                                            checked={isChecked}
+                                            onChange={handleToggle}
+                                        />
+                                        <div className={classes.slider}></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
+                                <label htmlFor={'package_real_time'}>Package Language</label>
+                                <CustomSelectLanguage/>
                             </div>
                         </div>
                         <button type={'submit'}>

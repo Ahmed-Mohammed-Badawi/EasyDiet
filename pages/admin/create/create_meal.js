@@ -3,10 +3,12 @@ import classes from '@/styles/pages/admin/create_meal.module.scss'
 import Image from "next/image";
 // IMPORT
 import CustomSelectMealType from "@/components/pages/dashboard/custom-select-mealType";
+import CustomSelectLanguage from "@/components/pages/dashboard/custom-select-language";
 
 const CreatePackage = () => {
     // STATES
     const [preview, setPreview] = useState(null);
+    const [isChecked, setIsChecked] = useState(false);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -21,6 +23,12 @@ const CreatePackage = () => {
             setPreview(null);
         }
     };
+
+    const handleToggle = () => {
+        setIsChecked(!isChecked);
+    };
+
+
 
 
     return (
@@ -67,9 +75,9 @@ const CreatePackage = () => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'meal_vitamins'}>vitamins && minerals (Grams)</label>
-                                <input type={'number'} name={'meal_vitamins'} id={'meal_vitamins'}
-                                       placeholder={'EX: 15'}/>
+                                <label htmlFor={'meal_calories'}>Calories (Number)</label>
+                                <input type={'number'} name={'meal_calories'} id={'meal_calories'}
+                                       placeholder={'EX: 125'}/>
                             </div>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'meal_protein'}>protein (Grams)</label>
@@ -87,6 +95,27 @@ const CreatePackage = () => {
                                 <label htmlFor={'number_of_repetitions'}>number of repetitions (number)</label>
                                 <input type={'number'} name={'number_of_repetitions'} id={'number_of_repetitions'}
                                        placeholder={'EX: 3'}/>
+                            </div>
+                        </div>
+                        <div className={classes.InputsContainer}>
+                            <div className={classes.InputGroup}>
+                                <div className={classes.togglerInput}>
+                                    <label htmlFor="package_friday_included">Block Meal</label>
+                                    <div className={classes.toggler}>
+                                        <input
+                                            type="checkbox"
+                                            id="package_friday_included"
+                                            name="package_friday_included"
+                                            checked={isChecked}
+                                            onChange={handleToggle}
+                                        />
+                                        <div className={classes.slider}></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
+                                <label htmlFor={'package_real_time'}>Package Language</label>
+                                <CustomSelectLanguage/>
                             </div>
                         </div>
                         <button type={'submit'}>
