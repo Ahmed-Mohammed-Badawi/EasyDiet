@@ -3,15 +3,35 @@ import classes from '@/styles/pages/admin/edit_employee.module.scss'
 import Image from "next/image";
 // IMPORT
 import CustomSelectMealType from "@/components/pages/dashboard/custom-select-userRole";
+import {toast} from "react-toastify";
+import axios from "axios";
+import {clearAll, setAll} from "@/redux/slices/editEmployee-slice";
+import {useRouter} from "next/router";
+import {useDispatch, useSelector} from "react-redux";
+import wrapper from "@/redux/store";
+import {setAll} from "@/redux/slices/editmeal-slice";
 
-const CreateEmployee = () => {
+const EditEmployee = () => {
+    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2Y1MTlhNzdiMDU0ZDM4OGM5ZGI5ZjkiLCJyb2xlIjoiYWRtaW4iLCJhY3RpdmUiOnRydWUsImlhdCI6MTY4MTI1NzYzOSwiZXhwIjoxNjgxMzQ0MDM5fQ.AVgvwqtT3u8B9w5tRTeAE0pAXK-GSdoKZOqsKU-uOtg`;
+    // ROUTER
+    const router = useRouter()
+
     // STATES
+    const [selectedImage, setSelectedImage] = useState(null);
     const [preview, setPreview] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    // REDUX
+    const dispatch = useDispatch();
+    const {fullName, username, role, password, address, phone} = useSelector(state => state.edit_employee)
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
 
         if (file) {
+            // Set the Image State
+            setSelectedImage(file);
+
             const reader = new FileReader();
             reader.onloadend = () => {
                 setPreview(reader.result);
@@ -22,13 +42,59 @@ const CreateEmployee = () => {
         }
     };
 
+    // SUBMIT HANDLER
+    const submitHandler = async (e) => {
+        // STOP RELOADING
+        e.preventDefault();
+        //Check the inputs
+        if (!selectedImage || !fullName || !username || !role || !password || !address || !phone) {
+            toast.error(`Please fill All inputs`);
+            return;
+        }
+        // Set the loading state for the spinner
+        setLoading(true);
+        // Create the Data as formData
+        const editEmployee_formData = new FormData();
+        editEmployee_formData.append("userId", fullName);
+        editEmployee_formData.append("fullName", fullName);
+        editEmployee_formData.append("username", username);
+        editEmployee_formData.append("role", role);
+        editEmployee_formData.append("password", password);
+        editEmployee_formData.append("address", address);
+        editEmployee_formData.append("phoneNumber", phone);
+        editEmployee_formData.append("files", selectedImage);
+
+        // Send Create Request to the server
+        await axios.put(`https://api.easydietkw.com/api/v1/edit/user`, editEmployee_formData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => {
+                // SET THE STATE
+                setLoading(false);
+                // DO WHAT I WANT
+                toast.success(res.data.message);
+                // Clear the reducer
+                dispatch(clearAll());
+                // Clear the image;
+                setSelectedImage('');
+                setPreview('')
+            })
+            .catch(err => {
+                // SET THE STATE
+                setLoading(false);
+                // DO WHAT I WANT
+                toast.error(err?.response?.data?.message || err?.message);
+            })
+    }
 
     return (
         <>
             <main className={classes.Main}>
                 <div className={classes.FormContainer}>
                     <h1>Edit Employee</h1>
-                    <form>
+                    <form onSubmit={submitHandler}>
                         <div className={classes.Image_Uploader}>
                             <label htmlFor={'meal_image'}>
                                 <div className={classes.Static}>
@@ -77,4 +143,37 @@ const CreateEmployee = () => {
         </>
     )
 }
-export default CreateEmployee
+export default EditEmployee
+
+
+export const getServerSideProps = wrapper.getServerSideProps(store => async ({req, res, query}) => {
+    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2Y1MTlhNzdiMDU0ZDM4OGM5ZGI5ZjkiLCJyb2xlIjoiYWRtaW4iLCJhY3RpdmUiOnRydWUsImlhdCI6MTY4MTI1NzYzOSwiZXhwIjoxNjgxMzQ0MDM5fQ.AVgvwqtT3u8B9w5tRTeAE0pAXK-GSdoKZOqsKU-uOtg`;
+    // GET THE ID OF THE MEAL FROM THE URL
+    const {userId} = query;
+    console.log(userId)
+    // GET THE MEAL FROM THE SERVER
+    await axios.get(`https://api.easydietkw.com/api/v1/get/user?userId=${userId}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+        .then(res => {
+            // SET THE STATE
+            const user = res.data
+            console.log(res.data)
+            store.dispatch(setAll({
+                fullName: "",
+                username: "",
+                role: "",
+                password: "",
+                address: '',
+                phone: '',
+            }))
+        })
+        .catch(err => {
+            // SET THE STATE
+            console.log(err)
+        })
+
+    // Your code here
+});

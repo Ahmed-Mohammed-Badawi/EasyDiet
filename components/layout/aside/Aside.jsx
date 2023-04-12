@@ -6,49 +6,67 @@ import i18n from "@/i18n";
 
 // HELPERS
 import {useTranslation} from "react-i18next";
+import {useRouter} from "next/router";
 
 const Aside = () => {
+    //ROUTER
+    const router = useRouter();
+
     // MULTI LANGUAGES
     const {t} = useTranslation();
 
     // Helpers Functions
     const toggleLanguage = () => {
-        console.log(i18n.language)
-        i18n.language.includes('en') ? i18n.changeLanguage('ar') : i18n.changeLanguage('en');
+        let htmlTag;
+        if (document) {
+            htmlTag = document.querySelector('html');
+        }
+
+        if (i18n.language.includes('en')) {
+            if(htmlTag){
+                htmlTag.setAttribute('lang', 'ar')
+            }
+            i18n.changeLanguage('ar')
+        } else {
+            if(htmlTag){
+                htmlTag.setAttribute('lang', 'en')
+            }
+            i18n.changeLanguage('en');
+        }
     }
 
     return (<aside className={classes.Aside} id={`AsideId`}>
         <ul className={classes.Aside_List}>
             <li className={classes.Aside_List__Item}>
-                <Link href={'#'}>
+                <Link href={'/'} className={router.pathname === '/' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Home_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
                     <span className={classes.Text}>Home</span>
                 </Link></li>
             <li className={classes.Aside_List__Item}>
-                <Link href={'#'}>
+                <Link href={'/about'} className={router.pathname === '/about' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/About_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
                     <span className={classes.Text}>About</span>
                 </Link></li>
             <li className={classes.Aside_List__Item}>
-                <Link href={'#'}>
+                <Link href={'/admin/packages'} className={router.pathname === '/admin/packages' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Packages_Icon.svg'} alt={'Icon'} width={20} height={20}/>
                         </span>
                     <span className={classes.Text}>Packages</span>
                 </Link></li>
             <li className={classes.Aside_List__Item}>
-                <Link href={'#'}>
+                <Link href={'/admin/meals'} className={router.pathname === '/admin/meals' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Meals_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
                     <span className={classes.Text}>Meals</span>
                 </Link></li>
             <li className={classes.Aside_List__Item}>
-                <Link href={'#'}>
+                <Link href={'/user/profile'} className={router.pathname === '/user/profile' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Users_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
@@ -69,7 +87,7 @@ const Aside = () => {
                     <span className={classes.Text}>nutrition specialist</span>
                 </Link></li>
             <li className={classes.Aside_List__Item}>
-                <Link href={'#'}>
+                <Link href={'/admin/users'} className={router.pathname === '/admin/users' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Users_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
@@ -90,12 +108,21 @@ const Aside = () => {
                     <span className={[classes.Logout_Text, classes.Text].join(' ')}>Logout</span>
                 </Link></li>
         </ul>
-        <div className={classes.Aside_Options}>
-            <button onClick={toggleLanguage}>
-                <Image src={'/images/Arabic_Icon.svg'} alt={'Arabic icon'} width={30}
-                       height={20}/> ENGLISH
-            </button>
-        </div>
+        {/*<div className={classes.Aside_Options}>*/}
+        {/*    <button onClick={toggleLanguage}>*/}
+        {/*        {i18n?.language && i18n.language.includes('en') ? (*/}
+        {/*            <>*/}
+        {/*                <Image src={'/images/Arabic_Icon.svg'} alt={'Arabic icon'} width={30} height={20}/>*/}
+        {/*                <span style={{fontFamily: `var(--font-almarai)`}}>العربية</span>*/}
+        {/*            </>*/}
+        {/*        ) : (*/}
+        {/*            <>*/}
+        {/*                <Image src={'/images/English_Icon.svg'} alt={'Arabic icon'} width={30} height={20}/>*/}
+        {/*                <span>ENGLISH</span>*/}
+        {/*            </>*/}
+        {/*        )}*/}
+        {/*    </button>*/}
+        {/*</div>*/}
     </aside>)
 }
 export default Aside;

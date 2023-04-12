@@ -31,20 +31,22 @@ const customStyles = {
 
 const options = [
     {value: 'admin', label: 'Admin'},
-    {value: 'branchManager', label: 'Branch Manager'},
-    {value: 'delivery', label: 'Delivery'},
-    {value: 'cashier', label: 'cashier'},
-    {value: 'doctor', label: 'doctor'},
+    {value: 'diet specialist', label: 'nutrition specialist'},
+    {value: 'manager', label: 'Branch Manager'},
 ];
 
-const CustomSelect = () => {
+const CustomSelect = ({changed, defaultValue}) => {
 
     // CUSTOM ID
     const id = useId();
 
+    // GET THE DEFAULT VALUE TO SET
+    // Find the option objects that match the option labels
+    const defaultValueObject = options.find(option => option.value === defaultValue);
+
     return (
         <>
-            <Select id={id} options={options} styles={customStyles} />
+            <Select id={id} options={options} styles={customStyles} value={defaultValueObject} onChange={changed} />
         </>
     )
 }

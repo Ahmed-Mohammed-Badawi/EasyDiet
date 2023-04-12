@@ -36,14 +36,25 @@ const options = [
     {value: 4, label: '4 Weeks'},
 ];
 
-const CustomSelect = () => {
+const CustomSelect = ({defaultValue, changed}) => {
 
     // CUSTOM ID
     const id = useId();
 
+    // GET THE DEFAULT VALUE TO SET
+    // Find the option objects that match the option labels
+    const defaultValueObject = options.find(option => option.value === defaultValue);
+
+
     return (
         <>
-            <Select id={id} options={options} styles={customStyles} />
+            <Select
+                id={id}
+                options={options}
+                styles={customStyles}
+                value={defaultValueObject || ''}
+                onChange={changed}
+            />
         </>
     )
 }

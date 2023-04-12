@@ -30,20 +30,32 @@ const customStyles = {
 };
 
 const options = [
-    {value: 'Breakfast', label: 'Breakfast'},
-    {value: 'Lunch', label: 'Lunch'},
-    {value: 'Dinner', label: 'Dinner'},
-    {value: 'Snacks', label: 'Snacks'},
+    {value: 'افطار', label: 'Breakfast'},
+    {value: 'غداء', label: 'Lunch'},
+    {value: 'عشاء', label: 'Dinner'},
+    {value: 'سناك', label: 'Snacks'},
 ];
 
-const CustomSelect = () => {
+const CustomSelect = ({changed, defaultValue}) => {
 
     // CUSTOM ID
     const id = useId();
 
+    // GET THE DEFAULT VALUE TO SET
+    // Find the option objects that match the option labels
+    const defaultValueObjectArray = options.filter(option => defaultValue.includes(option.value));
+
+
     return (
         <>
-            <Select isMulti id={id} options={options} styles={customStyles} />
+            <Select
+                value={defaultValueObjectArray}
+                isMulti
+                id={id}
+                options={options}
+                styles={customStyles}
+                onChange={changed}
+            />
         </>
     )
 }

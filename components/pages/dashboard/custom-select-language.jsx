@@ -31,18 +31,28 @@ const customStyles = {
 };
 
 const options = [
-    {value: 'en', label: `English`},
-    {value: 'ar', label: 'Arabic'},
+    {value: 'EN', label: `English`},
+    {value: 'AR', label: 'Arabic'},
 ];
 
-const CustomSelect = () => {
+const CustomSelect = ({changed, defaultValue}) => {
 
     // CUSTOM ID
     const id = useId();
 
+    // GET THE DEFAULT VALUE TO SET
+    // Find the option objects that match the option labels
+    const defaultValueObject = options.find(option => option.value === defaultValue);
+
     return (
         <>
-            <Select id={id} options={options} styles={customStyles} />
+            <Select
+                value={defaultValueObject || ''}
+                id={id}
+                options={options}
+                styles={customStyles}
+                onChange={changed}
+            />
         </>
     )
 }

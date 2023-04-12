@@ -1,10 +1,16 @@
 import classes from './PackageCard_Edit.module.scss';
 import Image from "next/image";
-const PackageAdminCard = () => {
+import {useRouter} from "next/router";
+
+
+const PackageAdminCard = ({timeOnCard, price, }) => {
+    //ROUTER
+    const router = useRouter();
+
     return (
         <article className={classes.Card}>
             <div className={classes.Buttons}>
-                <button>
+                <button onClick={() => router.push(`/admin/edit/edit_package`)}>
                     <Image src={'/images/Edit_Icon.svg'} alt={'Edit'} width={18} height={18} />
                 </button>
                 <button>
@@ -21,20 +27,20 @@ const PackageAdminCard = () => {
             </div>
             <div className={classes.Bottom}>
                 <div>
-                    <p>BREAKFAST</p>
-                    <span>1</span>
-                </div>
-                <div>
-                    <p>LUNCH</p>
-                    <span>1</span>
-                </div>
-                <div>
-                    <p>DINNER</p>
+                    <p>MEALS</p>
                     <span>1</span>
                 </div>
                 <div>
                     <p>SNACKS</p>
                     <span>1</span>
+                </div>
+                <div>
+                    <p>FRIDAYS</p>
+                    <span>&#10003;</span>
+                </div>
+                <div>
+                    <p>OFFER DAYS</p>
+                    <span>&#10006;</span>
                 </div>
             </div>
         </article>

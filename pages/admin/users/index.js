@@ -1,8 +1,15 @@
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import classes from '@/styles/pages/admin/users.module.scss';
 import Image from "next/image";
+import {useRouter} from "next/router";
+import axios from "axios";
 
 const Users = () => {
+    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2Y1MTlhNzdiMDU0ZDM4OGM5ZGI5ZjkiLCJyb2xlIjoiYWRtaW4iLCJhY3RpdmUiOnRydWUsImlhdCI6MTY4MTI1NzYzOSwiZXhwIjoxNjgxMzQ0MDM5fQ.AVgvwqtT3u8B9w5tRTeAE0pAXK-GSdoKZOqsKU-uOtg`;
+
+    // ROUTER
+    const router = useRouter();
+
     // STATES
     const [isOn, setIsOn] = useState(false);
     const [isUserActive, setIsUserActive] = useState(false);
@@ -18,12 +25,35 @@ const Users = () => {
         setIsOn(false);
     }
 
+    // EFFECT TO GET THE USERS
+    useEffect(() => {
+        if(isOn){
+            // GET THE EMPLOYEES
+            axios.get(`https://api.easydietkw.com/api/v1/get/all/users`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(res => console.log(res.data))
+                .catch(err => console.log(err))
+        }else {
+            // GET THE USERS
+            axios.get(`https://api.easydietkw.com/api/v1/all/clients?page=1`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(res => console.log(res.data))
+                .catch(err => console.log(err))
+        }
+    }, [isOn])
+
     return (
         <>
             <main className={classes.Main}>
                 <div className={classes.Container}>
                     <div className={classes.Top}>
-                        <button>
+                        <button onClick={() => router.push(`/admin/create/create_employee`)}>
                             <Image src={'/images/Add_Icon.svg'} alt={'Add Icon'} width={18} height={18}/>
                             <span>Create An Employee</span>
                         </button>
