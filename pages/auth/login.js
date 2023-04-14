@@ -1,8 +1,49 @@
+import {useState} from "react";
 import classes from "@/styles/pages/register.module.scss";
 import Link from "next/link";
 import Image from "next/image";
+import {toast} from "react-toastify";
+import axios from "axios";
+import {useRouter} from "next/router";
 
 const Login = () => {
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const router = useRouter();
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await axios.post(
+                "https://api.easydietkw.com/api/v1/login",
+                {
+                    username: username,
+                    password: password,
+                }
+            )
+
+            // Save the token in cookies
+            document.cookie = `token=${response.data.token}`;
+
+            // Redirect based on the user's role
+            if (response.data.user.role === "admin") {
+                router.push("/admin/dashboard");
+            } else if (response.data.user.role === "user") {
+                router.push("/user/dashboard");
+            }
+
+            // Show success message
+            toast.success(response.data.message);
+        } catch (error) {
+            // Show error message
+            toast.error("Invalid username or password");
+        }
+    };
+
+
     return (
         <>
             <main className={classes.Main}>
@@ -17,15 +58,15 @@ const Login = () => {
                             <h1>EASY DIET</h1>
                             <p>BE ONE OF US</p>
                         </div>
-                        <form className={classes.Form}>
+                        <form className={classes.Form} onSubmit={handleFormSubmit}>
                             <h2 className={classes.Heading_2}>LOGIN</h2>
                             <div className={classes.Input_Group}>
                                 <label htmlFor={'email'}>EMAIL</label>
-                                <input type={'email'} id={'email'} name={'email'}/>
+                                <input onChange={(e) => setUsername(e.target.value)} type={'username'} id={'email'} name={'email'}/>
                             </div>
                             <div className={classes.Input_Group}>
                                 <label htmlFor={'password'}>PASSWORD</label>
-                                <input type={'password'} id={'password'} name={'password'}/>
+                                <input onChange={(e) => setPassword(e.target.value)} type={'password'} id={'password'} name={'password'}/>
                             </div>
                             <div className={classes.Form_buttons}>
                                 <div className={classes.Links}>

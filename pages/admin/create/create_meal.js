@@ -11,10 +11,9 @@ import {onInputChange, clearAll} from '@/redux/slices/createmeal-slice';
 // HELPERS
 import {toast} from "react-toastify";
 import axios from "axios";
+import {extractTokenFromCookie} from "@/helpers/extractToken";
 
 const CreatePackage = () => {
-    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2Y1MTlhNzdiMDU0ZDM4OGM5ZGI5ZjkiLCJyb2xlIjoiYWRtaW4iLCJhY3RpdmUiOnRydWUsImlhdCI6MTY4MTE3MTEyNCwiZXhwIjoxNjgxMjU3NTI0fQ.a8mBy1FmtNVlpdjY-loMN6_eSxfiwafL15BoGpUmL3g`;
-
     // STATES
     const [selectedImage, setSelectedImage] = useState(null);
     const [preview, setPreview] = useState(null);
@@ -57,6 +56,9 @@ const CreatePackage = () => {
     const submitHandler = async (e) => {
         // STOP RELOADING
         e.preventDefault();
+        //GET THE TOKEN
+        const token = extractTokenFromCookie(document.cookie)
+
         //Check the inputs
         if (!selectedImage || !name || !category || !carbohydrate || !protein || !calories || !fat || !repeatPeriod || !repeatNumber || !language) {
             toast.error(`Please fill All inputs`);

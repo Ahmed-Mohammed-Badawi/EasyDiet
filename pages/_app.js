@@ -11,15 +11,25 @@ import NextNProgress from 'nextjs-progressbar';
 
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import {useRouter} from "next/router";
 
 function MyApp({Component, pageProps}) {
+    //ROUTER
+    const router = useRouter()
+
     return (
         <I18nextProvider i18n={i18n}>
-            <NextNProgress color={`#A71523`} />
+            <NextNProgress color={`#A71523`}/>
             <Provider store={store}>
-                <Layout>
-                    <Component {...pageProps} />
-                </Layout>
+                {router.pathname.includes('/admin') ? (
+                        <Layout>
+                            <Component {...pageProps} />
+                        </Layout>
+                    ) :
+                    (
+                        <Component {...pageProps} />
+                    )
+                }
             </Provider>
             <ToastContainer position="bottom-right"/>
         </I18nextProvider>

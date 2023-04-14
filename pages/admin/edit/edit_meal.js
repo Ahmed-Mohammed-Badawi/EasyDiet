@@ -3,7 +3,7 @@ import classes from '@/styles/pages/admin/edit_meal.module.scss'
 import Image from "next/image";
 import {useRouter} from "next/router";
 // IMPORT
-import CustomSelectMealType from "@/components/pages/dashboard/custom-select-mealType";
+import CustomSelectMealType from "@/components/pages/dashboard/custom-select-mealTypeEdit";
 import CustomSelectLanguage from "@/components/pages/dashboard/custom-select-language";
 import Spinner from "@/components/layout/spinner/Spinner";
 // REDUX
@@ -13,13 +13,13 @@ import {onInputChange, clearAll, setAll} from '@/redux/slices/editmeal-slice';
 // HELPERS
 import {toast} from "react-toastify";
 import axios from "axios";
+import {extractTokenFromCookie} from "@/helpers/extractToken";
 
 const EditMeal = () => {
-    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2Y1MTlhNzdiMDU0ZDM4OGM5ZGI5ZjkiLCJyb2xlIjoiYWRtaW4iLCJhY3RpdmUiOnRydWUsImlhdCI6MTY4MTI1NzYzOSwiZXhwIjoxNjgxMzQ0MDM5fQ.AVgvwqtT3u8B9w5tRTeAE0pAXK-GSdoKZOqsKU-uOtg`;
-
     // ROUTER
     const router = useRouter();
-
+    //GET THE QUERIES
+    const {mealName} = router.query;
     // STATES
     const [preview, setPreview] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -61,6 +61,9 @@ const EditMeal = () => {
     const submitHandler = async (e) => {
         // STOP RELOADING
         e.preventDefault();
+        //GET THE TOKEN
+        const token = extractTokenFromCookie(document.cookie)
+
         //Check the inputs
         if (!name || !category || !carbohydrate || !protein || !calories || !fat || !repeatPeriod || !repeatNumber || !language) {
             toast.error(`Please fill All inputs`);
@@ -118,7 +121,7 @@ const EditMeal = () => {
             <main className={classes.Main}>
                 <div className={classes.FormContainer}>
                     <h1>Edit Meal</h1>
-                    <p>You will edit the (Pizza) Meal</p>
+                    <p>You will edit the ({mealName}) Meal</p>
                     <form onSubmit={submitHandler}>
                         <div className={classes.Image_Uploader}>
                             <label htmlFor={'meal_image'}>
@@ -135,7 +138,7 @@ const EditMeal = () => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'package_name'}>Package Name</label>
+                                <label htmlFor={'package_name'}>Meal Name</label>
                                 <input
                                     type={'text'}
                                     name={'package_name'}
@@ -155,17 +158,10 @@ const EditMeal = () => {
                                 <CustomSelectMealType
                                     defaultValue={category}
                                     changed={(values) => {
-                                        const arrayOfCategories = [];
-                                        // Get the Values from the Array of objects
-                                        if (values) {
-                                            values.forEach((cur) => {
-                                                arrayOfCategories.push(cur.value)
-                                            });
-                                        }
                                         // Set the State in Redux
                                         dispatch(onInputChange({
                                             key: 'category',
-                                            value: arrayOfCategories
+                                            value: values.value
                                         }))
                                     }}
                                 />
@@ -330,14 +326,18 @@ const EditMeal = () => {
 export default EditMeal;
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async ({req, res, query}) => {
-    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2Y1MTlhNzdiMDU0ZDM4OGM5ZGI5ZjkiLCJyb2xlIjoiYWRtaW4iLCJhY3RpdmUiOnRydWUsImlhdCI6MTY4MTI1NzYzOSwiZXhwIjoxNjgxMzQ0MDM5fQ.AVgvwqtT3u8B9w5tRTeAE0pAXK-GSdoKZOqsKU-uOtg`;
+    // get the Auth
+    const cookies = req.headers.cookie;
+    const token = cookies.split('=');
+    console.log(token)
+
     // GET THE ID OF THE MEAL FROM THE URL
     const {mealId, lang} = query;
-    console.log(mealId)
+
     // GET THE MEAL FROM THE SERVER
     await axios.get(`https://api.easydietkw.com/api/v1/get/meal?mealId=${mealId}&lang=${lang}`, {
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token[1]}`
         }
     })
         .then(res => {

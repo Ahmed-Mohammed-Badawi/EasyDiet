@@ -11,6 +11,8 @@ import {useRouter} from "next/router";
 // REDUX
 import {onInputChange, clearAll} from "@/redux/slices/createpackage-slice";
 import {useDispatch, useSelector} from "react-redux";
+//HELPERS
+import {extractTokenFromCookie} from "@/helpers/extractToken";
 
 const CreatePackage = () => {
     // ROUTER
@@ -264,4 +266,13 @@ const CreatePackage = () => {
         </>
     )
 }
-export default CreatePackage
+export default CreatePackage;
+
+export const getServerSideProps = async (ctx) => {
+
+    console.log(ctx.req.cookies)
+
+    return {
+        props: {},
+    };
+};

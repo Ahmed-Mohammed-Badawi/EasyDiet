@@ -47,7 +47,8 @@
 }
 
 input:focus{
-  outline: 1px solid #954ade;
+  outline: none;
+  border: 1px solid #954ade;
 }
 
 input::placeholder{

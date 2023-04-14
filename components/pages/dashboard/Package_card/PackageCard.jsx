@@ -1,5 +1,5 @@
 import classes from './PackageCard.module.scss';
-const PackageAdminCard = () => {
+const PackageAdminCard = ({name, price, time, meals}) => {
     return (
         <article className={classes.Card}>
             <p className={classes.Price}>52 KWD</p>

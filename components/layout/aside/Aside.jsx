@@ -35,6 +35,17 @@ const Aside = () => {
         }
     }
 
+    // LOGOUT HANDLER
+    const logoutHandler = (event) => {
+        event.preventDefault();
+        // Clear the cookie by setting its value to an empty string and an expiry date in the past
+        document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+        // Redirect to another page
+        router.push('/auth/login').then(() => {
+            window.location.reload()
+        })
+    }
+
     return (<aside className={classes.Aside} id={`AsideId`}>
         <ul className={classes.Aside_List}>
             <li className={classes.Aside_List__Item}>
@@ -44,12 +55,40 @@ const Aside = () => {
                         </span>
                     <span className={classes.Text}>Home</span>
                 </Link></li>
+            {/*<li className={classes.Aside_List__Item}>*/}
+            {/*    <Link href={'/about'} className={router.pathname === '/about' ? classes.Active : ''}>*/}
+            {/*            <span className={classes.Image_Container}>*/}
+            {/*                <Image src={'/images/About_Icon.svg'} alt={'Icon'} width={30} height={20}/>*/}
+            {/*            </span>*/}
+            {/*        <span className={classes.Text}>About</span>*/}
+            {/*    </Link></li>*/}
+            {/*<li className={classes.Aside_List__Item}>*/}
+            {/*    <Link href={'/user/profile'} className={router.pathname === '/user/profile' ? classes.Active : ''}>*/}
+            {/*            <span className={classes.Image_Container}>*/}
+            {/*                <Image src={'/images/Users_Icon.svg'} alt={'Icon'} width={30} height={20}/>*/}
+            {/*            </span>*/}
+            {/*        <span className={classes.Text}>PROFILE</span>*/}
+            {/*    </Link></li>*/}
+            {/*<li className={classes.Aside_List__Item}>*/}
+            {/*    <Link href={'#'}>*/}
+            {/*            <span className={classes.Image_Container}>*/}
+            {/*                <Image src={'/images/Subscription_Icon.svg'} alt={'Icon'} width={20} height={20}/>*/}
+            {/*            </span>*/}
+            {/*        <span className={classes.Text}>My Subscription</span>*/}
+            {/*    </Link></li>*/}
+            {/*<li className={classes.Aside_List__Item}>*/}
+            {/*    <Link href={'#'}>*/}
+            {/*            <span className={classes.Image_Container}>*/}
+            {/*                <Image src={'/images/Doctor_Icon.svg'} alt={'Icon'} width={30} height={20}/>*/}
+            {/*            </span>*/}
+            {/*        <span className={classes.Text}>nutrition specialist</span>*/}
+            {/*    </Link></li>*/}
             <li className={classes.Aside_List__Item}>
-                <Link href={'/about'} className={router.pathname === '/about' ? classes.Active : ''}>
+                <Link href={'/admin/dashboard'} className={router.pathname === '/admin/dashboard' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
-                            <Image src={'/images/About_Icon.svg'} alt={'Icon'} width={30} height={20}/>
+                            <Image src={'/images/dashboard.png'} alt={'Icon'} width={20} height={20}/>
                         </span>
-                    <span className={classes.Text}>About</span>
+                    <span className={classes.Text}>Dashboard</span>
                 </Link></li>
             <li className={classes.Aside_List__Item}>
                 <Link href={'/admin/packages'} className={router.pathname === '/admin/packages' ? classes.Active : ''}>
@@ -66,27 +105,6 @@ const Aside = () => {
                     <span className={classes.Text}>Meals</span>
                 </Link></li>
             <li className={classes.Aside_List__Item}>
-                <Link href={'/user/profile'} className={router.pathname === '/user/profile' ? classes.Active : ''}>
-                        <span className={classes.Image_Container}>
-                            <Image src={'/images/Users_Icon.svg'} alt={'Icon'} width={30} height={20}/>
-                        </span>
-                    <span className={classes.Text}>PROFILE</span>
-                </Link></li>
-            <li className={classes.Aside_List__Item}>
-                <Link href={'#'}>
-                        <span className={classes.Image_Container}>
-                            <Image src={'/images/Subscription_Icon.svg'} alt={'Icon'} width={20} height={20}/>
-                        </span>
-                    <span className={classes.Text}>My Subscription</span>
-                </Link></li>
-            <li className={classes.Aside_List__Item}>
-                <Link href={'#'}>
-                        <span className={classes.Image_Container}>
-                            <Image src={'/images/Doctor_Icon.svg'} alt={'Icon'} width={30} height={20}/>
-                        </span>
-                    <span className={classes.Text}>nutrition specialist</span>
-                </Link></li>
-            <li className={classes.Aside_List__Item}>
                 <Link href={'/admin/users'} className={router.pathname === '/admin/users' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Users_Icon.svg'} alt={'Icon'} width={30} height={20}/>
@@ -94,14 +112,14 @@ const Aside = () => {
                     <span className={classes.Text}>Users</span>
                 </Link></li>
             <li className={classes.Aside_List__Item}>
-                <Link href={'#'}>
+                <Link href={'/admin/reports'} className={router.pathname === '/admin/reports' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Reports_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
                     <span className={classes.Text}>Reports</span>
                 </Link></li>
             <li className={classes.Aside_List__Item}>
-                <Link href={'#'}>
+                <Link onClick={logoutHandler} href={'/auth/login'} className={classes.ActiveLogout}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Logout_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>

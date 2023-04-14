@@ -8,13 +8,11 @@ import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {onInputChange} from '@/redux/slices/meals-slice';
 import {useRouter} from "next/router";
+import {extractTokenFromCookie} from "@/helpers/extractToken";
 
 const Meals = () => {
-
     //ROUTER
     const router = useRouter();
-
-    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2Y1MTlhNzdiMDU0ZDM4OGM5ZGI5ZjkiLCJyb2xlIjoiYWRtaW4iLCJhY3RpdmUiOnRydWUsImlhdCI6MTY4MTI1NzYzOSwiZXhwIjoxNjgxMzQ0MDM5fQ.AVgvwqtT3u8B9w5tRTeAE0pAXK-GSdoKZOqsKU-uOtg`;
 
     // REDUX
     const dispatch = useDispatch();
@@ -22,12 +20,15 @@ const Meals = () => {
 
     // EFFECT TO GET THE MEALS WHEN PAGE LOAD
     useEffect(() => {
+        //GET THE TOKEN
+        const token = extractTokenFromCookie(document.cookie)
+
         axios.get(`https://api.easydietkw.com/api/v1/get/all/meals`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
             params: {
                 page: 1,
+            },
+            headers: {
+                'Authorization': `Bearer ${token}`
             }
         })
             .then(res => {

@@ -2,17 +2,17 @@ import {useState} from "react";
 import classes from '@/styles/pages/admin/edit_employee.module.scss'
 import Image from "next/image";
 // IMPORT
-import CustomSelectMealType from "@/components/pages/dashboard/custom-select-userRole";
 import {toast} from "react-toastify";
 import axios from "axios";
-import {clearAll, setAll} from "@/redux/slices/editEmployee-slice";
+import {setAll, onInputChange} from "@/redux/slices/editEmployee-slice";
 import {useRouter} from "next/router";
 import {useDispatch, useSelector} from "react-redux";
 import wrapper from "@/redux/store";
-import {setAll} from "@/redux/slices/editmeal-slice";
+import CustomSelectRoleType from "@/components/pages/dashboard/custom-select-userRole";
+import {extractTokenFromCookie} from "@/helpers/extractToken";
+import CustomSelectUserRole from "@/components/pages/dashboard/custom-select-userRole";
 
-const EditEmployee = () => {
-    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2Y1MTlhNzdiMDU0ZDM4OGM5ZGI5ZjkiLCJyb2xlIjoiYWRtaW4iLCJhY3RpdmUiOnRydWUsImlhdCI6MTY4MTI1NzYzOSwiZXhwIjoxNjgxMzQ0MDM5fQ.AVgvwqtT3u8B9w5tRTeAE0pAXK-GSdoKZOqsKU-uOtg`;
+const EditEmployee = ({ID}) => {
     // ROUTER
     const router = useRouter()
 
@@ -46,8 +46,10 @@ const EditEmployee = () => {
     const submitHandler = async (e) => {
         // STOP RELOADING
         e.preventDefault();
+        // GET THE TOKEN
+        const token = extractTokenFromCookie(document.cookie);
         //Check the inputs
-        if (!selectedImage || !fullName || !username || !role || !password || !address || !phone) {
+        if (!fullName || !username || !role || !address || !phone) {
             toast.error(`Please fill All inputs`);
             return;
         }
@@ -55,14 +57,18 @@ const EditEmployee = () => {
         setLoading(true);
         // Create the Data as formData
         const editEmployee_formData = new FormData();
-        editEmployee_formData.append("userId", fullName);
+        editEmployee_formData.append("userId", ID);
         editEmployee_formData.append("fullName", fullName);
         editEmployee_formData.append("username", username);
         editEmployee_formData.append("role", role);
-        editEmployee_formData.append("password", password);
+        if (password) {
+            editEmployee_formData.append("password", password);
+        }
         editEmployee_formData.append("address", address);
         editEmployee_formData.append("phoneNumber", phone);
-        editEmployee_formData.append("files", selectedImage);
+        if (selectedImage) {
+            editEmployee_formData.append("files", selectedImage);
+        }
 
         // Send Create Request to the server
         await axios.put(`https://api.easydietkw.com/api/v1/edit/user`, editEmployee_formData, {
@@ -75,11 +81,6 @@ const EditEmployee = () => {
                 setLoading(false);
                 // DO WHAT I WANT
                 toast.success(res.data.message);
-                // Clear the reducer
-                dispatch(clearAll());
-                // Clear the image;
-                setSelectedImage('');
-                setPreview('')
             })
             .catch(err => {
                 // SET THE STATE
@@ -111,24 +112,100 @@ const EditEmployee = () => {
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'employee_name'}>Employee Name</label>
-                                <input type={'text'} name={'employee_name'} id={'employee_name'}
-                                       placeholder={'EX: Ahmed Mohammed'}/>
+                                <input
+                                    value={fullName}
+                                    type={'text'}
+                                    name={'employee_name'}
+                                    id={'employee_name'}
+                                    placeholder={'EX: Ahmed Mohammed'}
+                                    onChange={(event) => {
+                                        dispatch(onInputChange({
+                                            key: 'fullName',
+                                            value: event.target.value
+                                        }))
+                                    }}
+                                />
                             </div>
                             <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
                                 <label htmlFor={'user_role'}>User Role</label>
-                                <CustomSelectMealType/>
+                                <CustomSelectUserRole
+                                    defaultValue={role}
+                                    changed={(values) => {
+                                        // Set the State in Redux
+                                        dispatch(onInputChange({
+                                            key: 'role',
+                                            value: values.value
+                                        }))
+                                    }}
+                                />
                             </div>
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'employee_address'}>Employee Address</label>
-                                <input type={'text'} name={'employee_address'} id={'employee_address'}
-                                       placeholder={'EX: 15 Marg Street'}/>
+                                <input
+                                    value={address}
+                                    type={'text'}
+                                    name={'employee_address'}
+                                    id={'employee_address'}
+                                    placeholder={'EX: 15 Marg Street'}
+                                    onChange={(event) => {
+                                        dispatch(onInputChange({
+                                            key: 'address',
+                                            value: event.target.value
+                                        }))
+                                    }}
+                                />
                             </div>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'employee_phone'}>Mobile</label>
-                                <input type={'tel'} name={'employee_phone'} id={'employee_phone'}
-                                       placeholder={'EX: 01020985828'}/>
+                                <input
+                                    value={phone}
+                                    type={'tel'}
+                                    name={'employee_phone'}
+                                    id={'employee_phone'}
+                                    placeholder={'EX: 99994459'}
+                                    onChange={(event) => {
+                                        dispatch(onInputChange({
+                                            key: 'phone',
+                                            value: event.target.value
+                                        }))
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div className={classes.InputsContainer}>
+                            <div className={classes.InputGroup}>
+                                <label htmlFor={'employee_username'}>Username</label>
+                                <input
+                                    type={'text'}
+                                    name={'employee_username'}
+                                    id={'employee_username'}
+                                    placeholder={'EX: A7med'}
+                                    value={username}
+                                    onChange={(event) => {
+                                        dispatch(onInputChange({
+                                            key: 'username',
+                                            value: event.target.value,
+                                        }))
+                                    }}
+                                />
+                            </div>
+                            <div className={classes.InputGroup}>
+                                <label htmlFor={'employee_password'}>Password</label>
+                                <input
+                                    type={'password'}
+                                    name={'employee_password'}
+                                    id={'employee_password'}
+                                    placeholder={'EX: *******'}
+                                    value={password}
+                                    onChange={(event) => {
+                                        dispatch(onInputChange({
+                                            key: 'password',
+                                            value: event.target.value,
+                                        }))
+                                    }}
+                                />
                             </div>
                         </div>
                         <button type={'submit'}>
@@ -147,27 +224,30 @@ export default EditEmployee
 
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async ({req, res, query}) => {
-    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2Y1MTlhNzdiMDU0ZDM4OGM5ZGI5ZjkiLCJyb2xlIjoiYWRtaW4iLCJhY3RpdmUiOnRydWUsImlhdCI6MTY4MTI1NzYzOSwiZXhwIjoxNjgxMzQ0MDM5fQ.AVgvwqtT3u8B9w5tRTeAE0pAXK-GSdoKZOqsKU-uOtg`;
+    // get the Auth
+    const cookies = req.headers.cookie;
+    const token = cookies.split('=')
+
     // GET THE ID OF THE MEAL FROM THE URL
-    const {userId} = query;
-    console.log(userId)
+    const {ID} = query;
+
     // GET THE MEAL FROM THE SERVER
-    await axios.get(`https://api.easydietkw.com/api/v1/get/user?userId=${userId}`, {
+    await axios.get(`https://api.easydietkw.com/api/v1/get/user?userId=${ID}`, {
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token[1]}`
         }
     })
         .then(res => {
             // SET THE STATE
-            const user = res.data
-            console.log(res.data)
+            const user = res.data.user
+            console.log(user)
             store.dispatch(setAll({
-                fullName: "",
-                username: "",
-                role: "",
+                fullName: user.fullName,
+                username: user.username,
+                role: user.role,
                 password: "",
-                address: '',
-                phone: '',
+                address: user.address,
+                phone: user.phoneNumber,
             }))
         })
         .catch(err => {
@@ -176,4 +256,9 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async ({re
         })
 
     // Your code here
+    return {
+        props: {
+            ID
+        }
+    }
 });

@@ -30,9 +30,10 @@ const customStyles = {
 };
 
 const options = [
-    {value: 'admin', label: 'Admin'},
-    {value: 'diet specialist', label: 'nutrition specialist'},
-    {value: 'manager', label: 'Branch Manager'},
+    {value: 'افطار', label: 'Breakfast'},
+    {value: 'غداء', label: 'Lunch'},
+    {value: 'عشاء', label: 'Dinner'},
+    {value: 'سناك', label: 'Snacks'},
 ];
 
 const CustomSelect = ({changed, defaultValue}) => {
@@ -42,11 +43,18 @@ const CustomSelect = ({changed, defaultValue}) => {
 
     // GET THE DEFAULT VALUE TO SET
     // Find the option objects that match the option labels
-    const defaultValueObject = options.find(option => option.value === defaultValue);
+    const defaultValueObjectArray = options.filter(option => defaultValue.includes(option.value));
+
 
     return (
         <>
-            <Select id={id} options={options} styles={customStyles} value={defaultValueObject || ''} onChange={changed} />
+            <Select
+                value={defaultValueObjectArray}
+                id={id}
+                options={options}
+                styles={customStyles}
+                onChange={changed}
+            />
         </>
     )
 }

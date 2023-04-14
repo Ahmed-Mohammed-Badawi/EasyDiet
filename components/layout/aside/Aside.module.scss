@@ -27,6 +27,7 @@
             padding: 1rem 2rem;
             width: 100%;
             background-color: var(--color-white-background);
+            transition: all 0.2s ease-in-out;
 
             &:hover{
                 background-color: var(--color-select-background);
@@ -34,6 +35,13 @@
 
             &.Active{
                 background-color: var(--color-select-background);
+            }
+
+            &.ActiveLogout:hover{
+                background-color: rgba(245, 33, 54, 0.23);
+            }
+            &.ActiveLogout:active{
+                transform: scale(0.95);
             }
         }
 

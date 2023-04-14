@@ -2,15 +2,26 @@ import classes from './Meal_Edit.module.scss';
 import Image from "next/image";
 import {useRouter} from "next/router";
 import axios from "axios";
+import {extractTokenFromCookie} from "@/helpers/extractToken";
+import {toast} from "react-toastify";
+//REDUX
+import {onInputChange} from "@/redux/slices/meals-slice";
+import {useSelector, useDispatch} from "react-redux";
+
 
 const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, lang}) => {
-    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2Y1MTlhNzdiMDU0ZDM4OGM5ZGI5ZjkiLCJyb2xlIjoiYWRtaW4iLCJhY3RpdmUiOnRydWUsImlhdCI6MTY4MTI1NzYzOSwiZXhwIjoxNjgxMzQ0MDM5fQ.AVgvwqtT3u8B9w5tRTeAE0pAXK-GSdoKZOqsKU-uOtg`;
-
     // ROUTER
     const router = useRouter();
 
+    //REDUX
+    const dispatch = useDispatch();
+    const {meals} = useSelector(state => state.meals);
+
     // DELETE HANDLER
     const deleteHandler = async () => {
+        //GET THE TOKEN
+        const token = extractTokenFromCookie(document.cookie)
+
         if (window.confirm('This Meal Will Be Deleted. Are you sure you want to continue?')) {
             await axios.delete(`https://api.easydietkw.com/api/v1/delete/meal?mealId=${ID}&lang=${lang}`, {
                 headers: {
@@ -18,7 +29,11 @@ const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, 
                 }
             })
                 .then(res => {
-                    console.log(res)
+                    // Show notification
+                    toast.success('Meal Deleted Successfully');
+                    // Update the State
+                    const updatedItems = meals.filter(item => item._id !== ID);
+                    dispatch(onInputChange({key: 'meals', value: updatedItems}))
                 })
                 .catch(err => {
                     console.log(err)
@@ -54,9 +69,11 @@ const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, 
                 </div>
                 <div className={classes.Buttons}>
                     <button>
-                        <Image src={'/images/Delete_Icon.svg'} onClick={deleteHandler} alt={'Delete'} width={18} height={18}/>
+                        <Image src={'/images/Delete_Icon.svg'} onClick={deleteHandler} alt={'Delete'} width={18}
+                               height={18}/>
                     </button>
-                    <button onClick={() => router.push(`/admin/edit/edit_meal?mealId=${ID}&lang=${lang}`)}>
+                    <button
+                        onClick={() => router.push(`/admin/edit/edit_meal?mealId=${ID}&lang=${lang}&mealName=${name}`)}>
                         <Image src={'/images/Edit_Icon.svg'} alt={'Edit'} width={18} height={18}/>
                     </button>
                 </div>

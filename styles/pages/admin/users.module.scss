@@ -171,7 +171,10 @@
         overflow: auto;
 
         table {
+            display: block;
             width: 100%;
+            align-items: center;
+            justify-content: flex-start;
         }
 
         .table {
@@ -179,19 +182,60 @@
             width: 100%;
 
             thead {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
                 background-color: #FCF5FF;
+                width: 100%;
+
+                tr{
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    width: 100%;
+                    gap: 1rem;
+                }
 
                 th {
-                    text-align: left;
                     padding: 1rem;
                     font-weight: normal;
+                    text-align: left;
+
+                    &:nth-child(1){
+                        width: 20%;
+                    }
+                    &:nth-child(2){
+                        width: 20%;
+                    }
+                    &:nth-child(3){
+                        width: 20%;
+                    }
+                    &:nth-child(4){
+                        width: 20%;
+                    }
+                    &:nth-child(5){
+                        width: 20%;
+                    }
                 }
             }
 
             tbody {
+                display: block;
+                height: 55rem;
+                max-height: 55rem;
+                overflow: auto;
+
+                tr{
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    gap: 1rem;
+                    width: 100%;
+                }
+
                 td {
                     font-size: 1.5rem;
-                    padding: 1rem .25rem;
+                    padding: 1rem;
                     color: var(--color-gray-777);
 
                     .UserImage{
@@ -204,6 +248,75 @@
                             border-radius: 50%;
                             object-fit: cover;
                         }
+                    }
+
+                    &:nth-child(1){
+                        width: 20%;
+                    }
+                    &:nth-child(2){
+                        width: 20%;
+                    }
+                    &:nth-child(3){
+                        width: 20%;
+                    }
+                    &:nth-child(4){
+                        width: 20%;
+                    }
+                    &:nth-child(5){
+                        width: 20%;
+                    }
+                }
+            }
+
+            &.tableEmployees{
+                th {
+                    padding: 1rem;
+                    font-weight: normal;
+                    text-align: left;
+
+                    &:nth-child(1){
+                        width: 10%;
+                    }
+                    &:nth-child(2){
+                        width: 20%;
+                    }
+                    &:nth-child(3){
+                        width: 15%;
+                    }
+                    &:nth-child(4){
+                        width: 15%;
+                    }
+                    &:nth-child(5){
+                        width: 20%;
+                    }
+                    &:nth-child(6){
+                        width: 20%;
+                    }
+                }
+
+
+                td {
+                    font-size: 1.5rem;
+                    padding: 1rem;
+                    color: var(--color-gray-777);
+
+                    &:nth-child(1){
+                        width: 10%;
+                    }
+                    &:nth-child(2){
+                        width: 20%;
+                    }
+                    &:nth-child(3){
+                        width: 15%;
+                    }
+                    &:nth-child(4){
+                        width: 15%;
+                    }
+                    &:nth-child(5){
+                        width: 20%;
+                    }
+                    &:nth-child(6){
+                        width: 20%;
                     }
                 }
             }
@@ -271,6 +384,13 @@
                     color: var(--color-white-text);
                     transform: scale(0.95);
                 }
+
+                &:disabled{
+                    background-color: var(--color-gray-999);
+                    color: var(--color-white-text);
+                    border-color: var(--color-gray-999);
+                    cursor: not-allowed;
+                }
             }
 
             .Delete {
@@ -316,11 +436,19 @@
 
         .row:nth-child(even) {
             background-color: #FCFAFC;
+            width: 100%;
         }
 
         .row:nth-child(odd) {
             background-color: var(--color-white-background);
         }
+    }
+
+    .ClientName{
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        cursor: pointer;
     }
 
     .Table_Pagination{

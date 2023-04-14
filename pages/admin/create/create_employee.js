@@ -10,9 +10,10 @@ import axios from "axios";
 // REDUX
 import {clearAll, onInputChange} from "@/redux/slices/createEmployee-slice";
 import {useDispatch, useSelector} from "react-redux";
+import {extractTokenFromCookie} from "@/helpers/extractToken";
+import {setAll} from "@/redux/slices/editEmployee-slice";
 
 const CreateEmployee = () => {
-    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2Y1MTlhNzdiMDU0ZDM4OGM5ZGI5ZjkiLCJyb2xlIjoiYWRtaW4iLCJhY3RpdmUiOnRydWUsImlhdCI6MTY4MTI1NzYzOSwiZXhwIjoxNjgxMzQ0MDM5fQ.AVgvwqtT3u8B9w5tRTeAE0pAXK-GSdoKZOqsKU-uOtg`;
     // ROUTER
     const router = useRouter()
 
@@ -46,6 +47,9 @@ const CreateEmployee = () => {
     const submitHandler = async (e) => {
         // STOP RELOADING
         e.preventDefault();
+        //GET THE TOKEN
+        const token = extractTokenFromCookie(document.cookie)
+
         //Check the inputs
         if (!selectedImage || !fullName || !username || !role || !password || !address || !phone) {
             toast.error(`Please fill All inputs`);
@@ -219,3 +223,12 @@ const CreateEmployee = () => {
     )
 }
 export default CreateEmployee
+
+export const getServerSideProps = async (ctx) => {
+    // GET THE TOKEN FROM THE REQUEST
+    const {token} = ctx.req.cookies;
+
+    return {
+        props: {},
+    };
+};
