@@ -79,7 +79,7 @@ const EditPackage = ({bundle}) => {
         const token = extractTokenFromCookie(document.cookie);
 
         //Check the inputs
-        if (!name || !timeOnCard || !realTime || !packagePrice || !numberOfMeals || !numberOfSnacks || !offerDays || !language || packageMeals.length <= 0) {
+        if (!name || !timeOnCard || !realTime || !packagePrice || !numberOfMeals || !numberOfSnacks || !language || packageMeals.length <= 0) {
             toast.error(`Please fill All inputs`);
             return;
         }
