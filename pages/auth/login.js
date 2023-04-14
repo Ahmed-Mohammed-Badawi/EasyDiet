@@ -25,14 +25,11 @@ const Login = () => {
                 }
             )
 
-            // Save the token in cookies
-            document.cookie = `token=${response.data.token}`;
-
             // Redirect based on the user's role
             if (response.data.user.role === "admin") {
-                router.push("/admin/dashboard");
+                router.push(`/admin/dashboard?token=${response.data.token}`).then(() => window.location.reload());
             } else if (response.data.user.role === "user") {
-                router.push("/user/dashboard");
+                router.push(`/user/dashboard?token=${'asdasd'}`);
             }
 
             // Show success message

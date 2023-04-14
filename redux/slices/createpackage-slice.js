@@ -12,6 +12,9 @@ const initialValue = {
     fridayIncluded: false,
     language: '',
     packageMeals: [],
+    breakfast: false,
+    lunch: false,
+    dinner: false
 };
 
 const createPackageSlice = createSlice({
@@ -39,7 +42,7 @@ const createPackageSlice = createSlice({
                 })
             }
             // Add the meal id if it's not exist
-            if(isMealExist === false){
+            if (isMealExist === false) {
                 packageMealsCopy.push(action.payload.id);
                 state.packageMeals = packageMealsCopy
             }
@@ -55,6 +58,9 @@ const createPackageSlice = createSlice({
             state.fridayIncluded = false;
             state.language = '';
             state.packageMeals = [];
+            state.breakfast = false;
+            state.lunch = false;
+            state.dinner = false
         }
     },
 })

@@ -1,31 +1,31 @@
 import classes from './PackageCard.module.scss';
-const PackageAdminCard = ({name, price, time, meals}) => {
+const PackageAdminCard = ({name, price, time, meals, snacks, fridays, offers}) => {
     return (
         <article className={classes.Card}>
-            <p className={classes.Price}>52 KWD</p>
+            <p className={classes.Price}>{price} KWD</p>
             <div className={classes.Top}>
                 <div className={classes.Info}>
-                    <p>Fit Package</p>
-                    <span>2 Weeks</span>
-                    <span>5</span>
+                    <p>{name}</p>
+                    <span>{time}</span>
+                    <span>{meals}</span>
                 </div>
             </div>
             <div className={classes.Bottom}>
                 <div>
-                    <p>BREAKFAST</p>
-                    <span>1</span>
+                    <p>MEALS</p>
+                    <span>{meals}</span>
                 </div>
                 <div>
-                    <p>BREAKFAST</p>
-                    <span>1</span>
+                    <p>SNACKS</p>
+                    <span>{snacks}</span>
                 </div>
                 <div>
-                    <p>BREAKFAST</p>
-                    <span>1</span>
+                    <p>FRIDAYS</p>
+                    <span>{fridays ? <span>&#10003;</span> : <span>&#10006;</span>}</span>
                 </div>
                 <div>
-                    <p>BREAKFAST</p>
-                    <span>1</span>
+                    <p>OFFER DAYS</p>
+                    <span>{offers > 0 ? <span>&#10003;</span> : <span>&#10006;</span>}</span>
                 </div>
             </div>
         </article>

@@ -1,11 +1,13 @@
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import classes from '@/styles/pages/admin/package_meals.module.scss';
 import Image from "next/image";
 import {useRouter} from "next/router";
 // IMPORTS
 import MealCheckbox from "@/components/pages/dashboard/Meal_checkbox/MealCheckbox";
 import Spinner from "@/components/layout/spinner/Spinner";
-
+import {extractTokenFromCookie} from "@/helpers/extractToken";
+import {toast} from "react-toastify";
+import axios from "axios";
 
 const Users = () => {
     //ROUTER
@@ -13,7 +15,8 @@ const Users = () => {
 
     // STATES
     const [isOn, setIsOn] = useState(false);
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const [meals, setMeals] = useState(null);
 
     const handleClick = (e) => {
         setIsOn(e.target.checked);
@@ -25,6 +28,28 @@ const Users = () => {
     const checkClients = () => {
         setIsOn(false);
     }
+    
+    useEffect(() => {
+        const token = extractTokenFromCookie(document.cookie);
+        
+        try {
+            axios.get(`https://api.easydietkw.com/api/v1/get/meals`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                params: {
+                    page: 1,
+                    lang: isOn ? 'AR' : 'EN',
+                }
+            })
+                .then(res => {
+                    console.log(res);
+                    setMeals(res.data.data.meals);
+                })
+        }catch (err) {
+            toast.error(err.response?.data?.message || err.message)
+        }
+    }, [isOn])
 
     return (
         <>
@@ -60,22 +85,22 @@ const Users = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map((cur, index) => {
+                            {meals && meals.map((cur) => {
                                 return (
-                                    <tr key={index} className={classes.row}>
+                                    <tr key={cur._id} className={classes.row}>
                                         <td>
                                             <div className={classes.UserImage}>
-                                                <Image src={'/images/Auth/dl.beatsnoop.com-3000-H6LQJm7ZRo.png'}
+                                                <Image src={cur.imagePath}
                                                        alt={'User Image'} width={40} height={40}/>
                                             </div>
                                         </td>
-                                        <td>Ahmed Mohammed</td>
-                                        <td>01020985828</td>
+                                        <td>{cur.mealTitle}</td>
+                                        <td>{cur.mealType}</td>
                                         <td><span
-                                            className={classes.SubscriptionButton}>Admin</span>
+                                            className={classes.SubscriptionButton}>{cur.lang}</span>
                                         </td>
                                         <td className={classes.Actions}>
-                                            <MealCheckbox id={index}/>
+                                            <MealCheckbox id={cur._id}/>
                                         </td>
                                     </tr>
                                 )

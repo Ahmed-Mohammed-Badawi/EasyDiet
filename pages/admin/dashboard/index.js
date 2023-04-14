@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import Head from 'next/head'
 import classes from '@/styles/pages/admin/dashboard.module.scss';
+import {useRouter} from "next/router";
 // NEW
 import {useTranslation} from "react-i18next";
 //TEST
@@ -9,9 +10,24 @@ import ProjectsChart from "@/components/pages/dashboard/ProjectsChart";
 import PackageAdminCard from "@/components/pages/dashboard/Package_card/PackageCard";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
-import {setUsers} from "@/redux/slices/users-slice";
 
 export default function Dashboard() {
+    // ROUTER
+    const router = useRouter();
+
+    // get the token
+    const {token} = router.query;
+    // set the token
+    if (token) {
+        // Set the token at cookie
+        document.cookie = `token=${token}; path=/;`;
+        // Check if the token is set before redirecting
+        if (document.cookie.includes('token')) {
+            // reload the page
+            router.push("/admin/dashboard").then(() => router.reload());
+        }
+    }
+
 
     //STATES
     const [doctors, setDoctors] = useState(0);
@@ -38,30 +54,33 @@ export default function Dashboard() {
     //EFFECT TO GET THE DATA OF DASHBOARD
     useEffect(() => {
         const token = extractTokenFromCookie(document.cookie);
-        try {
-            // GET THE DASHBOARD DATA
-            axios.get(`https://api.easydietkw.com/api/v1/get/stats`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-                .then(res => {
-                    setPackages(res.data.data.bundlesNumber);
-                    setMeals(res.data.data.mealsNumber);
-                    setDoctors(res.data.data.specialistsNumber);
-                    setTopSelling(res.data.data.bestSellerPackages);
-                    setClients({
-                        all: res.data.data.clientsStats.all,
-                        active: res.data.data.clientsStats.active,
-                        inActive: res.data.data.clientsStats.inactive
-                    })
+        if (token) {
+            try {
+                // GET THE DASHBOARD DATA
+                axios.get(`https://api.easydietkw.com/api/v1/get/stats`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 })
-                .catch(err => console.log(err))
-        } catch (e) {
-            console.log(e)
+                    .then(res => {
+                        console.log(res.data)
+                        setPackages(res.data.data.bundlesNumber);
+                        setMeals(res.data.data.mealsNumber);
+                        setDoctors(res.data.data.specialistsNumber);
+                        setTopSelling(res.data.data.bestSeller);
+                        setClients({
+                            all: res.data.data.clientsStats.all,
+                            active: res.data.data.clientsStats.active,
+                            inActive: res.data.data.clientsStats.inactive
+                        })
+                    })
+                    .catch(err => console.log(err))
+            } catch (e) {
+                console.log(e)
+            }
         }
 
-    }, [])
+    }, [router.asPath])
 
     return (
         <>
@@ -111,9 +130,18 @@ export default function Dashboard() {
                 <section className={classes.Bottom}>
                     <h2>Best Selling Packages</h2>
                     <div className={classes.Cards_Container} onWheel={handleScroll} ref={cardContainerRef}>
-                        {topSelling && topSelling.map((cur, index) => {
+                        {topSelling && topSelling.map((cur) => {
                             return (
-                                <PackageAdminCard key={index}/>
+                                <PackageAdminCard
+                                    key={cur._id}
+                                    name={cur.bundleName}
+                                    meals={cur.mealsNumber}
+                                    price={cur.bundlePrice}
+                                    snacks={cur.snacksNumber}
+                                    fridays={cur.fridayOption}
+                                    offers={cur.bundleOffer}
+                                    time={cur.timeOnCard}
+                                />
                             )
                         })
                         }
@@ -123,3 +151,33 @@ export default function Dashboard() {
         </>
     )
 }
+
+
+export const getServerSideProps = async (ctx) => {
+    // GET THE TOKEN FROM THE REQUEST
+    const {token} = ctx.req.cookies;
+
+    let tokenInfo;
+    if (token) {
+        await axios.get(`https://api.easydietkw.com/api/v1/get/verify/token`, {
+            params: {
+                token: token,
+            }
+        })
+            .then(res => tokenInfo = res.data.decodedToken)
+            .catch(err => console.log(err))
+    }
+
+    if (!tokenInfo || tokenInfo.role !== 'admin' || tokenInfo.active === false) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
+
+    return {
+        props: {},
+    };
+};

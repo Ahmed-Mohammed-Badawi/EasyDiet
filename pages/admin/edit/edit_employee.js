@@ -226,34 +226,58 @@ export default EditEmployee
 export const getServerSideProps = wrapper.getServerSideProps(store => async ({req, res, query}) => {
     // get the Auth
     const cookies = req.headers.cookie;
-    const token = cookies.split('=')
+    const token = cookies.split('=');
+
+    // Check the role
+    let tokenInfo;
+    if (token) {
+        await axios.get(`https://api.easydietkw.com/api/v1/get/verify/token`, {
+            params: {
+                token: token[1],
+            }
+        })
+            .then(res => tokenInfo = res.data.decodedToken)
+            .catch(err => console.log(err))
+    }
+
+    if (!tokenInfo || tokenInfo.role !== 'admin' || tokenInfo.active === false) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
+
 
     // GET THE ID OF THE MEAL FROM THE URL
     const {ID} = query;
 
-    // GET THE MEAL FROM THE SERVER
-    await axios.get(`https://api.easydietkw.com/api/v1/get/user?userId=${ID}`, {
-        headers: {
-            'Authorization': `Bearer ${token[1]}`
-        }
-    })
-        .then(res => {
-            // SET THE STATE
-            const user = res.data.user
-            console.log(user)
-            store.dispatch(setAll({
-                fullName: user.fullName,
-                username: user.username,
-                role: user.role,
-                password: "",
-                address: user.address,
-                phone: user.phoneNumber,
-            }))
+    if (ID) {
+        // GET THE MEAL FROM THE SERVER
+        await axios.get(`https://api.easydietkw.com/api/v1/get/user?userId=${ID}`, {
+            headers: {
+                'Authorization': `Bearer ${token[1]}`
+            }
         })
-        .catch(err => {
-            // SET THE STATE
-            console.log(err)
-        })
+            .then(res => {
+                // SET THE STATE
+                const user = res.data.user
+                console.log(user)
+                store.dispatch(setAll({
+                    fullName: user.fullName,
+                    username: user.username,
+                    role: user.role,
+                    password: "",
+                    address: user.address,
+                    phone: user.phoneNumber,
+                }))
+            })
+            .catch(err => {
+                // SET THE STATE
+                console.log(err)
+            })
+    }
 
     // Your code here
     return {

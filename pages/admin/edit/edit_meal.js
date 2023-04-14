@@ -329,39 +329,62 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async ({re
     // get the Auth
     const cookies = req.headers.cookie;
     const token = cookies.split('=');
-    console.log(token)
+
+    //CHECK THE ROLE
+    let tokenInfo;
+    if (token) {
+        await axios.get(`https://api.easydietkw.com/api/v1/get/verify/token`, {
+            params: {
+                token: token[1],
+            }
+        })
+            .then(res => tokenInfo = res.data.decodedToken)
+            .catch(err => console.log(err))
+    }
+
+    if (!tokenInfo || tokenInfo.role !== 'admin' || tokenInfo.active === false) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
+
 
     // GET THE ID OF THE MEAL FROM THE URL
     const {mealId, lang} = query;
 
-    // GET THE MEAL FROM THE SERVER
-    await axios.get(`https://api.easydietkw.com/api/v1/get/meal?mealId=${mealId}&lang=${lang}`, {
-        headers: {
-            'Authorization': `Bearer ${token[1]}`
-        }
-    })
-        .then(res => {
-            // SET THE STATE
-            const meal = res.data.meal
-            console.log(res.data.meal)
-            store.dispatch(setAll({
-                mealId: meal._id,
-                name: meal.mealTitle,
-                category: [meal.mealType],
-                carbohydrate: meal.carbohydrates,
-                protein: meal.protine,
-                calories: meal.calories,
-                fat: meal.fats,
-                repeatPeriod: meal.selectionRule.period,
-                repeatNumber: meal.selectionRule.redundancy,
-                blocked: meal.mealBlocked,
-                language: meal.lang
-            }))
+    if (mealId, lang) {
+        // GET THE MEAL FROM THE SERVER
+        await axios.get(`https://api.easydietkw.com/api/v1/get/meal?mealId=${mealId}&lang=${lang}`, {
+            headers: {
+                'Authorization': `Bearer ${token[1]}`
+            }
         })
-        .catch(err => {
-            // SET THE STATE
-            console.log(err)
-        })
+            .then(res => {
+                // SET THE STATE
+                const meal = res.data.meal
+                console.log(res.data.meal)
+                store.dispatch(setAll({
+                    mealId: meal._id,
+                    name: meal.mealTitle,
+                    category: [meal.mealType],
+                    carbohydrate: meal.carbohydrates,
+                    protein: meal.protine,
+                    calories: meal.calories,
+                    fat: meal.fats,
+                    repeatPeriod: meal.selectionRule.period,
+                    repeatNumber: meal.selectionRule.redundancy,
+                    blocked: meal.mealBlocked,
+                    language: meal.lang
+                }))
+            })
+            .catch(err => {
+                // SET THE STATE
+                console.log(err)
+            })
+    }
 
     // Your code here
 });

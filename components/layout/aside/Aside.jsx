@@ -119,7 +119,7 @@ const Aside = () => {
                     <span className={classes.Text}>Reports</span>
                 </Link></li>
             <li className={classes.Aside_List__Item}>
-                <Link onClick={logoutHandler} href={'/auth/login'} className={classes.ActiveLogout}>
+                <Link onClick={(event) => logoutHandler(event)} href={'/auth/login'} className={classes.ActiveLogout}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Logout_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>

@@ -98,6 +98,64 @@
             border-radius: 3px;
             width: 100%;
         }
+
+
+        .checkboxRow {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            width: 100%;
+            gap: 10px;
+        }
+
+        .checkbox {
+            position: relative;
+            display: inline-block;
+            font-size: 16px;
+            text-transform: capitalize;
+            line-height: 20px;
+            cursor: pointer;
+            padding-left: 2rem;
+        }
+
+        input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 18px;
+            width: 18px;
+            background-color: #fff;
+            border: 2px solid #954ade;
+            border-radius: 3px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        input[type="checkbox"]:checked ~ .checkmark:after {
+            content: "";
+            position: absolute;
+            display: block;
+            left: 50%;
+            top: 50%;
+            width: 7px;
+            height: 12px;
+            border: solid #954ade;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg) translate(-100%, -24%);
+            transform-origin: center;
+        }
+
+        .checkbox:hover .checkmark {
+            border-color: #954ade;
+        }
+
     }
 
     // TOGGLER

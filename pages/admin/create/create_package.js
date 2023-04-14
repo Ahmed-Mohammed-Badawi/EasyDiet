@@ -34,6 +34,9 @@ const CreatePackage = () => {
         fridayIncluded,
         language,
         packageMeals,
+        breakfast,
+        lunch,
+        dinner
     } = useSelector(state => state.create_package)
 
 
@@ -41,29 +44,35 @@ const CreatePackage = () => {
     const submitHandler = async (e) => {
         // STOP RELOADING
         e.preventDefault();
+        //GET THE TOKEN
+        const token = extractTokenFromCookie(document.cookie);
+
         //Check the inputs
-        if (!name || !timeOnCard || !realTime || !packagePrice || !numberOfMeals || !numberOfSnacks || !offerDays || !language || packageMeals.left <= 0) {
+        if (!name || !timeOnCard || !realTime || !packagePrice || !numberOfMeals || !numberOfSnacks || !offerDays || !language || packageMeals.length <= 0) {
             toast.error(`Please fill All inputs`);
             return;
         }
         // Set the loading state for the spinner
         setLoading(true);
-        // Create the Data as formData
-        const createMeal_formData = new FormData();
-        createMeal_formData.append("mealTitle", name);
-        createMeal_formData.append("mealTypes", category);
-        createMeal_formData.append("protine", protein);
-        createMeal_formData.append("carbohydrates", carbohydrate);
-        createMeal_formData.append("fats", fat);
-        createMeal_formData.append("calories", calories);
-        createMeal_formData.append("numberOfSelection", repeatNumber);
-        createMeal_formData.append("selectionPeriod", repeatPeriod);
-        createMeal_formData.append("files", [selectedImage]);
-        createMeal_formData.append("mealBlocked", blocked);
-        createMeal_formData.append("lang", language);
+
+        const createMeal_Obj = {
+            bundleName: name,
+            mealsNumber: numberOfMeals,
+            breakfast: breakfast ? 'on' : 'off',
+            lunch: lunch ? 'on' : 'off',
+            dinner: dinner ? 'on' : 'off',
+            snacksNumber: numberOfSnacks,
+            bundlePeriod: realTime,
+            bundleOffer: offerDays,
+            fridayOption: fridayIncluded,
+            bundlePrice: packagePrice,
+            mealsIds: packageMeals,
+            lang: language,
+            timeOnCard: timeOnCard
+        }
 
         // Send Create Request to the server
-        await axios.post(`https://api.easydietkw.com/api/v1/create/meal`, createMeal_formData, {
+        await axios.post(`https://api.easydietkw.com/api/v1/create/bundle`, createMeal_Obj, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -72,12 +81,9 @@ const CreatePackage = () => {
                 // SET THE STATE
                 setLoading(false);
                 // DO WHAT I WANT
-                toast.success(res.data.message);
+                toast.success(res.data.message || `Package Created Successfully`);
                 // Clear the reducer
                 dispatch(clearAll());
-                // Clear the image;
-                setSelectedImage(null);
-                setPreview('')
             })
             .catch(err => {
                 // SET THE STATE
@@ -248,9 +254,50 @@ const CreatePackage = () => {
                                     </div>
                                 </div>
                             </div>
+                            <div className={classes.InputGroup}>
+                                <div className={classes.checkboxRow}>
+                                    <label className={classes.checkbox}>
+                                        <input type="checkbox" checked={breakfast}
+                                               onChange={(event) => {
+                                                   dispatch(onInputChange({
+                                                       key: 'breakfast',
+                                                       value: event.target.checked
+                                                   }))
+                                               }}
+                                        />
+                                        <span className={classes.checkmark}></span>
+                                        Breakfast
+                                    </label>
+                                    <label className={classes.checkbox}>
+                                        <input type="checkbox" checked={lunch}
+                                               onChange={(event) => {
+                                                   dispatch(onInputChange({
+                                                       key: 'lunch',
+                                                       value: event.target.checked
+                                                   }))
+                                               }}
+                                        />
+                                        <span className={classes.checkmark}></span>
+                                        Lunch
+                                    </label>
+                                    <label className={classes.checkbox}>
+                                        <input type="checkbox" checked={dinner}
+                                               onChange={(event) => {
+                                                   dispatch(onInputChange({
+                                                       key: 'dinner',
+                                                       value: event.target.checked
+                                                   }))
+                                               }}
+                                        />
+                                        <span className={classes.checkmark}></span>
+                                        Dinner
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                         <div className={classes.NavigationContainer}>
-                            <button className={classes.SelectMeals} type={'button'} onClick={() => router.push(`/admin/packages/package_meals`)}>
+                            <button className={classes.SelectMeals} type={'button'}
+                                    onClick={() => router.push(`/admin/packages/package_meals`)}>
                                 Select Meals
                             </button>
                             <button type={'submit'}>
@@ -269,8 +316,28 @@ const CreatePackage = () => {
 export default CreatePackage;
 
 export const getServerSideProps = async (ctx) => {
+    // GET THE TOKEN FROM THE REQUEST
+    const {token} = ctx.req.cookies;
 
-    console.log(ctx.req.cookies)
+    let tokenInfo;
+    if (token) {
+        await axios.get(`https://api.easydietkw.com/api/v1/get/verify/token`, {
+            params: {
+                token: token,
+            }
+        })
+            .then(res => tokenInfo = res.data.decodedToken)
+            .catch(err => console.log(err))
+    }
+
+    if (!tokenInfo || tokenInfo.role !== 'admin' || tokenInfo.active === false) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
 
     return {
         props: {},
