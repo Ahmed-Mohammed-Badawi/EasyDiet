@@ -15,20 +15,6 @@ export default function Dashboard() {
     // ROUTER
     const router = useRouter();
 
-    // get the token
-    const {token} = router.query;
-    // set the token
-    if (token) {
-        // Set the token at cookie
-        document.cookie = `token=${token}; path=/;`;
-        // Check if the token is set before redirecting
-        if (document.cookie.includes('token')) {
-            // reload the page
-            router.push("/admin/dashboard").then(() => router.reload());
-        }
-    }
-
-
     //STATES
     const [doctors, setDoctors] = useState(0);
     const [meals, setMeals] = useState(0);

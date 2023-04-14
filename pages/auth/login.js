@@ -25,9 +25,11 @@ const Login = () => {
                 }
             )
 
+            document.cookie = `token=${response.data.token}; path=/;`;
+
             // Redirect based on the user's role
             if (response.data.user.role === "admin") {
-                router.push(`/admin/dashboard?token=${response.data.token}`).then(() => window.location.reload());
+                router.push(`/admin/dashboard`);
             } else if (response.data.user.role === "user") {
                 router.push(`/user/dashboard?token=${'asdasd'}`);
             }
