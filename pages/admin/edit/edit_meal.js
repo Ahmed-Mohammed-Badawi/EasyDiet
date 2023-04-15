@@ -21,8 +21,8 @@ const EditMeal = ({meal}) => {
     //GET THE QUERIES
     const {mealName} = router.query;
     // STATES
-    const [preview, setPreview] = useState(null);
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [preview, setPreview] = useState('');
+    const [selectedImage, setSelectedImage] = useState('');
     const [loading, setLoading] = useState(false);
 
     // REDUX

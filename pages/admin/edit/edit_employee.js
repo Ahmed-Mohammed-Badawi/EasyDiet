@@ -4,7 +4,7 @@ import Image from "next/image";
 // IMPORT
 import {toast} from "react-toastify";
 import axios from "axios";
-import {setAll, onInputChange} from "@/redux/slices/editEmployee-slice";
+import {setAll, onInputChange, clearAll} from "@/redux/slices/editEmployee-slice";
 import {useRouter} from "next/router";
 import {useDispatch, useSelector} from "react-redux";
 import wrapper from "@/redux/store";
@@ -95,6 +95,7 @@ const EditEmployee = ({ID, employee}) => {
                 // DO WHAT I WANT
                 router.push('/admin/users').then(() => {
                     toast.success(res.data.message);
+                    dispatch(clearAll());
                 })
             })
             .catch(err => {

@@ -11,7 +11,6 @@ import axios from "axios";
 import {clearAll, onInputChange} from "@/redux/slices/createEmployee-slice";
 import {useDispatch, useSelector} from "react-redux";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
-import {setAll} from "@/redux/slices/editEmployee-slice";
 
 const CreateEmployee = () => {
     // ROUTER

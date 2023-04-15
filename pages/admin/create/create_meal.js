@@ -19,8 +19,8 @@ const CreatePackage = () => {
     const router = useRouter();
 
     // STATES
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [preview, setPreview] = useState(null);
+    const [selectedImage, setSelectedImage] = useState('');
+    const [preview, setPreview] = useState('');
     const [loading, setLoading] = useState(false);
 
     // REDUX
@@ -102,7 +102,7 @@ const CreatePackage = () => {
                         // Clear the reducer
                         dispatch(clearAll());
                         // Clear the image;
-                        setSelectedImage(null);
+                        setSelectedImage('');
                         setPreview('')
                     })
             })
