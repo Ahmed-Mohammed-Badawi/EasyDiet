@@ -9,7 +9,7 @@ import {extractTokenFromCookie} from "@/helpers/extractToken";
 
 // REDUX
 import {useSelector, useDispatch} from "react-redux";
-import {setUsers} from '@/redux/slices/users-slice';
+import {setUsers, onInputChange} from '@/redux/slices/users-slice';
 import {toast} from "react-toastify";
 //IMPORTS
 import Overlay from "@/components/pages/dashboard/ChangeUser_Name/overlay";
@@ -20,7 +20,6 @@ const Users = () => {
     const router = useRouter();
 
     // STATES
-    const [isOn, setIsOn] = useState(false);
     const [clientEditId, setClientEditId] = useState(false);
 
     //REF
@@ -28,17 +27,17 @@ const Users = () => {
 
     // REDUX
     const dispatch = useDispatch();
-    const {users, usersType} = useSelector(state => state.users)
+    const {users, usersType, isOn} = useSelector(state => state.users)
 
     const handleClick = (e) => {
-        setIsOn(e.target.checked);
+        dispatch(onInputChange({key: 'isOn', value: e.target.checked}));
     };
 
     const checkEmployees = () => {
-        setIsOn(true);
+        dispatch(onInputChange({key: 'isOn', value: true}));
     }
     const checkClients = () => {
-        setIsOn(false);
+        dispatch(onInputChange({key: 'isOn', value: false}));
     }
 
     // EMPLOYEE FUNCTIONS
@@ -234,7 +233,7 @@ const Users = () => {
                 })
                 .catch(err => console.log(err))
         }
-    }, [isOn])
+    }, [isOn, dispatch])
 
     return (
         <>
@@ -377,7 +376,7 @@ const Users = () => {
                 </div>
             </main>
             <Overlay active={clientEditId.length > 5} clicked={clearTheIdOfUser}>
-                <InputsContainer clientId={clientEditId}/>
+                <InputsContainer clientId={clientEditId} clicked={clearTheIdOfUser}/>
             </Overlay>
         </>
     )

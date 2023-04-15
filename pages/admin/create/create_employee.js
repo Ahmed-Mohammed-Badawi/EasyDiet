@@ -78,11 +78,14 @@ const CreateEmployee = () => {
                 setLoading(false);
                 // DO WHAT I WANT
                 toast.success(res.data.message);
-                // Clear the reducer
-                dispatch(clearAll());
-                // Clear the image;
-                setSelectedImage('');
-                setPreview('')
+                router.push(`/admin/users`)
+                    .then(() => {
+                        // Clear the reducer
+                        dispatch(clearAll());
+                        // Clear the image;
+                        setSelectedImage('');
+                        setPreview('')
+                    })
             })
             .catch(err => {
                 // SET THE STATE

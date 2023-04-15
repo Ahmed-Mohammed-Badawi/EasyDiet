@@ -36,7 +36,7 @@ const Meals = () => {
                 dispatch(onInputChange({key: 'meals', value: res.data.data.meals}))
             })
             .catch(err => console.log(err))
-    }, [])
+    }, [dispatch])
 
 
     return (

@@ -4,12 +4,16 @@ import {createSlice} from "@reduxjs/toolkit";
 const initialValue = {
     users: [],
     usersType: '',
+    isOn: false,
 };
 
 const UsersSlice = createSlice({
     name: 'users',
     initialState: initialValue,
     reducers: {
+        onInputChange: (state, action) => {
+            state[action.payload.key] = action.payload.value;
+        },
         setUsers: (state, action) => {
             state.users = action.payload.users;
             state.usersType = action.payload.usersType;
@@ -18,5 +22,5 @@ const UsersSlice = createSlice({
 })
 
 
-export const {setUsers} = UsersSlice.actions;
+export const {setUsers, onInputChange} = UsersSlice.actions;
 export default UsersSlice;

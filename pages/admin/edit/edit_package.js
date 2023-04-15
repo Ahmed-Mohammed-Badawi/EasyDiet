@@ -69,7 +69,7 @@ const EditPackage = ({bundle}) => {
                 dinner: bundle.mealsType.includes('عشاء'),
             }))
         }
-    }, [])
+    }, [dispatch, bundle])
 
     // SUBMIT HANDLER
     const submitHandler = async (e) => {
@@ -114,6 +114,11 @@ const EditPackage = ({bundle}) => {
                 setLoading(false);
                 // DO WHAT I WANT
                 toast.success(res.data.message || `Package Updated Successfully`);
+                router.push(`/admin/packages`)
+                    .then(() => {
+                        // Clear the reducer
+                        dispatch(clearAll());
+                    })
             })
             .catch(err => {
                 // SET THE STATE
@@ -354,8 +359,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async ({re
 
     //CHECK THE ROLE
     let tokenInfo;
-    console.log(tokenInfo, token)
-    if(token) {
+    if (token) {
         await axios.get(`https://api.easydietkw.com/api/v1/get/verify/token`, {
             params: {
                 token: token[1],

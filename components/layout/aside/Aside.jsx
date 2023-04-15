@@ -23,12 +23,12 @@ const Aside = () => {
         }
 
         if (i18n.language.includes('en')) {
-            if(htmlTag){
+            if (htmlTag) {
                 htmlTag.setAttribute('lang', 'ar')
             }
             i18n.changeLanguage('ar')
         } else {
-            if(htmlTag){
+            if (htmlTag) {
                 htmlTag.setAttribute('lang', 'en')
             }
             i18n.changeLanguage('en');
@@ -39,8 +39,11 @@ const Aside = () => {
     const logoutHandler = (event) => {
         event.preventDefault();
         // Clear the cookie by setting its value to an empty string and an expiry date in the past
-        document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
-        // Redirect to another page
+        document.cookie.split(";").forEach((c) => {
+            document.cookie = c
+                .replace(/^ +/, "")
+                .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
+        });        // Redirect to another page
         router.push('/auth/login').then(() => {
             window.location.reload()
         })
@@ -84,7 +87,8 @@ const Aside = () => {
             {/*        <span className={classes.Text}>nutrition specialist</span>*/}
             {/*    </Link></li>*/}
             <li className={classes.Aside_List__Item}>
-                <Link href={'/admin/dashboard'} className={router.pathname === '/admin/dashboard' ? classes.Active : ''}>
+                <Link href={'/admin/dashboard'}
+                      className={router.pathname === '/admin/dashboard' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/dashboard.png'} alt={'Icon'} width={20} height={20}/>
                         </span>

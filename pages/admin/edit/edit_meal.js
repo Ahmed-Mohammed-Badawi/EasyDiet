@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import classes from '@/styles/pages/admin/edit_meal.module.scss'
 import Image from "next/image";
 import {useRouter} from "next/router";
@@ -15,7 +15,7 @@ import {toast} from "react-toastify";
 import axios from "axios";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 
-const EditMeal = () => {
+const EditMeal = ({meal}) => {
     // ROUTER
     const router = useRouter();
     //GET THE QUERIES
@@ -41,6 +41,25 @@ const EditMeal = () => {
         language
     } = useSelector(state => state.edit_meal);
 
+    // HANDLE SET DEFAULT DATA
+    useEffect(() => {
+        if (meal) {
+            dispatch(setAll({
+                mealId: meal._id,
+                name: meal.mealTitle,
+                category: [meal.mealType],
+                carbohydrate: meal.carbohydrates,
+                protein: meal.protine,
+                calories: meal.calories,
+                fat: meal.fats,
+                repeatPeriod: meal.selectionRule.period,
+                repeatNumber: meal.selectionRule.redundancy,
+                blocked: meal.mealBlocked,
+                language: meal.lang
+            }))
+        }
+    }, [dispatch, meal])
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
 
@@ -53,7 +72,7 @@ const EditMeal = () => {
             };
             reader.readAsDataURL(file);
         } else {
-            setPreview(null);
+            setPreview('');
         }
     };
 
@@ -99,13 +118,14 @@ const EditMeal = () => {
                 setLoading(false);
                 // DO WHAT I WANT
                 toast.success(res.data.message);
-                // Clear the reducer
-                dispatch(clearAll());
-                // Clear the image;
-                setSelectedImage(null);
-                setPreview('');
-                // REDIRECT TO MEALS PAGE
-                // router.push(`/admin/meals`)
+                router.push(`/admin/meals`)
+                    .then(() => {
+                        // Clear the reducer
+                        dispatch(clearAll());
+                        // Clear the image;
+                        setSelectedImage('');
+                        setPreview('');
+                    })
             })
             .catch(err => {
                 // SET THE STATE
@@ -354,6 +374,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async ({re
 
     // GET THE ID OF THE MEAL FROM THE URL
     const {mealId, lang} = query;
+    let meal;
 
     if (mealId, lang) {
         // GET THE MEAL FROM THE SERVER
@@ -364,27 +385,29 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async ({re
         })
             .then(res => {
                 // SET THE STATE
-                const meal = res.data.meal
-                console.log(res.data.meal)
-                store.dispatch(setAll({
-                    mealId: meal._id,
-                    name: meal.mealTitle,
-                    category: [meal.mealType],
-                    carbohydrate: meal.carbohydrates,
-                    protein: meal.protine,
-                    calories: meal.calories,
-                    fat: meal.fats,
-                    repeatPeriod: meal.selectionRule.period,
-                    repeatNumber: meal.selectionRule.redundancy,
-                    blocked: meal.mealBlocked,
-                    language: meal.lang
-                }))
+                meal = res.data.meal
             })
             .catch(err => {
                 // SET THE STATE
                 console.log(err)
             })
+    } else {
+        return {
+            redirect: {
+                destination: '/admin/meals',
+                permanent: false,
+            },
+        }
     }
 
     // Your code here
+    let propsObj = {};
+    if (meal) {
+        propsObj = {meal}
+    }
+
+    // Your code here
+    return {
+        props: propsObj
+    }
 });

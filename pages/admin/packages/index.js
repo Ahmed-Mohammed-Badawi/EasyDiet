@@ -36,7 +36,7 @@ const Packages = () => {
             toast.error(err.response?.data?.message || err.message)
         }
 
-    }, [])
+    }, [dispatch])
 
     return (
         <>

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import classes from '@/styles/pages/admin/edit_employee.module.scss'
 import Image from "next/image";
 // IMPORT
@@ -8,11 +8,10 @@ import {setAll, onInputChange} from "@/redux/slices/editEmployee-slice";
 import {useRouter} from "next/router";
 import {useDispatch, useSelector} from "react-redux";
 import wrapper from "@/redux/store";
-import CustomSelectRoleType from "@/components/pages/dashboard/custom-select-userRole";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import CustomSelectUserRole from "@/components/pages/dashboard/custom-select-userRole";
 
-const EditEmployee = ({ID}) => {
+const EditEmployee = ({ID, employee}) => {
     // ROUTER
     const router = useRouter()
 
@@ -23,7 +22,21 @@ const EditEmployee = ({ID}) => {
 
     // REDUX
     const dispatch = useDispatch();
-    const {fullName, username, role, password, address, phone} = useSelector(state => state.edit_employee)
+    const {fullName, username, role, password, address, phone} = useSelector(state => state.edit_employee);
+
+    // SET THE EMPLOYEE DATA IF IT'S FOUND
+    useEffect(() => {
+        if(employee){
+            dispatch(setAll({
+                fullName: employee.fullName,
+                username: employee.username,
+                role: employee.role,
+                password: "",
+                address: employee.address,
+                phone: employee.phoneNumber,
+            }))
+        }
+    }, [dispatch, employee])
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -80,7 +93,9 @@ const EditEmployee = ({ID}) => {
                 // SET THE STATE
                 setLoading(false);
                 // DO WHAT I WANT
-                toast.success(res.data.message);
+                router.push('/admin/users').then(() => {
+                    toast.success(res.data.message);
+                })
             })
             .catch(err => {
                 // SET THE STATE
@@ -252,6 +267,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async ({re
 
     // GET THE ID OF THE MEAL FROM THE URL
     const {ID} = query;
+    let employee;
 
     if (ID) {
         // GET THE MEAL FROM THE SERVER
@@ -262,16 +278,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async ({re
         })
             .then(res => {
                 // SET THE STATE
-                const user = res.data.user
-                console.log(user)
-                store.dispatch(setAll({
-                    fullName: user.fullName,
-                    username: user.username,
-                    role: user.role,
-                    password: "",
-                    address: user.address,
-                    phone: user.phoneNumber,
-                }))
+                employee = res.data.user
             })
             .catch(err => {
                 // SET THE STATE
@@ -279,10 +286,15 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async ({re
             })
     }
 
+    // SET THE EMPLOYEE IF EXIST
+
+    let propsObj = {ID};
+    if (employee) {
+        propsObj = {...propsObj, employee}
+    }
+
     // Your code here
     return {
-        props: {
-            ID
-        }
+        props: propsObj
     }
 });

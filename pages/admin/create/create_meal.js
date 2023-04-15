@@ -12,8 +12,12 @@ import {onInputChange, clearAll} from '@/redux/slices/createmeal-slice';
 import {toast} from "react-toastify";
 import axios from "axios";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
+import {useRouter} from "next/router";
 
 const CreatePackage = () => {
+    //ROUTER
+    const router = useRouter();
+
     // STATES
     const [selectedImage, setSelectedImage] = useState(null);
     const [preview, setPreview] = useState(null);
@@ -93,11 +97,14 @@ const CreatePackage = () => {
                 setLoading(false);
                 // DO WHAT I WANT
                 toast.success(res.data.message);
-                // Clear the reducer
-                dispatch(clearAll());
-                // Clear the image;
-                setSelectedImage(null);
-                setPreview('')
+                router.push(`/admin/meals`)
+                    .then(() => {
+                        // Clear the reducer
+                        dispatch(clearAll());
+                        // Clear the image;
+                        setSelectedImage(null);
+                        setPreview('')
+                    })
             })
             .catch(err => {
                 // SET THE STATE

@@ -82,8 +82,11 @@ const CreatePackage = () => {
                 setLoading(false);
                 // DO WHAT I WANT
                 toast.success(res.data.message || `Package Created Successfully`);
-                // Clear the reducer
-                dispatch(clearAll());
+                router.push(`/admin/packages`)
+                    .then(() => {
+                        // Clear the reducer
+                        dispatch(clearAll());
+                    })
             })
             .catch(err => {
                 // SET THE STATE

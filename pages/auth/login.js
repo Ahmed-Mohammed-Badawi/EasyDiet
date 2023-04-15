@@ -1,5 +1,5 @@
 import {useState} from "react";
-import classes from "@/styles/pages/register.module.scss";
+import classes from "@/styles/pages/login.module.scss";
 import Link from "next/link";
 import Image from "next/image";
 import {toast} from "react-toastify";
@@ -60,7 +60,7 @@ const Login = () => {
                         <form className={classes.Form} onSubmit={handleFormSubmit}>
                             <h2 className={classes.Heading_2}>LOGIN</h2>
                             <div className={classes.Input_Group}>
-                                <label htmlFor={'email'}>EMAIL</label>
+                                <label htmlFor={'email'}>USERNAME || EMAIL</label>
                                 <input onChange={(e) => setUsername(e.target.value)} type={'username'} id={'email'} name={'email'}/>
                             </div>
                             <div className={classes.Input_Group}>
@@ -85,7 +85,7 @@ const Login = () => {
                                             className={[classes.Create_button].join(' ')}
                                             type={'submit'}>
                                         <span>LOGIN</span>
-                                        <span><Image src={'/images/Auth/next-icon.svg'} alt={'Create User'} width={20}
+                                        <span className={classes.Next_Span}><Image src={'/images/Auth/next-icon.svg'} alt={'Create User'} width={20}
                                                      height={20}/></span>
                                     </button>
                                 </div>
