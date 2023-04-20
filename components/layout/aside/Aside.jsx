@@ -72,34 +72,34 @@ const Aside = () => {
                         </span>
                     <span className={classes.Text}>MENU</span>
                 </Link></li>
-            {/*<li className={classes.Aside_List__Item}>*/}
-            {/*    <Link href={'/about'} className={router.pathname === '/about' ? classes.Active : ''}>*/}
-            {/*            <span className={classes.Image_Container}>*/}
-            {/*                <Image src={'/images/About_Icon.svg'} alt={'Icon'} width={30} height={20}/>*/}
-            {/*            </span>*/}
-            {/*        <span className={classes.Text}>About</span>*/}
-            {/*    </Link></li>*/}
-            {/*<li className={classes.Aside_List__Item}>*/}
-            {/*    <Link href={'/user/profile'} className={router.pathname === '/user/profile' ? classes.Active : ''}>*/}
-            {/*            <span className={classes.Image_Container}>*/}
-            {/*                <Image src={'/images/Users_Icon.svg'} alt={'Icon'} width={30} height={20}/>*/}
-            {/*            </span>*/}
-            {/*        <span className={classes.Text}>PROFILE</span>*/}
-            {/*    </Link></li>*/}
             <li className={classes.Aside_List__Item}>
-                <Link href={'/user/my_subscription'}>
+                <Link href={'/about'} className={router.pathname === '/about' ? classes.Active : ''}>
+                        <span className={classes.Image_Container}>
+                            <Image src={'/images/About_Icon.svg'} alt={'Icon'} width={30} height={20}/>
+                        </span>
+                    <span className={classes.Text}>About</span>
+                </Link></li>
+            <li className={classes.Aside_List__Item}>
+                <Link href={'/user/profile'} className={router.pathname === '/user/profile' ? classes.Active : ''}>
+                        <span className={classes.Image_Container}>
+                            <Image src={'/images/Users_Icon.svg'} alt={'Icon'} width={30} height={20}/>
+                        </span>
+                    <span className={classes.Text}>PROFILE</span>
+                </Link></li>
+            <li className={classes.Aside_List__Item}>
+                <Link href={'/user/my_subscription'}  className={router.pathname === '/user/my_subscription' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Subscription_Icon.svg'} alt={'Icon'} width={20} height={20}/>
                         </span>
                     <span className={classes.Text}>My Subscription</span>
                 </Link></li>
-            {/*<li className={classes.Aside_List__Item}>*/}
-            {/*    <Link href={'#'}>*/}
-            {/*            <span className={classes.Image_Container}>*/}
-            {/*                <Image src={'/images/Doctor_Icon.svg'} alt={'Icon'} width={30} height={20}/>*/}
-            {/*            </span>*/}
-            {/*        <span className={classes.Text}>nutrition specialist</span>*/}
-            {/*    </Link></li>*/}
+            <li className={classes.Aside_List__Item}>
+                <Link href={'/user/nutrition_specialist'} className={router.pathname === '/user/nutrition_specialist' ? classes.Active : ''}>
+                        <span className={classes.Image_Container}>
+                            <Image src={'/images/Doctor_Icon.svg'} alt={'Icon'} width={30} height={20}/>
+                        </span>
+                    <span className={classes.Text}>nutrition specialist</span>
+                </Link></li>
             <li className={classes.Aside_List__Item}>
                 <Link href={'/admin/dashboard'}
                       className={router.pathname === '/admin/dashboard' ? classes.Active : ''}>

@@ -13,7 +13,7 @@ const SelectedMeals = ({isActive, selectedMeals, closeTheOverlay}) => {
                     {
                         selectedMeals?.length > 0 ? selectedMeals.map((meal, index) => {
                             return (
-                                <SelectedMealCard ID={meal.id} key={index} number={meal.number}/>
+                                <SelectedMealCard name={meal.name} image={meal.image} ID={meal.id} key={index} number={meal.number}/>
                             )
                         }): (
                             <p>No Meals Selected Yet</p>

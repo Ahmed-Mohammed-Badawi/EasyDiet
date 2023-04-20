@@ -97,5 +97,6 @@
 :global(.Active_Aside){
   .Aside{
     transform: translateX(0);
+    z-index: 999;
   }
 }

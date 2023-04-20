@@ -3,12 +3,13 @@ import {useRouter} from "next/router";
 // IMPORTS
 import PackageCard from "@/components/pages/dashboard/Package_card/PackageCard_User";
 import Image from "next/image";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
 import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import {onInputChange} from '@/redux/slices/user/packages';
+import {onInputChange as onInputInSubscriptionChange} from '@/redux/slices/user/subscription_info'
 
 const Packages = () => {
     // ROUTER
@@ -18,13 +19,41 @@ const Packages = () => {
     const dispatch = useDispatch();
     const {packages} = useSelector(state => state.packages_user);
 
+    // States
+    const [authenticationStatus, setAuthenticationStatus] = useState({
+        isAuthenticated: false,
+        hasProfile: false
+    })
+
+    useEffect(() => {
+        //GET THE TOKEN
+        const token = extractTokenFromCookie(document.cookie);
+
+        if (token) {
+            axios.get(`https://api.easydietkw.com/api/v1/get/verify/token`, {
+                params: {
+                    token: token,
+                }
+            })
+                .then(res => {
+                    console.log(res.data)
+                    dispatch(onInputInSubscriptionChange({key: 'userId', value: res.data.decodedToken.userId}))
+                    setAuthenticationStatus({
+                        isAuthenticated: true,
+                        hasProfile: res.data.hasProfile
+                    })
+                })
+                .catch(err => console.log(err))
+        }
+
+    }, [])
+
     // EFFECT TO GET THE PACKAGES WHEN PAGE LOAD
     useEffect(() => {
         // LOGIC
         try {
             axios.get(`https://api.easydietkw.com/api/v1/client/bundles`)
                 .then(res => {
-                    console.log(res)
                     dispatch(onInputChange({key: 'packages', value: res.data.bundles}))
                 })
         } catch (err) {
@@ -36,6 +65,8 @@ const Packages = () => {
     return (
         <>
             <div className={classes.Main}>
+                <h1>PACKAGES</h1>
+
                 <div className={classes.Bottom}>
                     {packages && packages.map((cur) => {
                         return (
@@ -50,6 +81,7 @@ const Packages = () => {
                                 offers={cur.bundleOffer}
                                 time={cur.timeOnCard}
                                 language={cur.lang}
+                                authenticationStatus={authenticationStatus}
                             />
                         )
                     })}

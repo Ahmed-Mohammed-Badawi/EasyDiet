@@ -13,7 +13,7 @@ export default function Home() {
     // ROUTER
     const router = useRouter();
     const [isThereToken, setIsThereToken] = useState(false);
-
+    const [language, setLanguage] = useState('EN')
 
     const {t} = useTranslation();
 

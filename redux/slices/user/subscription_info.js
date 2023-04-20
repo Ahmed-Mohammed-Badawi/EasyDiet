@@ -2,7 +2,12 @@ import {createSlice} from "@reduxjs/toolkit";
 
 //Initial Value
 const initialValue = {
-    package: [],
+    userId: '',
+    package: {
+        id: '',
+        friday: false,
+        language: ''
+    },
     selectedDay: null,
     selectedMonth: null,
 };

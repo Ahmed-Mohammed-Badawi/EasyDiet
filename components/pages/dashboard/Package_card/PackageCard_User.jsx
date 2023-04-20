@@ -1,18 +1,45 @@
 import classes from './PackageCard_User.module.scss';
 import Image from "next/image";
 import {useRouter} from "next/router";
+import {toast} from "react-toastify";
+import {onInputChange} from '@/redux/slices/user/subscription_info';
+import {useDispatch, useSelector} from "react-redux";
 
-const PackageCard_User = ({ID, name, price, time, meals, snacks, fridays, offers, language}) => {
+const PackageCard_User = ({
+                              ID,
+                              name,
+                              price,
+                              time,
+                              meals,
+                              snacks,
+                              fridays,
+                              offers,
+                              language,
+                              authenticationStatus: {hasProfile, isAuthenticated}
+                          }) => {
 
+    //ROUTER
     const router = useRouter();
+
+    //REDUX
+    const dispatch = useDispatch();
 
     return (
         <article className={classes.Card}>
             <div className={classes.Buttons}>
                 <button onClick={() => {
-                    router.push(`/admin/edit/edit_package?ID=${ID}&lang=${language}`)
+                    if (isAuthenticated && hasProfile) {
+                        dispatch(onInputChange({key: 'package', value: {id: ID, friday: fridays, language: language}}))
+                        router.push(`/user/choose_starting_date`)
+                    } else if (isAuthenticated && !hasProfile) {
+                        router.push(`/user/profile`).then(() => {
+                            toast.error('Please Fill your information first')
+                        })
+                    } else {
+                        router.push(`/auth/login`)
+                    }
                 }}>
-                    <Image src={'/images/Global/Buy_Icon.svg'} alt={'Edit'} width={18} height={18} />
+                    <Image src={'/images/Global/Buy_Icon.svg'} alt={'Edit'} width={18} height={18}/>
                 </button>
             </div>
             <p className={classes.Price}>{price} KWD</p>

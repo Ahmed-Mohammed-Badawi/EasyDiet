@@ -8,6 +8,7 @@ import axios from "axios";
 import {toast} from "react-toastify";
 import MealCard_User from "@/components/pages/user/MealCard_Add";
 import SelectedMeals from "@/components/pages/user/SelectedMeals";
+import {extractTokenFromCookie} from "@/helpers/extractToken";
 
 const Choose_Day_Meals = () => {
 
@@ -21,11 +22,18 @@ const Choose_Day_Meals = () => {
 
     // EFFECT TO GET THE PACKAGES WHEN PAGE LOAD
     useEffect(() => {
+        //GET THE TOKEN
+        const token = extractTokenFromCookie(document.cookie);
         // LOGIC
         try {
-            axios.get(`https://api.easydietkw.com/api/v1/client/bundles`)
+            axios.get(`https://api.easydietkw.com/api/v1/menu/meals`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
                 .then(res => {
-                    dispatch(onInputChange({key: 'meals', value: res.data.bundles}))
+                    console.log(res.data)
+                    dispatch(onInputChange({key: 'meals', value: res.data.menu}))
                 })
         } catch (err) {
             toast.error(err.response?.data?.message || err.message)
@@ -105,9 +113,19 @@ const Choose_Day_Meals = () => {
                     </div>
                     <div className={classes.Bottom}>
                         <div className={classes.Cards}>
-                            {meals && meals.map((cur, i) => {
+                            {meals && meals.map((cur) => {
                                 return (
-                                    <MealCard_User key={i} ID={i}/>
+                                    <MealCard_User
+                                        key={cur.mealId._id}
+                                        ID={cur.mealId._id}
+                                        image={cur.mealId.imagePath}
+                                        carbohydrate={cur.mealId.carbohydrates}
+                                        protein={cur.mealId.protine}
+                                        fats={cur.mealId.fats}
+                                        calories={cur.mealId.calories}
+                                        name={cur.mealId.mealTitle}
+                                        lang={cur.mealId.lang}
+                                    />
                                 )
                             })}
                         </div>

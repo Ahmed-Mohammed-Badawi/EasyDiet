@@ -52,7 +52,7 @@ const SelectedMeal = ({ID, image, name, number}) => {
                     </button>
                 </div>
                 <div className={classes.Bottom}>
-                    <h3>Meal Name</h3>
+                    <h3>{name}</h3>
                     <span>{number}</span>
                 </div>
             </div>

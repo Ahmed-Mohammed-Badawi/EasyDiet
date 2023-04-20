@@ -16,6 +16,16 @@
   display: flex;
   flex-direction: column;
 
+  h4{
+    font-family: var(--font-montserrat);
+    font-weight: 500;
+    margin-bottom: .5rem;
+  }
+
+  h4 + span{
+    font-size: 1.4rem;
+    color: var(--color-gray-666);
+  }
 }
 
 .Icons{
@@ -38,4 +48,9 @@
 
 .Edit{
   cursor: pointer;
+  transition: transform .1s ease-in-out;
+
+  &:active{
+    transform: scale(0.95);
+  }
 }
