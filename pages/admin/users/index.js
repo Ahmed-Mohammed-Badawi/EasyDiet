@@ -9,7 +9,7 @@ import {extractTokenFromCookie} from "@/helpers/extractToken";
 
 // REDUX
 import {useSelector, useDispatch} from "react-redux";
-import {setUsers, onInputChange} from '@/redux/slices/users-slice';
+import {setUsers, onInputChange} from '@/redux/slices/Admin/users-slice';
 import {toast} from "react-toastify";
 //IMPORTS
 import Overlay from "@/components/pages/dashboard/ChangeUser_Name/overlay";

@@ -1,0 +1,41 @@
+.DayItem{
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 3rem;
+  border: 1px solid var(--color-dashboard-border);
+  width: 20rem;
+
+  @media screen and (max-width: 500px){
+    width: 100%;
+  }
+}
+
+.Content{
+  display: flex;
+  flex-direction: column;
+
+}
+
+.Icons{
+  display: flex;
+  gap: 1rem;
+
+  & + span.Icon_Container{
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+  }
+}
+
+.Icon_Container{
+  img{
+    pointer-events: none;
+  }
+}
+
+.Edit{
+  cursor: pointer;
+}

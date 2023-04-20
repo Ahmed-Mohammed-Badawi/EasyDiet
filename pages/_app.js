@@ -21,7 +21,7 @@ function MyApp({Component, pageProps}) {
         <I18nextProvider i18n={i18n}>
             <NextNProgress color={`#A71523`}/>
             <Provider store={store}>
-                {router.pathname.includes('/admin') ? (
+                {(router.pathname.includes('/admin') || router.pathname.includes('/user')) ? (
                         <Layout>
                             <Component {...pageProps} />
                         </Layout>

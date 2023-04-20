@@ -9,7 +9,7 @@ import {toast} from "react-toastify";
 import axios from "axios";
 import {useRouter} from "next/router";
 // REDUX
-import {onInputChange, clearAll} from "@/redux/slices/createpackage-slice";
+import {onInputChange, clearAll} from "@/redux/slices/Admin/createpackage-slice";
 import {useDispatch, useSelector} from "react-redux";
 //HELPERS
 import {extractTokenFromCookie} from "@/helpers/extractToken";

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import classes from './Checkbox.module.scss';
 // Redux
 import {useDispatch, useSelector} from "react-redux";
-import {onMealChecked} from '@/redux/slices/createpackage-slice';
+import {onMealChecked} from '@/redux/slices/Admin/createpackage-slice';
 
 const Checkbox = ({id}) => {
     //REDUX

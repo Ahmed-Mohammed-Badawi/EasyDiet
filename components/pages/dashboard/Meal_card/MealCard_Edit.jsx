@@ -5,7 +5,7 @@ import axios from "axios";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import {toast} from "react-toastify";
 //REDUX
-import {onInputChange} from "@/redux/slices/meals-slice";
+import {onInputChange} from "@/redux/slices/Admin/meals-slice";
 import {useSelector, useDispatch} from "react-redux";
 
 

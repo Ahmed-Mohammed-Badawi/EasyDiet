@@ -6,7 +6,7 @@ import axios from "axios";
 import {toast} from "react-toastify";
 //REDUX
 import {useDispatch, useSelector} from "react-redux";
-import {setUsers} from '@/redux/slices/users-slice';
+import {setUsers} from '@/redux/slices/Admin/users-slice';
 
 const ChangeNameForm = ({clientId, clicked}) => {
     const [firstName, setFirstName] = useState('');

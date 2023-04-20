@@ -8,7 +8,7 @@ import CustomSelectRoleType from "@/components/pages/dashboard/custom-select-use
 import {toast} from "react-toastify";
 import axios from "axios";
 // REDUX
-import {clearAll, onInputChange} from "@/redux/slices/createEmployee-slice";
+import {clearAll, onInputChange} from "@/redux/slices/Admin/createEmployee-slice";
 import {useDispatch, useSelector} from "react-redux";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 

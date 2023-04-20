@@ -1,86 +1,101 @@
-.Aside{
-    // GRID PART
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
+.Aside {
+  // GRID PART
+  grid-column: 2 / 3;
+  grid-row: initial;
+  position: absolute;
+  top: 10rem;
+  right: 0;
+  transform: translateX(100%);
+  height: calc(100vh - 10rem);
+  transition: transform .5s ease-in-out;
+  border-left: 1px solid var(--color-dashboard-border);
 
-    //STYLE
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    background-color: var(--color-white-background);
-    padding: 5rem 3rem;
+  //STYLE
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  background-color: var(--color-white-background);
+  padding: 5rem 3rem;
 
-    &_List{
-        list-style: none;
+  &_List {
+    list-style: none;
+  }
+
+  &_List__Item {
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: .5rem;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--color-black-text);
+      padding: 1rem 2rem;
+      width: 100%;
+      background-color: var(--color-white-background);
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        background-color: var(--color-select-background);
+      }
+
+      &.Active {
+        background-color: var(--color-select-background);
+      }
+
+      &.ActiveLogout:hover {
+        background-color: rgba(245, 33, 54, 0.23);
+      }
+
+      &.ActiveLogout:active {
+        transform: scale(0.95);
+      }
     }
 
-    &_List__Item{
-        a{
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            gap: .5rem;
-            text-transform: uppercase;
-            text-decoration: none;
-            color: var(--color-black-text);
-            padding: 1rem 2rem;
-            width: 100%;
-            background-color: var(--color-white-background);
-            transition: all 0.2s ease-in-out;
-
-            &:hover{
-                background-color: var(--color-select-background);
-            }
-
-            &.Active{
-                background-color: var(--color-select-background);
-            }
-
-            &.ActiveLogout:hover{
-                background-color: rgba(245, 33, 54, 0.23);
-            }
-            &.ActiveLogout:active{
-                transform: scale(0.95);
-            }
-        }
-
-        .Logout_Text{
-            color: red;
-        }
-
-        .Image_Container{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 3rem;
-            max-width: 3rem;
-        }
+    .Logout_Text {
+      color: red;
     }
 
-    &_Options{
-        padding: 0 2rem;
-
-        button{
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 1.5rem;
-            background-color: var(--color-white-background);
-            border: 1px solid var(--color-input-border);
-            cursor: pointer;
-
-            &:active{
-                box-shadow: inset 0 0 0.4rem rgba(0, 0, 0, 0.16);
-            }
-        }
+    .Image_Container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 3rem;
+      max-width: 3rem;
     }
+  }
 
+  &_Options {
+    padding: 0 2rem;
 
-    // Class to make it Small
-    &.Aside_Mini{
-        .Text{
-            display: none;
-        }
+    button {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background-color: var(--color-white-background);
+      border: 1px solid var(--color-input-border);
+      cursor: pointer;
+
+      &:active {
+        box-shadow: inset 0 0 0.4rem rgba(0, 0, 0, 0.16);
+      }
     }
+  }
+
+
+  // Class to make it Small
+  &.Aside_Mini {
+    .Text {
+      display: none;
+    }
+  }
+}
+
+
+:global(.Active_Aside){
+  .Aside{
+    transform: translateX(0);
+  }
 }

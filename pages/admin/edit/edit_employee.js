@@ -4,7 +4,7 @@ import Image from "next/image";
 // IMPORT
 import {toast} from "react-toastify";
 import axios from "axios";
-import {setAll, onInputChange, clearAll} from "@/redux/slices/editEmployee-slice";
+import {setAll, onInputChange, clearAll} from "@/redux/slices/Admin/editEmployee-slice";
 import {useRouter} from "next/router";
 import {useDispatch, useSelector} from "react-redux";
 import wrapper from "@/redux/store";

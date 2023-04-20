@@ -8,7 +8,7 @@ import CustomSelectLanguage from "@/components/pages/dashboard/custom-select-lan
 import Spinner from "@/components/layout/spinner/Spinner";
 //REDUX
 import wrapper from "@/redux/store";
-import {clearAll, onInputChange, setAll} from "@/redux/slices/editpackage-slice";
+import {clearAll, onInputChange, setAll} from "@/redux/slices/Admin/editpackage-slice";
 import {useDispatch, useSelector} from "react-redux";
 //HELPERS
 import {toast} from "react-toastify";

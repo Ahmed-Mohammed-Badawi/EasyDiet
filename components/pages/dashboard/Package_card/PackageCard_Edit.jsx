@@ -6,7 +6,7 @@ import axios from "axios";
 import {toast} from "react-toastify";
 //REDUX
 import {useSelector, useDispatch} from "react-redux";
-import {onInputChange} from "@/redux/slices/packages-slice";
+import {onInputChange} from "@/redux/slices/Admin/packages-slice";
 
 
 const PackageAdminCard = ({ID, name, price, time, meals, snacks, fridays, offers, language}) => {

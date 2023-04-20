@@ -6,7 +6,7 @@ import MealCard from "@/components/pages/dashboard/Meal_card/MealCard_Edit";
 import axios from "axios";
 // REDUX
 import {useDispatch, useSelector} from "react-redux";
-import {onInputChange} from '@/redux/slices/meals-slice';
+import {onInputChange} from '@/redux/slices/Admin/meals-slice';
 import {useRouter} from "next/router";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 

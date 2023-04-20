@@ -58,6 +58,20 @@ const Aside = () => {
                         </span>
                     <span className={classes.Text}>Home</span>
                 </Link></li>
+            <li className={classes.Aside_List__Item}>
+                <Link href={'/user/packages'} className={router.pathname === '/user/packages' ? classes.Active : ''}>
+                        <span className={classes.Image_Container}>
+                            <Image src={'/images/Packages_Icon.svg'} alt={'Icon'} width={20} height={20}/>
+                        </span>
+                    <span className={classes.Text}>Bundles</span>
+                </Link></li>
+            <li className={classes.Aside_List__Item}>
+                <Link href={'/user/menu'} className={router.pathname === '/user/menu' ? classes.Active : ''}>
+                        <span className={classes.Image_Container}>
+                            <Image src={'/images/Meals_Icon.svg'} alt={'Icon'} width={30} height={20}/>
+                        </span>
+                    <span className={classes.Text}>MENU</span>
+                </Link></li>
             {/*<li className={classes.Aside_List__Item}>*/}
             {/*    <Link href={'/about'} className={router.pathname === '/about' ? classes.Active : ''}>*/}
             {/*            <span className={classes.Image_Container}>*/}
@@ -72,13 +86,13 @@ const Aside = () => {
             {/*            </span>*/}
             {/*        <span className={classes.Text}>PROFILE</span>*/}
             {/*    </Link></li>*/}
-            {/*<li className={classes.Aside_List__Item}>*/}
-            {/*    <Link href={'#'}>*/}
-            {/*            <span className={classes.Image_Container}>*/}
-            {/*                <Image src={'/images/Subscription_Icon.svg'} alt={'Icon'} width={20} height={20}/>*/}
-            {/*            </span>*/}
-            {/*        <span className={classes.Text}>My Subscription</span>*/}
-            {/*    </Link></li>*/}
+            <li className={classes.Aside_List__Item}>
+                <Link href={'/user/my_subscription'}>
+                        <span className={classes.Image_Container}>
+                            <Image src={'/images/Subscription_Icon.svg'} alt={'Icon'} width={20} height={20}/>
+                        </span>
+                    <span className={classes.Text}>My Subscription</span>
+                </Link></li>
             {/*<li className={classes.Aside_List__Item}>*/}
             {/*    <Link href={'#'}>*/}
             {/*            <span className={classes.Image_Container}>*/}

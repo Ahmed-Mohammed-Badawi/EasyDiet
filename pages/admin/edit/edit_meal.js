@@ -9,7 +9,7 @@ import Spinner from "@/components/layout/spinner/Spinner";
 // REDUX
 import wrapper from "@/redux/store";
 import {useDispatch, useSelector} from "react-redux";
-import {onInputChange, clearAll, setAll} from '@/redux/slices/editmeal-slice';
+import {onInputChange, clearAll, setAll} from '@/redux/slices/Admin/editmeal-slice';
 // HELPERS
 import {toast} from "react-toastify";
 import axios from "axios";

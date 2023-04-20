@@ -7,7 +7,7 @@ import CustomSelectLanguage from "@/components/pages/dashboard/custom-select-lan
 import Spinner from "@/components/layout/spinner/Spinner";
 // REDUX
 import {useDispatch, useSelector} from "react-redux";
-import {onInputChange, clearAll} from '@/redux/slices/createmeal-slice';
+import {onInputChange, clearAll} from '@/redux/slices/Admin/createmeal-slice';
 // HELPERS
 import {toast} from "react-toastify";
 import axios from "axios";

@@ -8,7 +8,7 @@ import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
 import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
-import {onInputChange} from '@/redux/slices/packages-slice';
+import {onInputChange} from '@/redux/slices/Admin/packages-slice';
 
 const Packages = () => {
     // ROUTER

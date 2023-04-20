@@ -1,0 +1,100 @@
+.Main {
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  height: calc(100vh - 14rem);
+
+  .Container {
+    width: 100%;
+    max-width: 140rem;
+    padding: 4rem 5rem;
+    border-radius: .5rem;
+
+    @media screen and (max-width: 650px){
+      padding: 4rem 1rem;
+    }
+  }
+
+  .Top {
+    position: relative;
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 4rem;
+
+    &:before{
+      content: 'PACKAGE';
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-family: var(--font-montserrat);
+      font-weight: 400;
+      background: -webkit-linear-gradient(170deg, var(--color-main), var(--color-black-text));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+      font-size: 20px;
+      transform: rotate(-45deg) translate(-2rem, -2rem);
+    }
+  }
+
+  .Top_Container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 1rem;
+    background-color: var(--color-white-background);
+    border: 1px solid var(--color-dashboard-border);
+    padding: 2rem 4rem;
+  }
+
+  .Top_Item{
+    width: calc(20% - .75rem);
+    min-width: 16rem;
+
+    h3{
+      font-size: 2rem;
+      font-weight: 500;
+      font-family: var(--font-montserrat);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    span{
+      font-family: var(--font-roboto);
+      color: var(--color-gray-666);
+    }
+  }
+
+  .Bottom {
+    position: relative;
+
+    &:before{
+      content: 'SUBSCRIPTION';
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-family: var(--font-montserrat);
+      font-weight: 400;
+      background: -webkit-linear-gradient(170deg, var(--color-main), var(--color-black-text));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+      font-size: 20px;
+      transform: translate(2rem, -50%);
+    }
+  }
+
+  .Days_Container{
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 3rem;
+    background-color: var(--color-white-background);
+    border: 1px solid var(--color-dashboard-border);
+    padding: 4rem 4rem;
+  }
+}
