@@ -60,7 +60,6 @@ const My_Subscription = () => {
     function getDayName(date) {
         const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         const dayIndex = new Date(date).getDay();
-        console.log(date, daysOfWeek[dayIndex], new Date(date).getDay())
         return daysOfWeek[dayIndex];
     }
 
@@ -103,9 +102,9 @@ const My_Subscription = () => {
                     </div>
                     <div className={classes.Bottom}>
                         <div className={classes.Days_Container}>
-                            {packageDays && packageDays.map((item, index) => {
+                            {packageDays && packageDays.map((item) => {
                               return (
-                                  <DayItem key={index}
+                                  <DayItem key={item._id} ID={item._id} Daydate={item.date}
                                     title={getDayName(item.date)} Editable={isDateAfterTwoDays(item.date)} isSelected={item.submitted} date={new Date(item.date).toLocaleDateString('en-US', {day: 'numeric', month: 'long'})}
                                   />
                               )

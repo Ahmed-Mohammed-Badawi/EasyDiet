@@ -2,7 +2,8 @@ import {createSlice} from "@reduxjs/toolkit";
 
 //Initial Value
 const initialValue = {
-    day: null,
+    date: '',
+    dateId: null,
     meals: [],
     selectedMeals: [],
 };
@@ -14,9 +15,14 @@ const dayMealsSlice = createSlice({
         onInputChange: (state, action) => {
             state[action.payload.key] = action.payload.value
         },
+        resetSelectedMeals: (state) => {
+            return {
+                ...initialValue
+            }
+        }
     },
 })
 
 
-export const {onInputChange, clearAll} = dayMealsSlice.actions;
+export const {onInputChange, resetSelectedMeals} = dayMealsSlice.actions;
 export default dayMealsSlice;

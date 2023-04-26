@@ -1,11 +1,16 @@
 import classes from "./DayItem.module.scss";
 import Image from "next/image";
 import {useRouter} from "next/router";
+import {useDispatch, useSelector} from "react-redux";
+import {onInputChange} from '@/redux/slices/user/daymeals_slice';
 
-const DayItem = ({title, date, isSelected, Editable}) => {
+const DayItem = ({ID, title, date, isSelected, Editable, Daydate}) => {
 
     //ROUTER
     const router = useRouter();
+
+    //REDUX
+    const dispatch =useDispatch();
 
     return (
         <>
@@ -19,7 +24,11 @@ const DayItem = ({title, date, isSelected, Editable}) => {
                         <Image src={(isSelected)? '/images/Global/Check_Icon.svg' : '/images/Global/UnSelected_Icon.svg'}
                                alt={'Check icon'} width={20} height={20}/>
                     </span>}
-                    {Editable && <span onClick={() => router.push(`/user/choose_day_meals`)} className={[classes.Icon_Container, classes.Edit].join(' ')}>
+                    {Editable && <span onClick={() => {
+                        dispatch(onInputChange({key: 'date', value: Daydate}));
+                        dispatch(onInputChange({key: 'dateId', value: ID}));
+                        router.push(`/user/choose_day_meals`)
+                    }} className={[classes.Icon_Container, classes.Edit].join(' ')}>
                     <Image src={'/images/Edit_Icon.svg'} alt={'Edit icon'} width={20} height={20}/>
                     </span>}
                 </div>

@@ -4,39 +4,37 @@
     overflow-y: auto;
     overflow-x: hidden;
 
+
     /* Set the width and color of the scrollbar */
-    ::-webkit-scrollbar {
+    &::-webkit-scrollbar {
         width: 6px;
         height: 6px;
         background-color: #f5f5f5;
     }
 
-    ::-webkit-scrollbar-thumb {
+    &::-webkit-scrollbar-thumb {
         background-color: var(--color-main);
         border-radius: 10px;
     }
 
-    ::-webkit-scrollbar-track {
+    &::-webkit-scrollbar-track {
         background-color: #f5f5f5;
         border-radius: 10px;
     }
 
     /* Set the width and color of the scrollbar for Firefox */
-    * {
-        scrollbar-width: thin;
-        scrollbar-color: var(--color-main) #f5f5f5;
-    }
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-main) #f5f5f5;
 
-    *::-webkit-scrollbar-thumb {
+    &::-webkit-scrollbar-thumb {
         background-color: var(--color-main);
         border-radius: 10px;
     }
 
-    *::-webkit-scrollbar-track {
+    &::-webkit-scrollbar-track {
         background-color: #f5f5f5;
         border-radius: 10px;
     }
-
 
     .Top{
         margin-bottom: 2rem;

@@ -6,6 +6,10 @@
   min-height: 100vh;
   overflow-x: hidden;
 
+  @media screen and (max-width: 650px) {
+    grid-auto-columns: 1fr 100%;
+  }
+
   .PageContainer {
     position: relative;
     // GRID PART

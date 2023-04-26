@@ -1,3 +1,4 @@
+
 import classes from './Aside.module.scss';
 import Link from "next/link";
 import Image from "next/image";
@@ -130,6 +131,13 @@ const Aside = () => {
                     <span className={classes.Text}>Users</span>
                 </Link></li>
             <li className={classes.Aside_List__Item}>
+                <Link href={'/admin/branch'} className={router.pathname === '/admin/branch' ? classes.Active : ''}>
+                        <span className={classes.Image_Container}>
+                            <Image src={'/images/branch.png'} alt={'Icon'} width={30} height={20}/>
+                        </span>
+                    <span className={classes.Text}>Branch Manager</span>
+                </Link></li>
+            <li className={classes.Aside_List__Item}>
                 <Link href={'/admin/reports'} className={router.pathname === '/admin/reports' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Reports_Icon.svg'} alt={'Icon'} width={30} height={20}/>
@@ -144,21 +152,21 @@ const Aside = () => {
                     <span className={[classes.Logout_Text, classes.Text].join(' ')}>Logout</span>
                 </Link></li>
         </ul>
-        {/*<div className={classes.Aside_Options}>*/}
-        {/*    <button onClick={toggleLanguage}>*/}
-        {/*        {i18n?.language && i18n.language.includes('en') ? (*/}
-        {/*            <>*/}
-        {/*                <Image src={'/images/Arabic_Icon.svg'} alt={'Arabic icon'} width={30} height={20}/>*/}
-        {/*                <span style={{fontFamily: `var(--font-almarai)`}}>العربية</span>*/}
-        {/*            </>*/}
-        {/*        ) : (*/}
-        {/*            <>*/}
-        {/*                <Image src={'/images/English_Icon.svg'} alt={'Arabic icon'} width={30} height={20}/>*/}
-        {/*                <span>ENGLISH</span>*/}
-        {/*            </>*/}
-        {/*        )}*/}
-        {/*    </button>*/}
-        {/*</div>*/}
+        <div className={classes.Aside_Options}>
+            <button onClick={toggleLanguage}>
+                {i18n?.language && i18n.language.includes('en') ? (
+                    <>
+                        <Image src={'/images/Arabic_Icon.svg'} alt={'Arabic icon'} width={30} height={20}/>
+                        <span style={{fontFamily: `var(--font-almarai)`}}>العربية</span>
+                    </>
+                ) : (
+                    <>
+                        <Image src={'/images/English_Icon.svg'} alt={'Arabic icon'} width={30} height={20}/>
+                        <span>ENGLISH</span>
+                    </>
+                )}
+            </button>
+        </div>
     </aside>)
 }
 export default Aside;
