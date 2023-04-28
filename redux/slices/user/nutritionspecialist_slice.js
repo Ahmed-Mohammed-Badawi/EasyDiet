@@ -6,6 +6,7 @@ const initialValue = {
     nutrition_specialistId: '',
     subject: '',
     content: '',
+    specialists: [],
 };
 
 const nutrition_specialistSlice = createSlice({
@@ -15,6 +16,12 @@ const nutrition_specialistSlice = createSlice({
         onInputChange: (state, action) => {
             state[action.payload.key] = action.payload.value
         },
+        clearAll: (state, action) => {
+            state.userId = '';
+            state.nutrition_specialistId = '';
+            state.subject = '';
+            state.content = '';
+        }
     },
 })
 

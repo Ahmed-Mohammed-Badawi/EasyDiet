@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import classes from '@/styles/pages/user/profile.module.scss'
 import Image from "next/image";
 //IMPORTS
@@ -7,12 +7,12 @@ import {toast} from "react-toastify";
 import axios from "axios";
 import {useRouter} from "next/router";
 // REDUX
-import {onInputChange} from "@/redux/slices/user/profile_slice";
+import {onInputChange, setAll} from "@/redux/slices/user/profile_slice";
 import {useDispatch, useSelector} from "react-redux";
 //HELPERS
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 
-const Profile = () => {
+const Profile = (props) => {
     // ROUTER
     const router = useRouter();
 
@@ -34,6 +34,24 @@ const Profile = () => {
     } = useSelector(state => state.profile)
 
 
+    // SET THE EMPLOYEE DATA IF IT'S FOUND
+    useEffect(() => {
+        if(props){
+            dispatch(setAll({
+                userId: props._id || '',
+                firstName: props?.clientName.split(' ')[0] || '',
+                lastName: props?.clientName.split(' ')[1] || '',
+                phone: props.phoneNumber || '',
+                region: props.distrect || '',
+                street: props.streetName || '',
+                house: props.homeNumber || '',
+                floor: props.floorNumber || '',
+                apartment: props.appartment || '',
+            }))
+        }
+    }, [dispatch, props])
+
+
     // SUBMIT HANDLER
     const submitHandler = async (e) => {
         // STOP RELOADING
@@ -42,31 +60,26 @@ const Profile = () => {
         const token = extractTokenFromCookie(document.cookie);
 
         //Check the inputs
-        // if (!name || !timeOnCard || !realTime || !packagePrice || !numberOfMeals || !numberOfSnacks || !language || packageMeals.length <= 0) {
-        //     toast.error(`Please fill All inputs`);
-        //     return;
-        // }
+        if (!userId || !firstName || !lastName || !phone || !region || !street || !house || !floor || !apartment) {
+            toast.error(`Please fill All inputs`);
+            return;
+        }
         // Set the loading state for the spinner
         setLoading(true);
 
-        // const createMeal_Obj = {
-        //     bundleName: name,
-        //     mealsNumber: numberOfMeals,
-        //     breakfast: breakfast ? 'on' : 'off',
-        //     lunch: lunch ? 'on' : 'off',
-        //     dinner: dinner ? 'on' : 'off',
-        //     snacksNumber: numberOfSnacks,
-        //     bundlePeriod: realTime,
-        //     bundleOffer: offerDays,
-        //     fridayOption: fridayIncluded,
-        //     bundlePrice: packagePrice,
-        //     mealsIds: packageMeals,
-        //     lang: language,
-        //     timeOnCard: timeOnCard
-        // }
+        const updateProfileObject = {
+            clientName: `${firstName} ${lastName}`,
+                phoneNumber: phone,
+                distrect: region,
+                streetName: street,
+                homeNumber: house,
+                floorNumber: floor,
+                appartment: apartment,
+                clientId: userId,
+        }
 
         // Send Create Request to the server
-        await axios.post(`https://api.easydietkw.com/api/v1/create/bundle`, createMeal_Obj, {
+        await axios.put(`https://api.easydietkw.com/api/v1/edit/profile`, updateProfileObject, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -75,12 +88,7 @@ const Profile = () => {
                 // SET THE STATE
                 setLoading(false);
                 // DO WHAT I WANT
-                toast.success(res.data.message || `Package Created Successfully`);
-                router.push(`/admin/packages`)
-                    .then(() => {
-                        // Clear the reducer
-                        dispatch(clearAll());
-                    })
+                toast.success(res.data.message || `Profile Updated Successfully`);
             })
             .catch(err => {
                 // SET THE STATE
@@ -257,31 +265,67 @@ const Profile = () => {
 }
 export default Profile;
 
-// export const getServerSideProps = async (ctx) => {
-//     // GET THE TOKEN FROM THE REQUEST
-//     const {token} = ctx.req.cookies;
-//
-//     let tokenInfo;
-//     if (token) {
-//         await axios.get(`https://api.easydietkw.com/api/v1/get/verify/token`, {
-//             params: {
-//                 token: token,
-//             }
-//         })
-//             .then(res => tokenInfo = res.data.decodedToken)
-//             .catch(err => console.log(err))
-//     }
-//
-//     if (!tokenInfo || tokenInfo.role !== 'admin' || tokenInfo.active === false) {
-//         return {
-//             redirect: {
-//                 destination: '/',
-//                 permanent: false,
-//             },
-//         }
-//     }
-//
-//     return {
-//         props: {},
-//     };
-// };
+export const getServerSideProps = async (ctx) => {
+    // GET THE TOKEN FROM THE REQUEST
+    const {token} = ctx.req.cookies;
+
+    let tokenInfo;
+    if (token) {
+        await axios.get(`https://api.easydietkw.com/api/v1/get/verify/token`, {
+            params: {
+                token: token,
+            }
+        })
+            .then(res => tokenInfo = res.data.decodedToken)
+            .catch(err => console.log(err))
+    }
+
+    if (!tokenInfo) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
+
+    // GET THE ID OF THE MEAL FROM THE URL
+    let clientInfo;
+
+    if (tokenInfo?.userId) {
+        // GET THE MEAL FROM THE SERVER
+        await axios.get(`https://api.easydietkw.com/api/v1/client/profile?clientId=${tokenInfo.userId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => {
+                // SET THE STATE
+                console.log(res.data)
+                clientInfo = res.data.client
+            })
+            .catch(err => {
+                // SET THE STATE
+                console.log(err)
+            })
+    }else{
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
+
+    // SET THE EMPLOYEE IF EXIST
+    let propObj = {};
+    if(clientInfo){
+        propObj = {
+            ...clientInfo
+        }
+    }
+
+    return {
+        props: propObj,
+    };
+};

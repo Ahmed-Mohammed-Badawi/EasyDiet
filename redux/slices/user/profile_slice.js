@@ -20,9 +20,20 @@ const profileSlice = createSlice({
         onInputChange: (state, action) => {
             state[action.payload.key] = action.payload.value
         },
+        setAll: (state, action) => {
+            state.userId = action.payload.userId;
+            state.firstName = action.payload.firstName;
+            state.lastName = action.payload.lastName;
+            state.phone = action.payload.phone;
+            state.region = action.payload.region;
+            state.street = action.payload.street;
+            state.house = action.payload.house;
+            state.floor = action.payload.floor;
+            state.apartment = action.payload.apartment;
+        },
     },
 })
 
 
-export const {onInputChange, clearAll} = profileSlice.actions;
+export const {onInputChange, setAll} = profileSlice.actions;
 export default profileSlice;

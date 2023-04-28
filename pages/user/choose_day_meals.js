@@ -85,18 +85,39 @@ const Choose_Day_Meals = () => {
         }
 
         try {
-            axios.post(`https://api.easydietkw.com/api/v1/client/select/meal`, requestBody, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-                .then(res => {
-                    router.push('/user/my_subscription').then(() => {
-                        toast.success('The Meals of the Day Updated Successfully')
-                        //Clear the Reducer
-                        dispatch(resetSelectedMeals());
-                    })
+            if (availableMeals === 0 && availableSnacks === 0 && window.confirm('Please Note that by choosing new meals the previous day meals will by Deleted.')) {
+                axios.post(`https://api.easydietkw.com/api/v1/client/select/meal`, requestBody, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 })
+                    .then(res => {
+                        router.push('/user/my_subscription').then(() => {
+                            toast.success('The Meals of the Day Updated Successfully')
+                            //Clear the Reducer
+                            dispatch(resetSelectedMeals());
+                        })
+                    })
+                    .catch(err => {
+                        toast.error(err.response?.data?.message || err.message)
+                    })
+            } else {
+                axios.post(`https://api.easydietkw.com/api/v1/client/select/meal`, requestBody, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                    .then(res => {
+                        router.push('/user/my_subscription').then(() => {
+                            toast.success('The Meals of the Day Updated Successfully')
+                            //Clear the Reducer
+                            dispatch(resetSelectedMeals());
+                        })
+                    })
+                    .catch(err => {
+                        toast.error(err.response?.data?.message || err.message)
+                    })
+            }
         } catch (err) {
             toast.error(err.response?.data?.message || err.message)
         }

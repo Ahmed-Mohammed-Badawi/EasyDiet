@@ -4,7 +4,7 @@ import {useRouter} from "next/router";
 import {onInputChange} from '@/redux/slices/user/nutritionspecialist_slice'
 import {useDispatch, useSelector} from "react-redux";
 
-const DoctorCard = ({userId, nutrition_specialistId}) => {
+const DoctorCard = ({userId, nutrition_specialistId, image, name, phone}) => {
 
     //ROUTER
     const router = useRouter();
@@ -16,23 +16,23 @@ const DoctorCard = ({userId, nutrition_specialistId}) => {
     return (
         <>
             <article className={classes.DoctorCard}>
-                <Image src={'/images/home_background.png'} alt={'Doctor Image'} width={280} height={280} />
+                <Image src={image || '/images/no_image.webp'} alt={'Doctor Image'} width={280} height={280} />
                 <div className={classes.Overlay}>
                     <div className={classes.Top}>
-                        <button>
+                        <button onClick={() => window.open(`https://wa.me/${phone}`, '_blank')}>
                             <Image src={'/images/Global/Whatsapp_Icon.svg'} alt={'WhatsApp'} height={22} width={22} />
                         </button>
                         <button
                             onClick={() => {
                                 dispatch(onInputChange({key: 'nutrition_specialistId', value: nutrition_specialistId}));
-                                router.push(`/user/send_message`)
+                                router.push(`/user/send_message?ID=${nutrition_specialistId}`)
                             }}
                         >
                             <Image src={'/images/Global/Chat_Icon.svg'} alt={'WhatsApp'} height={22} width={22} />
                         </button>
                     </div>
                     <div className={classes.Bottom}>
-                        <h4>Ahmed Mohammed</h4>
+                        <h4>{name}</h4>
                     </div>
                 </div>
             </article>

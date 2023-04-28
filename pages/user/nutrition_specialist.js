@@ -4,8 +4,9 @@ import {useRouter} from "next/router";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import axios from "axios";
-import {onInputChange} from "@/redux/slices/user/packages";
+import {onInputChange} from "@/redux/slices/user/nutritionspecialist_slice";
 import {toast} from "react-toastify";
+import {extractTokenFromCookie} from "@/helpers/extractToken";
 
 
 const Nutritio_specialist = () => {
@@ -15,16 +16,23 @@ const Nutritio_specialist = () => {
 
     //REDUX
     const dispatch = useDispatch();
-    const {packages} = useSelector(state => state.packages_user);
+    const {specialists} = useSelector(state => state.nutrition_specialist)
 
     // EFFECT TO GET THE PACKAGES WHEN PAGE LOAD
     useEffect(() => {
+        //GET THE TOKEN
+        const token = extractTokenFromCookie(document.cookie);
+
         // LOGIC
         try {
-            axios.get(`https://api.easydietkw.com/api/v1/client/bundles`)
+            axios.get(`https://api.easydietkw.com/api/v1/get/specialists`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
                 .then(res => {
                     console.log(res)
-                    dispatch(onInputChange({key: 'packages', value: res.data.bundles}))
+                    dispatch(onInputChange({key: 'specialists', value: res.data.specialists}))
                 })
         } catch (err) {
             toast.error(err.response?.data?.message || err.message)
@@ -37,9 +45,15 @@ const Nutritio_specialist = () => {
             <div className={classes.Main}>
                 <h1>nutrition specialist</h1>
                 <div className={classes.Bottom}>
-                    {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map((cur, index) => {
+                    {specialists && specialists.map((cur, index) => {
                         return (
-                            <DoctorCard key={index} />
+                            <DoctorCard
+                                key={cur._id}
+                                name={cur.fullName}
+                                image={cur.userImage}
+                                nutrition_specialistId={cur._id}
+                                phone={cur.phoneNumber}
+                            />
                         )
                     })}
                 </div>

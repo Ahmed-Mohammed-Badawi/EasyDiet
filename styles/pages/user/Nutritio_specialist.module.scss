@@ -94,7 +94,6 @@
   .Bottom {
     display: flex;
     justify-content: flex-start;
-    align-items: center;
     flex-wrap: wrap;
     gap: 1.5rem;
     background-color: var(--color-white-background);
@@ -102,6 +101,7 @@
     padding: 4rem;
     margin-top: 3rem;
     border-radius: 4rem;
+    min-height: calc(100% - 8rem);
 
     @media screen and (max-width: 650px) {
       justify-content: center;
