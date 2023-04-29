@@ -47,6 +47,7 @@ const SendMessage = ({ID, fullName, userImage}) => {
 
         // Create the Data as formData
         const sendMessage_formData = new FormData();
+        sendMessage_formData.append("specialistId", ID);
         sendMessage_formData.append("title", subject);
         sendMessage_formData.append("body", content);
         if (files && files.length > 0) {
@@ -109,7 +110,7 @@ const SendMessage = ({ID, fullName, userImage}) => {
                                     type={'text'}
                                     name={'subject'}
                                     id={'subject'}
-                                    placeholder={'EX: Ahmed'}
+                                    placeholder={'EX: Diet'}
                                     value={subject}
                                     onChange={(event) => {
                                         dispatch(onInputChange({
@@ -124,7 +125,7 @@ const SendMessage = ({ID, fullName, userImage}) => {
                                 <textarea
                                     name={'content'}
                                     id={'content'}
-                                    placeholder={'EX: Talk about your problem here'}
+                                    placeholder={'EX: Ask your question...'}
                                     value={content}
                                     onChange={(event) => {
                                         dispatch(onInputChange({
@@ -221,7 +222,7 @@ export const getServerSideProps = async (ctx) => {
 
     // SET THE EMPLOYEE IF EXIST
     let propObj = {};
-    if(specialist){
+    if (specialist) {
         propObj = {
             ID,
             ...specialist

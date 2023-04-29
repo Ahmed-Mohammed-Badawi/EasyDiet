@@ -16,8 +16,6 @@ const Aside = () => {
     // MULTI LANGUAGES
     const {t} = useTranslation('aside');
 
-    console.log(t)
-
     // Helpers Functions
     const toggleLanguage = () => {
         let htmlTag;

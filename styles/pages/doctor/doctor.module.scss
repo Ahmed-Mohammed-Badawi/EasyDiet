@@ -224,6 +224,29 @@
         text-transform: capitalize;
       }
 
+      h5 {
+        font-family: var(--font-roboto);
+        font-weight: 500;
+        background: -webkit-linear-gradient(170deg, var(--color-main), var(--color-black-text));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+
+        & ~ a {
+          padding: .5rem 1.5rem;
+          background-color: rgba(222, 222, 222, 0.5);
+          border: 1px solid var(--color-dashboard-border);
+          display: block;
+          color: var(--color-gray-333);
+          margin-bottom: .5rem;
+          font-size: 1.4rem;
+          text-decoration: none;
+        }
+      }
+
       h4 + time + p {
         font-size: 1.4rem;
         text-transform: capitalize;
@@ -233,7 +256,7 @@
       h4 + time {
         font-size: 1.3rem;
         color: var(--color-gray-999);
-        display: inline-block;
+        display: block;
         margin-bottom: .5rem;
       }
 
@@ -261,7 +284,7 @@
       }
 
       .Previous_Question {
-        margin-bottom: 2rem;
+        margin-bottom: 5rem;
       }
     }
 
@@ -359,7 +382,7 @@
           transition: transform .15s ease-in-out;
 
           &:active {
-            transform: scale(0.95);
+            transform: translateY(-50%) scale(0.95);
           }
         }
       }
@@ -595,6 +618,29 @@
           text-transform: capitalize;
         }
 
+        h5 {
+          font-family: var(--font-roboto);
+          font-weight: 500;
+          background: -webkit-linear-gradient(-170deg, var(--color-main), var(--color-black-text));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          display: inline-block;
+          text-transform: uppercase;
+          margin-bottom: 1rem;
+          margin-top: 1rem;
+
+          & ~ a {
+            padding: .5rem 1.5rem;
+            background-color: rgba(222, 222, 222, 0.5);
+            border: 1px solid var(--color-dashboard-border);
+            display: block;
+            color: var(--color-gray-333);
+            margin-bottom: .5rem;
+            font-size: 1.4rem;
+            text-decoration: none;
+          }
+        }
+
         h4 + time + p {
           font-size: 1.4rem;
           text-transform: capitalize;
@@ -604,7 +650,7 @@
         h4 + time {
           font-size: 1.3rem;
           color: var(--color-gray-999);
-          display: inline-block;
+          display: block;
           margin-bottom: .5rem;
         }
 
@@ -732,7 +778,7 @@
             transition: transform .15s ease-in-out;
 
             &:active {
-              transform: scale(0.95);
+              transform: translateY(-50%) scale(0.95);
             }
           }
         }
