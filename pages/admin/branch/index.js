@@ -12,6 +12,13 @@ const Branch_Manager = () => {
     //STATES
     const [users, setUsers] = useState([]);
 
+    const user = {
+        clientName: 'Ahmed Mohammed',
+        subscriptionId: '012844154512',
+        _id: '15245463515634',
+        phoneNumber: '01020985828'
+    }
+
     //REF
     const searchInputRef = useRef();
 
@@ -20,6 +27,42 @@ const Branch_Manager = () => {
     const {meals, checks: {All, Breakfast, Lunch, Dinner, Snacks}} = useSelector(state => state.branch);
 
     async function handleSearch() {
+        const token = extractTokenFromCookie(document.cookie);
+
+        // GET THE EMPLOYEES
+        axios.get(`https://api.easydietkw.com/api/v1/find/client?searchTerm=${searchInputRef.current.value}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then(res => {
+                // SET THE USERS IN REDUX
+                dispatch(setUsers({users: res.data.clients, usersType: 'clients'}))
+            })
+            .catch(err => {
+                toast.error(err.response?.data?.message || err.message);
+            })
+    }
+
+    async function handleSuccess(mealId) {
+        const token = extractTokenFromCookie(document.cookie);
+
+        // GET THE EMPLOYEES
+        axios.get(`https://api.easydietkw.com/api/v1/find/client?searchTerm=${searchInputRef.current.value}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then(res => {
+                // SET THE USERS IN REDUX
+                dispatch(setUsers({users: res.data.clients, usersType: 'clients'}))
+            })
+            .catch(err => {
+                toast.error(err.response?.data?.message || err.message);
+            })
+    }
+
+    async function handleFail(mealId) {
         const token = extractTokenFromCookie(document.cookie);
 
         // GET THE EMPLOYEES
@@ -121,18 +164,17 @@ const Branch_Manager = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            {users && users.map((user) => {
-                                return (
+                            {/*{users && users.map((user) => {*/}
+                            {/*    return (*/}
                                     <tr className={classes.row} key={user._id}>
                                         <td>{user.subscriptionId}</td>
-                                        <td className={classes.ClientName}>{user.clientNameEn || user.clientName}</td>
+                                        <td className={classes.ClientName}>{user?.clientNameEn || user.clientName}</td>
                                         <td>{user.phoneNumber}</td>
                                         <td><span
-                                            className={[classes.SubscriptionButton, user.subscriped ? classes.Active : classes.Inactive].join(' ')}>{'BREAKFAST'}</span>
+                                            className={[classes.SubscriptionButton]}>{'BREAKFAST'}</span>
                                         </td>
                                         <td className={classes.Actions}>
                                             <button className={classes.Freeze}
-                                                    disabled={user.clientStatus.paused && user.clientStatus.numPause === 0}
                                                     onClick={() => {
 
                                                     }}>
@@ -144,8 +186,8 @@ const Branch_Manager = () => {
                                             </button>
                                         </td>
                                     </tr>
-                                )
-                            })}
+                                {/*)*/}
+                            {/*})}*/}
                             </tbody>
                         </table>
                     </div>

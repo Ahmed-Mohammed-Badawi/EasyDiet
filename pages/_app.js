@@ -12,16 +12,43 @@ import NextNProgress from 'nextjs-progressbar';
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {useRouter} from "next/router";
+import {useEffect} from "react";
 
 function MyApp({Component, pageProps}) {
     //ROUTER
-    const router = useRouter()
+    const router = useRouter();
+
+    //EFFECT TO SET THE DEFAULT OF LANGUAGES
+    useEffect(() => {
+        let htmlTag;
+        let bodyTag;
+        if (document) {
+            htmlTag = document.querySelector('html');
+            bodyTag = document.body;
+        }
+
+        if (i18n.language.includes('en')) {
+            if (htmlTag) {
+                htmlTag.setAttribute('lang', 'en');
+                htmlTag.setAttribute('dir', 'ltr');
+                bodyTag.classList.remove('ARABIC');
+            }
+            i18n.changeLanguage('en')
+        } else {
+            if (htmlTag) {
+                htmlTag.setAttribute('lang', 'ar')
+                htmlTag.setAttribute('dir', 'rtl');
+                bodyTag.classList.add('ARABIC');
+            }
+            i18n.changeLanguage('ar');
+        }
+    })
 
     return (
         <I18nextProvider i18n={i18n}>
             <NextNProgress color={`#A71523`}/>
             <Provider store={store}>
-                {(router.pathname.includes('/admin') || router.pathname.includes('/user')) ? (
+                {(router.pathname.includes('/admin') || router.pathname.includes('/user') || router.pathname.includes('/doctor')) ? (
                         <Layout>
                             <Component {...pageProps} />
                         </Layout>

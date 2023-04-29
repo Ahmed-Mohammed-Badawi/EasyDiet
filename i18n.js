@@ -1,8 +1,6 @@
 import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import {initReactI18next} from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import enTranslation from './locales/en/translation.json';
-import arTranslation from './locales/ar/translation.json';
 
 i18n
     .use(LanguageDetector)
@@ -10,10 +8,15 @@ i18n
     .init({
         resources: {
             en: {
-                translation: enTranslation,
+                aside: require('./locales/en/aside.json'),
+                home: require('./locales/en/pages/home.json'),
+                packageCard: require('./locales/en/packageCard.json')
             },
             ar: {
-                translation: arTranslation,
+                aside: require('./locales/ar/aside.json'),
+                home: require('./locales/ar/pages/home.json'),
+                packageCard: require('./locales/ar/packageCard.json')
+
             },
         },
         fallbackLng: 'en',

@@ -65,5 +65,12 @@ body{
   background-color: var(--color-page-background);
 }
 
+body.ARABIC{
+  font-family: var(--font-almarai);
+  p{
+    line-height: 1.1;
+  }
+}
+
 
 // HELPERS

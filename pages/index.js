@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import classes from '@/styles/pages/global/home.module.scss';
 // NEW
 import {useTranslation} from "react-i18next";
 import i18n from "@/i18n";
@@ -9,19 +8,22 @@ import Image from "next/image";
 import {useEffect, useState} from "react";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 
+//STYLE
+import classes from '@/styles/pages/global/home.module.scss'
+
 export default function Home() {
     // ROUTER
     const router = useRouter();
     const [isThereToken, setIsThereToken] = useState(false);
     const [language, setLanguage] = useState('EN')
 
-    const {t} = useTranslation();
+    const {t} = useTranslation('home');
 
     // EFFECT TO SEE IF THERE IS A COOKIE
     useEffect(() => {
         const token = extractTokenFromCookie(document.cookie);
 
-        if(token){
+        if (token) {
             setIsThereToken(token)
         }
 
@@ -30,36 +32,34 @@ export default function Home() {
 
     return (
         <>
-            <div className={classes.Container}>
-                <div className={classes.Main}>
-                    <div className={classes.Right}>
-                        <div className={classes.Logo} onClick={() => router.push('/')}>
+            <div className={classes?.Container}>
+                <div className={classes?.Main}>
+                    <div className={classes?.Right}>
+                        <div className={classes?.Logo} onClick={() => router.push('/')}>
                             <Image src={'/images/Auth/logo.svg'} alt={'logo'} width={70} height={50}/>
                         </div>
-                        <div className={classes.Content}>
-                            <h1 className={classes.Header}>EASY DEIT</h1>
-                            <p className={classes.Paragraph}>
-                                Lorem ipsum dolor sit amet, consetetur.Lorem ipsum dolor sit amet, consetetur.Lorem
-                                ipsum
-                                dolor sit amet, consetetur.Lorem ipsum dolor sit amet, consetetur.Lorem ipsum dolor sit
-                                amet, consetetur.Lorem ipsum dolor sit amet, consetetur.
+                        <div className={classes?.Content}>
+                            <h1 className={classes?.Header}>{t('title')}</h1>
+                            <p className={classes?.Paragraph}>
+                                {t('paragraph')}
                             </p>
-                            <button className={classes.Button} onClick={() => router.push('/user/packages')}>Packages
+                            <button className={classes?.Button} onClick={() => router.push('/user/packages')}>
+                                {t('button')}
                             </button>
                         </div>
                     </div>
-                    <div className={classes.Left}>
-                        <div className={classes.Buttons}>
-                            <button title={'Profile'} onClick={() => {
-                                if(isThereToken){
+                    <div className={classes?.Left}>
+                        <div className={classes?.Buttons}>
+                            <button title={t('login')} onClick={() => {
+                                if (isThereToken) {
                                     router.push('/user/profile')
-                                }else{
+                                } else {
                                     router.push('/auth/login')
                                 }
                             }}>
                                 <Image src={'/images/Global/Login_Icon.svg'} alt={'login'} width={22} height={22}/>
                             </button>
-                            <button title={'About us'} onClick={() => router.push('/about')}>
+                            <button title={t('aboutTitle')} onClick={() => router.push('/about')}>
                                 <Image src={'/images/Global/About_Icon.svg'} alt={'login'} width={24} height={24}/>
                             </button>
                         </div>
