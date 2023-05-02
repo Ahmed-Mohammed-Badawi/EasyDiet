@@ -111,12 +111,13 @@ const Register = () => {
                 phoneNumber: phoneRef.current.value,
                 email: emailRef.current.value,
                 gender: gender,
-                district: regionRef.current.value,
+                distrect: regionRef.current.value,
                 streetName: streetRef.current.value,
                 homeNumber: houseRef.current.value,
                 floorNumber: floorRef.current.value,
                 password: passwordRef.current.value,
-                confirmPassword: confirmPasswordRef.current.value
+                confirmPassword: confirmPasswordRef.current.value,
+                appartment: apartmentRef.current.value
             })
 
             // Reset form inputs

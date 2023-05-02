@@ -37,6 +37,7 @@ const Profile = (props) => {
     // SET THE EMPLOYEE DATA IF IT'S FOUND
     useEffect(() => {
         if(props){
+            console.log(props)
             dispatch(setAll({
                 userId: props._id || '',
                 firstName: props?.clientName.split(' ')[0] || '',
@@ -280,7 +281,7 @@ export const getServerSideProps = async (ctx) => {
             .catch(err => console.log(err))
     }
 
-    if (!tokenInfo) {
+    if (!tokenInfo || tokenInfo.role !== 'client') {
         return {
             redirect: {
                 destination: '/',

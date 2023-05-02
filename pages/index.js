@@ -11,24 +11,14 @@ import {extractTokenFromCookie} from "@/helpers/extractToken";
 //STYLE
 import classes from '@/styles/pages/global/home.module.scss'
 
-export default function Home() {
+export default function Home({isAuthenticated, userData}) {
+    console.log(isAuthenticated, userData)
+
     // ROUTER
     const router = useRouter();
-    const [isThereToken, setIsThereToken] = useState(false);
     const [language, setLanguage] = useState('EN')
 
     const {t} = useTranslation('home');
-
-    // EFFECT TO SEE IF THERE IS A COOKIE
-    useEffect(() => {
-        const token = extractTokenFromCookie(document.cookie);
-
-        if (token) {
-            setIsThereToken(token)
-        }
-
-    }, [])
-
 
     return (
         <>
@@ -51,8 +41,14 @@ export default function Home() {
                     <div className={classes?.Left}>
                         <div className={classes?.Buttons}>
                             <button title={t('login')} onClick={() => {
-                                if (isThereToken) {
-                                    router.push('/user/profile')
+                                if (isAuthenticated && userData?.decodedToken?.role === 'admin') {
+                                    router.push('/admin/dashboard')
+                                } else if (isAuthenticated && userData?.decodedToken?.role === 'manager') {
+                                    router.push('/admin/branch')
+                                } else if (isAuthenticated && userData?.decodedToken?.role === 'diet specialist') {
+                                    router.push('/doctor')
+                                } else if (isAuthenticated && userData?.decodedToken?.role === 'client') {
+                                    router.push('/user/my_subscription')
                                 } else {
                                     router.push('/auth/login')
                                 }

@@ -3,14 +3,14 @@ import classes from './Layout.module.scss';
 import Navbar from "@/components/layout/navbar/Navbar";
 import Aside from "@/components/layout/aside/Aside";
 
-const Layout = ({children}) => {
+const Layout = ({children, isAuthenticated, userData}) => {
     return (
         <main className={classes.MainGrid} id={`mainLayout`}>
             <Navbar/>
             <section className={classes.PageContainer}>
                 {children}
             </section>
-            <Aside/>
+            <Aside isAuthenticated={isAuthenticated} userData={userData}/>
         </main>
     )
 }

@@ -1,4 +1,3 @@
-
 import classes from './Aside.module.scss';
 import Link from "next/link";
 import Image from "next/image";
@@ -9,7 +8,7 @@ import i18n from "@/i18n";
 import {useTranslation} from "react-i18next";
 import {useRouter} from "next/router";
 
-const Aside = () => {
+const Aside = ({isAuthenticated, userData}) => {
     //ROUTER
     const router = useRouter();
 
@@ -58,105 +57,128 @@ const Aside = () => {
 
     return (<aside className={classes.Aside} id={`AsideId`}>
         <ul className={classes.Aside_List}>
-            <li className={classes.Aside_List__Item}>
+            {(<li className={classes.Aside_List__Item}>
                 <Link href={'/'} className={router.pathname === '/' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Home_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
                     <span className={classes.Text}>{t('home')}</span>
-                </Link></li>
-            <li className={classes.Aside_List__Item}>
-                <Link href={'/user/packages'} className={router.pathname === '/user/packages' ? classes.Active : ''}>
-                        <span className={classes.Image_Container}>
-                            <Image src={'/images/Packages_Icon.svg'} alt={'Icon'} width={20} height={20}/>
-                        </span>
-                    <span className={classes.Text}>{t('bundles')}</span>
-                </Link></li>
-            <li className={classes.Aside_List__Item}>
-                <Link href={'/user/menu'} className={router.pathname === '/user/menu' ? classes.Active : ''}>
-                        <span className={classes.Image_Container}>
-                            <Image src={'/images/Meals_Icon.svg'} alt={'Icon'} width={30} height={20}/>
-                        </span>
-                    <span className={classes.Text}>{t('menu')}</span>
-                </Link></li>
-            <li className={classes.Aside_List__Item}>
+                </Link></li>)}
+            {(<li className={classes.Aside_List__Item}>
                 <Link href={'/about'} className={router.pathname === '/about' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/About_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
                     <span className={classes.Text}>{t('about')}</span>
-                </Link></li>
-            <li className={classes.Aside_List__Item}>
-                <Link href={'/user/profile'} className={router.pathname === '/user/profile' ? classes.Active : ''}>
+                </Link></li>)}
+            {(<li className={classes.Aside_List__Item}>
+                <Link href={'/user/packages'} className={router.pathname === '/user/packages' ? classes.Active : ''}>
+                        <span className={classes.Image_Container}>
+                            <Image src={'/images/Packages_Icon.svg'} alt={'Icon'} width={20} height={20}/>
+                        </span>
+                    <span className={classes.Text}>{t('bundles')}</span>
+                </Link></li>)}
+            {(<li className={classes.Aside_List__Item}>
+                <Link href={'/user/menu'} className={router.pathname === '/user/menu' ? classes.Active : ''}>
+                        <span className={classes.Image_Container}>
+                            <Image src={'/images/Meals_Icon.svg'} alt={'Icon'} width={30} height={20}/>
+                        </span>
+                    <span className={classes.Text}>{t('menu')}</span>
+                </Link></li>)}
+            {(isAuthenticated && userData?.decodedToken?.role === "client") && (
+                <li className={classes.Aside_List__Item}>
+                    <Link href={'/user/profile'} className={router.pathname === '/user/profile' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Users_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
-                    <span className={classes.Text}>{t('profile')}</span>
-                </Link></li>
-            <li className={classes.Aside_List__Item}>
-                <Link href={'/user/my_subscription'}  className={router.pathname === '/user/my_subscription' ? classes.Active : ''}>
+                        <span className={classes.Text}>{t('profile')}</span>
+                    </Link></li>)}
+            {(isAuthenticated && userData?.decodedToken?.role === "client") && (
+                <li className={classes.Aside_List__Item}>
+                    <Link href={'/user/my_subscription'}
+                          className={router.pathname === '/user/my_subscription' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Subscription_Icon.svg'} alt={'Icon'} width={20} height={20}/>
                         </span>
-                    <span className={classes.Text}>{t('mySubscription')}</span>
-                </Link></li>
-            <li className={classes.Aside_List__Item}>
-                <Link href={'/user/nutrition_specialist'} className={router.pathname === '/user/nutrition_specialist' ? classes.Active : ''}>
+                        <span className={classes.Text}>{t('mySubscription')}</span>
+                    </Link></li>)}
+            {(isAuthenticated && userData?.decodedToken?.role === "client") && (
+                <li className={classes.Aside_List__Item}>
+                    <Link href={'/user/nutrition_specialist'}
+                          className={router.pathname === '/user/nutrition_specialist' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Doctor_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
-                    <span className={classes.Text}>{t('NutritionSpecialist')}</span>
-                </Link></li>
-            <li className={classes.Aside_List__Item}>
+                        <span className={classes.Text}>{t('NutritionSpecialist')}</span>
+                    </Link></li>)}
+            {(isAuthenticated && userData?.decodedToken?.role === "diet specialist") && (
+                <li className={classes.Aside_List__Item}>
+                    <Link href={'/admin/doctor'}
+                          className={router.pathname === '/admin/dashboard' ? classes.Active : ''}>
+                        <span className={classes.Image_Container}>
+                            <Image src={'/images/dashboard.png'} alt={'Icon'} width={20} height={20}/>
+                        </span>
+                        <span className={classes.Text}>{t('dashboard')}</span>
+                    </Link></li>)}
+            {(isAuthenticated && userData?.decodedToken?.role === "admin") && (<li className={classes.Aside_List__Item}>
                 <Link href={'/admin/dashboard'}
                       className={router.pathname === '/admin/dashboard' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/dashboard.png'} alt={'Icon'} width={20} height={20}/>
                         </span>
-                    <span className={classes.Text}>{t('dashboard')}</span>
-                </Link></li>
-            <li className={classes.Aside_List__Item}>
+                    <span className={classes.Text}>{t('Dashboard')}</span>
+                </Link></li>)}
+            {(isAuthenticated && userData?.decodedToken?.role === "admin") && (<li className={classes.Aside_List__Item}>
                 <Link href={'/admin/packages'} className={router.pathname === '/admin/packages' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Packages_Icon.svg'} alt={'Icon'} width={20} height={20}/>
                         </span>
                     <span className={classes.Text}>{t('packages')}</span>
-                </Link></li>
-            <li className={classes.Aside_List__Item}>
+                </Link></li>)}
+            {(isAuthenticated && userData?.decodedToken?.role === "admin") && (<li className={classes.Aside_List__Item}>
                 <Link href={'/admin/meals'} className={router.pathname === '/admin/meals' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Meals_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
                     <span className={classes.Text}>{t('meals')}</span>
-                </Link></li>
-            <li className={classes.Aside_List__Item}>
+                </Link></li>)}
+            {(isAuthenticated && userData?.decodedToken?.role === "admin") && (<li className={classes.Aside_List__Item}>
                 <Link href={'/admin/users'} className={router.pathname === '/admin/users' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Users_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
                     <span className={classes.Text}>{t('users')}</span>
-                </Link></li>
-            <li className={classes.Aside_List__Item}>
-                <Link href={'/admin/branch'} className={router.pathname === '/admin/branch' ? classes.Active : ''}>
+                </Link></li>)}
+            {(isAuthenticated && (userData?.decodedToken?.role === "manager" || userData?.decodedToken?.role === "admin")) && (
+                <li className={classes.Aside_List__Item}>
+                    <Link href={'/admin/branch'} className={router.pathname === '/admin/branch' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/branch.png'} alt={'Icon'} width={30} height={20}/>
                         </span>
-                    <span className={classes.Text}>{t('branchManager')}</span>
-                </Link></li>
-            <li className={classes.Aside_List__Item}>
-                <Link href={'/admin/reports'} className={router.pathname === '/admin/reports' ? classes.Active : ''}>
+                        <span className={classes.Text}>{t('branchManager')}</span>
+                    </Link></li>)}
+            {(isAuthenticated && (userData?.decodedToken?.role === "manager" || userData?.decodedToken?.role === "admin")) && (
+                <li className={classes.Aside_List__Item}>
+                    <Link href={'/admin/reports'}
+                          className={router.pathname === '/admin/reports' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Reports_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
-                    <span className={classes.Text}>{t('reports')}</span>
-                </Link></li>
-            <li className={classes.Aside_List__Item}>
+                        <span className={classes.Text}>{t('reports')}</span>
+                    </Link></li>)}
+            {isAuthenticated ? (<li className={classes.Aside_List__Item}>
                 <Link onClick={(event) => logoutHandler(event)} href={'/auth/login'} className={classes.ActiveLogout}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Logout_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
                     <span className={[classes.Logout_Text, classes.Text].join(' ')}>{t('logout')}</span>
-                </Link></li>
+                </Link></li>) : (<li className={classes.Aside_List__Item}>
+                <Link href={'/auth/login'} className={classes.Aside_List__Item}>
+                        <span className={classes.Image_Container}>
+                            <Image src={'/images/login.png'} alt={'Icon'} width={20} height={20}/>
+                        </span>
+                    <span className={[classes.Text]}>{t('Login')}</span>
+                </Link></li>)}
         </ul>
         <div className={classes.Aside_Options}>
             <button onClick={toggleLanguage}>

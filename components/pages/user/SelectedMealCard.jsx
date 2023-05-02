@@ -21,21 +21,12 @@ const SelectedMeal = ({ID, image, name, number}) => {
         // find the meal by index
         const index = mealsCopy.findIndex((meal) => meal.id === ID);
 
-        if (index !== -1 && mealsCopy[index].number > 1) {
-            // add one
-            mealsCopy[index] = {...mealsCopy[index], number: mealsCopy[index].number - 1}
-            dispatch(onInputChange({
-                key: 'selectedMeals',
-                value: mealsCopy
-            }))
-        } else {
-            mealsCopy.splice(index, 1);
+        mealsCopy.splice(index, 1);
 
-            dispatch(onInputChange({
-                key: 'selectedMeals',
-                value: mealsCopy
-            }))
-        }
+        dispatch(onInputChange({
+            key: 'selectedMeals',
+            value: mealsCopy
+        }))
 
     }
 
@@ -53,7 +44,7 @@ const SelectedMeal = ({ID, image, name, number}) => {
                 </div>
                 <div className={classes.Bottom}>
                     <h3>{name}</h3>
-                    <span>{number}</span>
+                    {/*<span>{number}</span>*/}
                 </div>
             </div>
         </>

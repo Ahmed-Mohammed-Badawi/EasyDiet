@@ -234,7 +234,7 @@ const Doctor = () => {
                             {(showActiveUser && userMessages) && (
                                 <div className={classes.Current_Question}>
                                     <h3>Question of client</h3>
-                                    <h4>q: {userMessages[0]?.title}?</h4>
+                                    <h4>q: {userMessages[0]?.body}?</h4>
                                     <time>{new Date(userMessages[0]?.updatedAt).toLocaleDateString('en-US', {
                                         day: "numeric",
                                         month: "long",
@@ -317,3 +317,32 @@ const Doctor = () => {
 }
 
 export default Doctor;
+
+export const getServerSideProps = async (ctx) => {
+    // GET THE TOKEN FROM THE REQUEST
+    const {token} = ctx.req.cookies;
+
+    let tokenInfo;
+    if (token) {
+        await axios.get(`https://api.easydietkw.com/api/v1/get/verify/token`, {
+            params: {
+                token: token,
+            }
+        })
+            .then(res => tokenInfo = res.data.decodedToken)
+            .catch(err => console.log(err))
+    }
+
+    if (!tokenInfo || tokenInfo.role !== 'diet specialist' || tokenInfo.active === false) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
+
+    return {
+        props: {},
+    };
+};

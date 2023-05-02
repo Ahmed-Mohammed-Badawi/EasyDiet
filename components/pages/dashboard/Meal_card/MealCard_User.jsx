@@ -10,37 +10,6 @@ import {useSelector, useDispatch} from "react-redux";
 
 
 const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, lang}) => {
-    // ROUTER
-    const router = useRouter();
-
-    //REDUX
-    const dispatch = useDispatch();
-    const {meals} = useSelector(state => state.meals);
-
-    // DELETE HANDLER
-    const deleteHandler = async () => {
-        //GET THE TOKEN
-        const token = extractTokenFromCookie(document.cookie)
-
-        if (window.confirm('This Meal Will Be Deleted. Are you sure you want to continue?')) {
-            await axios.delete(`https://api.easydietkw.com/api/v1/delete/meal?mealId=${ID}&lang=${lang}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-                .then(res => {
-                    // Show notification
-                    toast.success('Meal Deleted Successfully');
-                    // Update the State
-                    const updatedItems = meals.filter(item => item._id !== ID);
-                    dispatch(onInputChange({key: 'meals', value: updatedItems}))
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        }
-    }
-
 
     return (
         <article className={classes.Card}>

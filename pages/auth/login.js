@@ -16,30 +16,38 @@ const Login = () => {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const response = await axios.post(
-                "https://api.easydietkw.com/api/v1/login",
-                {
-                    username: username,
-                    password: password,
-                }
-            )
-
-            document.cookie = `token=${response.data.token}; path=/;`;
-
-            // Redirect based on the user's role
-            if (response.data.user.role === "admin") {
-                router.push(`/admin/dashboard`);
-            } else if (response.data.user.role === "user") {
-                router.push(`/user/dashboard?token=${'asdasd'}`);
+        await axios.post(
+            "https://api.easydietkw.com/api/v1/login",
+            {
+                username: username,
+                password: password,
             }
+        )
+            .then(res => {
+                document.cookie = `token=${res.data.token}; path=/;`;
 
-            // Show success message
-            toast.success(response.data.message);
-        } catch (error) {
-            // Show error message
-            toast.error("Invalid username or password");
-        }
+                // Redirect based on the user's role
+                if (res.data.user.role === "admin") {
+                    router.push(`/admin/dashboard`)
+                        .then(() => router.reload())
+                } else if (res.data.user.role === "client") {
+                    router.push(`/user/my_subscription`)
+                        .then(() => router.reload())
+                } else if (res.data.user.role === "manager") {
+                    router.push(`/admin/branch`)
+                        .then(() => router.reload())
+                } else if (res.data.user.role === "diet specialist") {
+                    router.push(`/doctor`)
+                        .then(() => router.reload())
+                }
+
+                // Show success message
+                toast.success(res.data.message);
+            })
+            .catch(err => {
+                // Show error message
+                toast.error(err.response?.data?.message || err.message || "Invalid username or password");
+            })
     };
 
 
@@ -61,11 +69,13 @@ const Login = () => {
                             <h2 className={classes.Heading_2}>LOGIN</h2>
                             <div className={classes.Input_Group}>
                                 <label htmlFor={'email'}>USERNAME || EMAIL</label>
-                                <input onChange={(e) => setUsername(e.target.value)} type={'username'} id={'email'} name={'email'}/>
+                                <input onChange={(e) => setUsername(e.target.value)} type={'username'} id={'email'}
+                                       name={'email'}/>
                             </div>
                             <div className={classes.Input_Group}>
                                 <label htmlFor={'password'}>PASSWORD</label>
-                                <input onChange={(e) => setPassword(e.target.value)} type={'password'} id={'password'} name={'password'}/>
+                                <input onChange={(e) => setPassword(e.target.value)} type={'password'} id={'password'}
+                                       name={'password'}/>
                             </div>
                             <div className={classes.Form_buttons}>
                                 <div className={classes.Links}>
@@ -82,11 +92,12 @@ const Login = () => {
                                                      height={30}/></span>
                                     </button>
                                     <button
-                                            className={[classes.Create_button].join(' ')}
-                                            type={'submit'}>
+                                        className={[classes.Create_button].join(' ')}
+                                        type={'submit'}>
                                         <span>LOGIN</span>
-                                        <span className={classes.Next_Span}><Image src={'/images/Auth/next-icon.svg'} alt={'Create User'} width={20}
-                                                     height={20}/></span>
+                                        <span className={classes.Next_Span}><Image src={'/images/Auth/next-icon.svg'}
+                                                                                   alt={'Create User'} width={20}
+                                                                                   height={20}/></span>
                                     </button>
                                 </div>
                             </div>

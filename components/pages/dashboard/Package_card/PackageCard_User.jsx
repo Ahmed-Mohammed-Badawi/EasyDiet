@@ -51,7 +51,7 @@ const PackageCard_User = ({
                 <div className={classes.Info}>
                     <p>{name}</p>
                     <span>{time}</span>
-                    <span>{meals}</span>
+                    {/*<span>{meals}</span>*/}
                 </div>
             </div>
             <div className={classes.Bottom}>

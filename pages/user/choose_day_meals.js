@@ -25,7 +25,6 @@ const Choose_Day_Meals = () => {
     const dispatch = useDispatch();
     const {meals, date, dateId, selectedMeals} = useSelector(state => state.daymeals_user);
 
-
     // EFFECT TO GET THE PACKAGES WHEN PAGE LOAD
     useEffect(() => {
         //GET THE TOKEN
@@ -168,21 +167,32 @@ const Choose_Day_Meals = () => {
                                 </span>
                             </div>
                             <div className={classes.Buttons}>
-                                <button title={'Selected Meals'} onClick={() => console.log('GO BACK')}>
+                                <button title={'Selected Meals'} onClick={() => {
+                                    resetMealsHandler()
+                                    router.push('/user/my_subscription');
+                                }}>
                                     <Image style={{transform: 'rotate(180deg)'}} src={'/images/Auth/next-icon.svg'}
                                            alt={'Selected Meals'}
                                            width={20} height={20}/>
+                                    <span>Back</span>
                                 </button>
                                 <button title={'Selected Meals'} onClick={() => setOverlay(true)}>
                                     <Image src={'/images/Global/SelectedMeals_Icon.svg'} alt={'Selected Meals'}
                                            width={20} height={20}/>
+                                    <span>Selected</span>
                                 </button>
                                 <button title={'Reset All Meals'} onClick={resetMealsHandler}>
                                     <Image src={'/images/Global/ResetMeals_Icon.svg'} alt={'Selected Meals'} width={20}
                                            height={20}/>
+                                    <span>Reset</span>
                                 </button>
                             </div>
-                            <div className={classes.AvailableMeals}>
+                            <div className={classes.AvailableMeals}
+                                 data-day={new Date(date).toLocaleDateString('en-US', {
+                                     day: 'numeric',
+                                     month: 'long',
+                                     year: 'numeric'
+                                 })}>
                                 <p>Available Meals <span>{availableMeals}</span></p>
                                 <p>Available Snacks <span>{availableSnacks}</span></p>
                             </div>

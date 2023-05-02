@@ -13,10 +13,15 @@ import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {useRouter} from "next/router";
 import {useEffect} from "react";
+// AUTH CHECKER
+import {useAuth} from "@/hooks/useAuth";
 
 function MyApp({Component, pageProps}) {
     //ROUTER
     const router = useRouter();
+
+    // AUTH CHECKER DATA
+    const {isAuthenticated, userData} = useAuth();
 
     //EFFECT TO SET THE DEFAULT OF LANGUAGES
     useEffect(() => {
@@ -42,19 +47,19 @@ function MyApp({Component, pageProps}) {
             }
             i18n.changeLanguage('ar');
         }
-    })
+    }, [])
 
     return (
         <I18nextProvider i18n={i18n}>
             <NextNProgress color={`#A71523`}/>
             <Provider store={store}>
                 {(router.pathname.includes('/admin') || router.pathname.includes('/user') || router.pathname.includes('/doctor')) ? (
-                        <Layout>
-                            <Component {...pageProps} />
+                        <Layout isAuthenticated={isAuthenticated} userData={userData}>
+                            <Component {...pageProps} isAuthenticated={isAuthenticated} userData={userData}/>
                         </Layout>
                     ) :
                     (
-                        <Component {...pageProps} />
+                        <Component {...pageProps} isAuthenticated={isAuthenticated} userData={userData}/>
                     )
                 }
             </Provider>

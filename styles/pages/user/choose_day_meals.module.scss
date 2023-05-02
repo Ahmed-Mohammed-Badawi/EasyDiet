@@ -125,11 +125,18 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
+      gap: .5rem;
       padding: 2rem;
       background-color: var(--color-white-background);
       border: 1px solid var(--color-dashboard-border);
       transition: all 0.2s ease-in-out;
       cursor: pointer;
+
+      span{
+        font-size: 1.2rem;
+        text-transform: uppercase;
+      }
 
       &:active{
         transform: scale(0.95);
@@ -139,6 +146,7 @@
   }
 
   .AvailableMeals{
+    position: relative;
     width: 100%;
     flex-grow: 1;
     padding: 2rem;
@@ -159,6 +167,23 @@
         font-family: var(--font-montserrat);
         color: var(--color-black-text);
       }
+    }
+
+    &:after{
+      content: attr(data-day);
+      display: inline-block;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0.3rem 1rem;
+      color: var(--color-white-text);
+      background-color: #534e56;
+      text-align: center;
+      transform: translate(-50%, 50%);
+
     }
   }
 
