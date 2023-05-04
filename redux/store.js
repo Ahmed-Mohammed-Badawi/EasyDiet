@@ -11,7 +11,9 @@ import createpackageSlice from "@/redux/slices/Admin/createpackage-slice";
 import editPackageSlice from "@/redux/slices/Admin/editpackage-slice";
 import createEmployeeSlice from "@/redux/slices/Admin/createEmployee-slice";
 import editEmployeeSlice from "@/redux/slices/Admin/editEmployee-slice";
+import createUserSlice from "@/redux/slices/Admin/createUser-slice";
 import branchManager from "@/redux/slices/Admin/branchManager-slice";
+import defaultMealsSlice from "@/redux/slices/Admin/defaultmeals_slice";
 //USER
 import packages from "@/redux/slices/user/packages";
 import menuSlice from "@/redux/slices/user/menu";
@@ -32,7 +34,9 @@ export const store = configureStore({
         [editPackageSlice.name]: editPackageSlice.reducer,
         [createEmployeeSlice.name]: createEmployeeSlice.reducer,
         [editEmployeeSlice.name]: editEmployeeSlice.reducer,
+        [createUserSlice.name]: createUserSlice.reducer,
         [branchManager.name]: branchManager.reducer,
+        [defaultMealsSlice.name]: defaultMealsSlice.reducer,
         //USER
         [packages.name]: packages.reducer,
         [menuSlice.name]: menuSlice.reducer,

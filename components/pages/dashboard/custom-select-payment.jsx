@@ -30,10 +30,8 @@ const customStyles = {
 };
 
 const options = [
-    {value: 1, label: '1 Week'},
-    {value: 2, label: '2 Weeks'},
-    {value: 3, label: '3 Weeks'},
-    {value: 4, label: '4 Weeks'},
+    {value: 'KNET', label: 'KNET'},
+    {value: 'Visa', label: 'Visa'},
 ];
 
 const CustomSelect = ({defaultValue, changed}) => {
@@ -41,20 +39,11 @@ const CustomSelect = ({defaultValue, changed}) => {
     // CUSTOM ID
     const id = useId();
 
-    // GET THE DEFAULT VALUE TO SET
-    // Find the option objects that match the option labels
-    const defaultValueObject = options.find(option => option.value === defaultValue);
-
+    const defaultOption = options.find(option => option.value === defaultValue);
 
     return (
         <>
-            <Select
-                instanceId={id}
-                options={options}
-                styles={customStyles}
-                value={defaultValueObject || ''}
-                onChange={changed}
-            />
+            <Select instanceId={id} options={options} styles={customStyles} onChange={changed} value={defaultOption || ''} />
         </>
     )
 }

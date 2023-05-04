@@ -48,7 +48,7 @@ const CustomSelect = ({changed, defaultValue}) => {
         <>
             <Select
                 value={defaultValueObject || ''}
-                id={id}
+                instanceId={id}
                 options={options}
                 styles={customStyles}
                 onChange={changed}

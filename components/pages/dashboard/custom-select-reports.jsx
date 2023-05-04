@@ -35,14 +35,16 @@ const options = [
     {value: 'Users', label: 'Users'},
 ];
 
-const CustomSelect = () => {
+const CustomSelect = ({changed, defaultValue}) => {
 
     // CUSTOM ID
     const id = useId();
 
+    const defaultOption = options.find(option => option.value === defaultValue);
+
     return (
         <>
-            <Select id={id} options={options} styles={customStyles} />
+            <Select instanceId={id} options={options} styles={customStyles} value={defaultOption} onChange={changed} />
         </>
     )
 }

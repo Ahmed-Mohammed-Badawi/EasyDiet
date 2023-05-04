@@ -240,9 +240,9 @@ const Users = () => {
             <main className={classes.Main}>
                 <div className={classes.Container}>
                     <div className={classes.Top}>
-                        <button onClick={() => router.push(`/admin/create/create_employee`)}>
+                        <button onClick={() => isOn ? router.push(`/admin/create/create_employee`) : router.push(`/admin/create/create_user`)}>
                             <Image src={'/images/Add_Icon.svg'} alt={'Add Icon'} width={18} height={18}/>
-                            <span>Create An Employee</span>
+                            <span>{isOn ? `Create An Employee` : `Create a client`}</span>
                         </button>
                         <div className={classes.Toggle_container}>
                             <span onClick={checkClients}>CLIENTS</span>

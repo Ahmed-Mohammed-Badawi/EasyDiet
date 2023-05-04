@@ -55,31 +55,45 @@ const Aside = ({isAuthenticated, userData}) => {
         })
     }
 
+    // Handle the aside
+    function handleResize() {
+        console.log('HANDLE')
+        if (window.innerWidth > 1440) {
+            if (!document.body.classList.contains("Active_Aside")) {
+                document.body.classList.add("Active_Aside");
+            }
+        }else{
+            document.body.classList.remove("Active_Aside");
+            document.body.style.height = "auto";
+            document.body.style.overflow = "visible";
+        }
+    }
+
     return (<aside className={classes.Aside} id={`AsideId`}>
         <ul className={classes.Aside_List}>
             {(<li className={classes.Aside_List__Item}>
-                <Link href={'/'} className={router.pathname === '/' ? classes.Active : ''}>
+                <Link onClick={handleResize} href={'/'} className={router.pathname === '/' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Home_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
                     <span className={classes.Text}>{t('home')}</span>
                 </Link></li>)}
             {(<li className={classes.Aside_List__Item}>
-                <Link href={'/about'} className={router.pathname === '/about' ? classes.Active : ''}>
+                <Link onClick={handleResize} href={'/about'} className={router.pathname === '/about' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/About_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
                     <span className={classes.Text}>{t('about')}</span>
                 </Link></li>)}
             {(<li className={classes.Aside_List__Item}>
-                <Link href={'/user/packages'} className={router.pathname === '/user/packages' ? classes.Active : ''}>
+                <Link onClick={handleResize} href={'/user/packages'} className={router.pathname === '/user/packages' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Packages_Icon.svg'} alt={'Icon'} width={20} height={20}/>
                         </span>
                     <span className={classes.Text}>{t('bundles')}</span>
                 </Link></li>)}
             {(<li className={classes.Aside_List__Item}>
-                <Link href={'/user/menu'} className={router.pathname === '/user/menu' ? classes.Active : ''}>
+                <Link onClick={handleResize} href={'/user/menu'} className={router.pathname === '/user/menu' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Meals_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
@@ -87,7 +101,7 @@ const Aside = ({isAuthenticated, userData}) => {
                 </Link></li>)}
             {(isAuthenticated && userData?.decodedToken?.role === "client") && (
                 <li className={classes.Aside_List__Item}>
-                    <Link href={'/user/profile'} className={router.pathname === '/user/profile' ? classes.Active : ''}>
+                    <Link onClick={handleResize} href={'/user/profile'} className={router.pathname === '/user/profile' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Users_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
@@ -95,7 +109,7 @@ const Aside = ({isAuthenticated, userData}) => {
                     </Link></li>)}
             {(isAuthenticated && userData?.decodedToken?.role === "client") && (
                 <li className={classes.Aside_List__Item}>
-                    <Link href={'/user/my_subscription'}
+                    <Link onClick={handleResize} href={'/user/my_subscription'}
                           className={router.pathname === '/user/my_subscription' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Subscription_Icon.svg'} alt={'Icon'} width={20} height={20}/>
@@ -104,7 +118,7 @@ const Aside = ({isAuthenticated, userData}) => {
                     </Link></li>)}
             {(isAuthenticated && userData?.decodedToken?.role === "client") && (
                 <li className={classes.Aside_List__Item}>
-                    <Link href={'/user/nutrition_specialist'}
+                    <Link onClick={handleResize} href={'/user/nutrition_specialist'}
                           className={router.pathname === '/user/nutrition_specialist' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Doctor_Icon.svg'} alt={'Icon'} width={30} height={20}/>
@@ -113,7 +127,7 @@ const Aside = ({isAuthenticated, userData}) => {
                     </Link></li>)}
             {(isAuthenticated && userData?.decodedToken?.role === "diet specialist") && (
                 <li className={classes.Aside_List__Item}>
-                    <Link href={'/admin/doctor'}
+                    <Link onClick={handleResize} href={'/admin/doctor'}
                           className={router.pathname === '/admin/dashboard' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/dashboard.png'} alt={'Icon'} width={20} height={20}/>
@@ -121,7 +135,7 @@ const Aside = ({isAuthenticated, userData}) => {
                         <span className={classes.Text}>{t('dashboard')}</span>
                     </Link></li>)}
             {(isAuthenticated && userData?.decodedToken?.role === "admin") && (<li className={classes.Aside_List__Item}>
-                <Link href={'/admin/dashboard'}
+                <Link onClick={handleResize} href={'/admin/dashboard'}
                       className={router.pathname === '/admin/dashboard' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/dashboard.png'} alt={'Icon'} width={20} height={20}/>
@@ -129,21 +143,21 @@ const Aside = ({isAuthenticated, userData}) => {
                     <span className={classes.Text}>{t('Dashboard')}</span>
                 </Link></li>)}
             {(isAuthenticated && userData?.decodedToken?.role === "admin") && (<li className={classes.Aside_List__Item}>
-                <Link href={'/admin/packages'} className={router.pathname === '/admin/packages' ? classes.Active : ''}>
+                <Link onClick={handleResize} href={'/admin/packages'} className={router.pathname === '/admin/packages' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Packages_Icon.svg'} alt={'Icon'} width={20} height={20}/>
                         </span>
                     <span className={classes.Text}>{t('packages')}</span>
                 </Link></li>)}
             {(isAuthenticated && userData?.decodedToken?.role === "admin") && (<li className={classes.Aside_List__Item}>
-                <Link href={'/admin/meals'} className={router.pathname === '/admin/meals' ? classes.Active : ''}>
+                <Link onClick={handleResize} href={'/admin/meals'} className={router.pathname === '/admin/meals' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Meals_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
                     <span className={classes.Text}>{t('meals')}</span>
                 </Link></li>)}
             {(isAuthenticated && userData?.decodedToken?.role === "admin") && (<li className={classes.Aside_List__Item}>
-                <Link href={'/admin/users'} className={router.pathname === '/admin/users' ? classes.Active : ''}>
+                <Link onClick={handleResize} href={'/admin/users'} className={router.pathname === '/admin/users' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Users_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
@@ -151,7 +165,7 @@ const Aside = ({isAuthenticated, userData}) => {
                 </Link></li>)}
             {(isAuthenticated && (userData?.decodedToken?.role === "manager" || userData?.decodedToken?.role === "admin")) && (
                 <li className={classes.Aside_List__Item}>
-                    <Link href={'/admin/branch'} className={router.pathname === '/admin/branch' ? classes.Active : ''}>
+                    <Link onClick={handleResize} href={'/admin/branch'} className={router.pathname === '/admin/branch' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/branch.png'} alt={'Icon'} width={30} height={20}/>
                         </span>
@@ -159,7 +173,15 @@ const Aside = ({isAuthenticated, userData}) => {
                     </Link></li>)}
             {(isAuthenticated && (userData?.decodedToken?.role === "manager" || userData?.decodedToken?.role === "admin")) && (
                 <li className={classes.Aside_List__Item}>
-                    <Link href={'/admin/reports'}
+                    <Link onClick={handleResize} href={'/admin/defaultmeals'} className={router.pathname === '/admin/defaultmeals' ? classes.Active : ''}>
+                        <span className={classes.Image_Container}>
+                            <Image src={'/images/defaultmeals.png'} alt={'Icon'} width={20} height={20}/>
+                        </span>
+                        <span className={classes.Text}>{t('default meals')}</span>
+                    </Link></li>)}
+            {(isAuthenticated && (userData?.decodedToken?.role === "manager" || userData?.decodedToken?.role === "admin")) && (
+                <li className={classes.Aside_List__Item}>
+                    <Link onClick={handleResize} href={'/admin/reports'}
                           className={router.pathname === '/admin/reports' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Reports_Icon.svg'} alt={'Icon'} width={30} height={20}/>
@@ -167,13 +189,16 @@ const Aside = ({isAuthenticated, userData}) => {
                         <span className={classes.Text}>{t('reports')}</span>
                     </Link></li>)}
             {isAuthenticated ? (<li className={classes.Aside_List__Item}>
-                <Link onClick={(event) => logoutHandler(event)} href={'/auth/login'} className={classes.ActiveLogout}>
+                <Link onClick={(event) => {
+                    logoutHandler(event);
+                    handleResize();
+                }} href={'/auth/login'} className={classes.ActiveLogout}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/Logout_Icon.svg'} alt={'Icon'} width={30} height={20}/>
                         </span>
                     <span className={[classes.Logout_Text, classes.Text].join(' ')}>{t('logout')}</span>
                 </Link></li>) : (<li className={classes.Aside_List__Item}>
-                <Link href={'/auth/login'} className={classes.Aside_List__Item}>
+                <Link onClick={handleResize} href={'/auth/login'} className={classes.Aside_List__Item}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/login.png'} alt={'Icon'} width={20} height={20}/>
                         </span>

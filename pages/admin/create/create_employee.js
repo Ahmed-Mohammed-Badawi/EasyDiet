@@ -11,6 +11,7 @@ import axios from "axios";
 import {clearAll, onInputChange} from "@/redux/slices/Admin/createEmployee-slice";
 import {useDispatch, useSelector} from "react-redux";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
+import Spinner from "@/components/layout/spinner/Spinner";
 
 const CreateEmployee = () => {
     // ROUTER
@@ -214,7 +215,7 @@ const CreateEmployee = () => {
                         </div>
                         <button type={'submit'}>
                             <span>
-                                Create
+                                {loading ? <Spinner size={2} color={`#ffffff`}/> : 'Create'}
                             </span>
                             <Image src={'/images/Send_Icon.svg'} alt={'Send'} width={20} height={20}/>
                         </button>
