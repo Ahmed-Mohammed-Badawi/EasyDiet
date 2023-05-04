@@ -1,13 +1,32 @@
-import {useRef, useState} from "react";
-import classes from '@/styles/pages/register.module.scss';
-import Image from "next/image";
+import {useState, useRef} from "react";
 import Link from "next/link";
-// IMPORTS
-import CustomSelect from "@/components/pages/register/custom-select";
-import {toast} from "react-toastify";
-import axios from "axios";
+import Image from "next/image";
+import {useRouter} from "next/router";
 
-const Register = () => {
+//STYLE
+import classes from '@/styles/pages/register.module.scss'
+
+// IMPORTS
+import Spinner from "@/components/layout/spinner/Spinner";
+
+import axios from "axios";
+import {toast} from "react-toastify";
+// Language
+import {useTranslation} from "react-i18next";
+import CustomSelect from "@/components/pages/register/custom-select-new";
+import {onInputChange} from "@/redux/slices/Admin/createUser-slice";
+
+
+export default function Register({isAuthenticated, userData}) {
+    // ROUTER
+    const router = useRouter();
+    // LANGUAGE
+    const {t} = useTranslation('register');
+
+    // STATES
+    const [gender, setGender] = useState();
+    const [loading, setLoading] = useState(false);
+    const [readTerms, setReadTerms] = useState(false);
 
     // REFS
     const PartsContainerRef = useRef();
@@ -19,7 +38,6 @@ const Register = () => {
     const lastNameRef = useRef();
     const emailRef = useRef();
     const phoneRef = useRef();
-    const [gender, setGender] = useState();
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
     //P2
@@ -81,7 +99,7 @@ const Register = () => {
         event.preventDefault();
 
         // Check that required fields are filled in
-        if (!firstNameRef.current.value || !lastNameRef.current.value || !emailRef.current.value || !phoneRef.current.value || !gender || !passwordRef.current.value || !confirmPasswordRef.current.value) {
+        if (!firstNameRef.current.value || !lastNameRef.current.value || !emailRef.current.value || !phoneRef.current.value || !gender || !passwordRef.current.value || !confirmPasswordRef.current.value || readTerms === false) {
             toast.error('Please fill in all required fields');
             return;
         }
@@ -94,18 +112,21 @@ const Register = () => {
 
         console.log(phoneRef.current.value.length)
 
-        if(phoneRef.current.value.length !== 8){
+        if (phoneRef.current.value.length !== 8) {
             toast.error("Please Enter valid phone number");
             return;
         }
 
-        if(phoneRef.current.value[0] !== "9" && phoneRef.current.value[0] !== "6" && phoneRef.current.value[0] !== "5"){
+        if (phoneRef.current.value[0] !== "9" && phoneRef.current.value[0] !== "6" && phoneRef.current.value[0] !== "5") {
             toast.error("The phone number must starts with 9 || 6 || 5");
             return;
         }
 
         // Submit form data here
         try {
+            // SET THE LOADING STATE
+            setLoading(true)
+
             await axios.post(`https://api.easydietkw.com/api/v1/register/new/client`, {
                 clientName: `${firstNameRef.current.value} ${lastNameRef.current.value}`,
                 phoneNumber: phoneRef.current.value,
@@ -134,158 +155,204 @@ const Register = () => {
             floorRef.current.value = '';
             apartmentRef.current.value = '';
 
+            // SET THE LOADING STATE
+            setLoading(false)
+
+            // router.push('/')
             // Display success message
             toast.success('Form submitted successfully');
 
         } catch (e) {
-            console.log(e)
+            // SET THE LOADING STATE
+            setLoading(false)
             toast.error(e.response.data.message || e.message)
         }
     }
 
     // GOOGLE HANDLER
     const googleHandler = async () => {
-        try{
+        try {
             await axios.get(`https://api.easydietkw.com/api/v1/auth/google`)
                 .then(res => {
                     window.location.href = `${res.data.authUrl}`;
                 })
-        }catch (e) {
+        } catch (e) {
             console.log(e)
         }
     }
 
+
     return (
         <>
-            <main className={classes.Main}>
-                <div className={classes.Content}>
-                    <div>
-                        <Link href={'/'} passHref>
-                            <Image src={'/images/Auth/logo.svg'} alt={'logo'} width={100} height={100}/>
-                        </Link>
-                    </div>
-                    <div className={classes.Container}>
-                        <div className={classes.Container_Text}>
-                            <h1>EASY DIET</h1>
-                            <p>BE ONE OF US</p>
+            <div className={classes?.Container}>
+                <div className={classes?.Main}>
+                    <div className={classes?.Right}>
+                        <div className={classes?.Logo} onClick={() => router.push('/')}>
+                            <Image src={'/images/Auth/logo.svg'} alt={'logo'} width={70} height={50}/>
                         </div>
                         <form className={classes.Form} onSubmit={handleSubmit}>
-                            <h2 className={classes.Heading_2}>REGISTER</h2>
+                            <h2 className={classes.Heading_2}>{t("title")}</h2>
                             <div className={classes.Parts_Container} ref={PartsContainerRef}>
                                 <div className={classes.Form_P1}>
                                     <div className={classes.Input_Container}>
                                         <div className={classes.Input_Group}>
-                                            <label htmlFor={'firstname'}>FIRST NAME</label>
-                                            <input ref={firstNameRef} type={'text'} id={'firstname'}
-                                                   name={'first name'}/>
+                                            <div className={classes.InputBorderContainer}>
+                                                <input ref={firstNameRef} type={'text'} id={'firstname'}
+                                                       placeholder={t("placeholder0")}
+                                                       name={'first name'}/>
+                                            </div>
                                         </div>
                                         <div className={classes.Input_Group}>
-                                            <label htmlFor={'lastname'}>LAST NAME</label>
-                                            <input ref={lastNameRef} type={'text'} id={'lastname'} name={'last name'}/>
+                                            <div className={classes.InputBorderContainer}>
+                                                <input ref={lastNameRef} type={'text'} id={'lastname'}
+                                                       name={'last name'}
+                                                       placeholder={t("placeholder1")}/>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className={classes.Input_Group}>
-                                        <label htmlFor={'email'}>EMAIL</label>
-                                        <input ref={emailRef} type={'email'} id={'email'} name={'email'}/>
-                                    </div>
-                                    <div className={classes.Input_Container}>
                                         <div className={classes.Input_Group}>
-                                            <label htmlFor={'phone_number'}>PHONE NUMBER</label>
-                                            <input ref={phoneRef} type={'tel'} id={'phone_number'}
-                                                   name={'phone number'}/>
+                                            <div className={classes.InputBorderContainer}>
+                                                <input ref={emailRef} type={'email'} id={'email'} name={'email'}
+                                                       placeholder={t("placeholder2")}/>
+                                            </div>
                                         </div>
-                                        <div className={classes.Input_Group}>
-                                            <label htmlFor={'gender'}>GENDER</label>
-                                            <CustomSelect
-                                                defaultValue={gender || ''}
-                                                changed={(values) => {
-                                                    console.log(values)
-                                                    setGender(values.value)
-                                                }}
-                                            />
+                                        <div className={classes.Input_Container}>
+                                            <div className={classes.Input_Group}>
+                                                <div className={classes.InputBorderContainer}>
+                                                    <input ref={phoneRef} type={'tel'} id={'phone_number'}
+                                                           placeholder={'PHONE NUMBER'}
+                                                           name={t("placeholder3")}/>
+                                                </div>
+                                            </div>
+                                            <div className={classes.Input_Group}>
+                                                {/*<label htmlFor={'gender'}>GENDER</label>*/}
+                                                <CustomSelect
+                                                    defaultValue={gender || ''}
+                                                    changed={(values) => {
+                                                        console.log(values)
+                                                        setGender(values.value)
+                                                    }}
+                                                    placeholder={t("placeholder4")}
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className={classes.Input_Container}>
-                                        <div className={classes.Input_Group}>
-                                            <label htmlFor={'password'}>PASSWORD</label>
-                                            <input ref={passwordRef} type={'password'} id={'password'}
-                                                   name={'password'}/>
-                                        </div>
-                                        <div className={classes.Input_Group}>
-                                            <label htmlFor={'confirm_password'}>CONFIRM PASSWORD</label>
-                                            <input ref={confirmPasswordRef} type={'password'} id={'confirm_password'}
-                                                   name={'confirm password'}/>
+                                        <div className={classes.Input_Container}>
+                                            <div className={classes.Input_Group}>
+                                                <div className={classes.InputBorderContainer}>
+                                                    <input ref={passwordRef} type={'password'} id={'password'}
+                                                           placeholder={t("placeholder5")}
+                                                           name={'password'}/>
+                                                </div>
+                                            </div>
+                                            <div className={classes.Input_Group}>
+                                                <div className={classes.InputBorderContainer}>
+                                                    <input ref={confirmPasswordRef} type={'password'}
+                                                           id={'confirm_password'}
+                                                           placeholder={t("placeholder6")}
+                                                           name={'confirm password'}/>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div className={classes.Form_P2}>
                                     <div className={classes.Input_Group}>
-                                        <label htmlFor={'Region'}>REGION</label>
-                                        <input ref={regionRef} type={'text'} id={'Region'} name={'Region'}/>
+                                        <div className={classes.InputBorderContainer}>
+
+                                            <input ref={regionRef} type={'text'} id={'Region'} name={'Region'}
+                                                   placeholder={t("placeholder7")}/>
+                                        </div>
                                     </div>
                                     <div className={classes.Input_Group}>
-                                        <label htmlFor={'street'}>STREET</label>
-                                        <input ref={streetRef} type={'text'} id={'street'} name={'street'}/>
+                                        <div className={classes.InputBorderContainer}>
+
+                                            <input ref={streetRef} type={'text'} id={'street'} name={'street'}
+                                                   placeholder={t("placeholder8")}/>
+                                        </div>
                                     </div>
                                     <div className={classes.Input_Container}>
                                         <div className={classes.Input_Group}>
-                                            <label htmlFor={'HOUSE'}>HOUSE</label>
-                                            <input ref={houseRef} type={'text'} id={'HOUSE'} name={'HOUSE'}/>
+                                            <div className={classes.InputBorderContainer}>
+
+                                                <input ref={houseRef} type={'text'} id={'HOUSE'} name={'HOUSE'}
+                                                       placeholder={t("placeholder9")}/>
+                                            </div>
                                         </div>
                                         <div className={classes.Input_Group}>
-                                            <label htmlFor={'FLOOR'}>FLOOR</label>
-                                            <input ref={floorRef} type={'text'} id={'FLOOR'} name={'FLOOR'}/>
+                                            <div className={classes.InputBorderContainer}>
+
+                                                <input ref={floorRef} type={'text'} id={'FLOOR'} name={'FLOOR'}
+                                                       placeholder={t("placeholder10")}/>
+                                            </div>
                                         </div>
                                         <div className={classes.Input_Group}>
-                                            <label htmlFor={'Apartment'}>APARTMENT</label>
-                                            <input ref={apartmentRef} type={'text'} id={'Apartment'}
-                                                   name={'Apartment'}/>
+                                            <div className={classes.InputBorderContainer}>
+
+                                                <input ref={apartmentRef} type={'text'} id={'Apartment'}
+                                                       placeholder={t("placeholder11")}
+                                                       name={'Apartment'}/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className={classes.Input_Container}>
+                                        <div className={classes.Input_Group}>
+                                            <div className={classes.togglerInput}>
+                                                <label htmlFor="payment">{t("terms1")} <Link target={'_blank'} href={'/user/License'}>{t("termsLink")}</Link> {t("terms2")}</label>
+                                                <div className={classes.toggler}>
+                                                    <input
+                                                        type="checkbox"
+                                                        id="payment"
+                                                        name="payment"
+                                                        checked={readTerms}
+                                                        onChange={(event) => {
+                                                            setReadTerms(event.target.checked)
+                                                        }}
+                                                    />
+                                                    <div className={classes.slider}></div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className={classes.Form_buttons}>
                                 <div className={classes.Links}>
-                                    <Link className={classes.Un_Active} ref={PreviousPartRef} href={'#'}
-                                          onClick={showPreviousPart}>
-                                        &#8592; Previous info
-                                    </Link>
                                     <Link href={'/auth/login'}>
-                                        &#8592; Back to login
+                                        {t("link1")}
                                     </Link>
                                 </div>
                                 <div className={classes.Buttons_Container}>
-                                    <button type={'button'} onClick={googleHandler} className={classes.Google_button}>
+                                    <button type={'button'} onClick={googleHandler}
+                                            className={classes.Google_button}>
                                         <span><Image src={'/images/Auth/google-icon.svg'} alt={'Create User'} width={30}
                                                      height={30}/></span>
                                     </button>
+                                    <button onClick={showPreviousPart} ref={PreviousPartRef}
+                                            className={[classes.Next_button, classes.Un_Active].join(' ')}
+                                            type={'button'}>
+                                        <span>{t("previousButton")}</span>
+                                    </button>
                                     <button onClick={showNextPart} ref={NextButton} className={classes.Next_button}
                                             type={'button'}>
-                                        <span>NEXT</span>
-                                        <span><Image src={'/images/Auth/next-icon.svg'} alt={'Create User'} width={20}
-                                                     height={20}/></span>
+                                        <span>{t("nextButton")}</span>
                                     </button>
                                     <button ref={CreateButtonRef}
                                             className={[classes.Create_button, classes.Un_Active].join(' ')}
                                             type={'submit'}>
-                                        <span>CREATE</span>
-                                        <span><Image src={'/images/Auth/next-icon.svg'} alt={'Create User'} width={20}
-                                                     height={20}/></span>
+                                        <span>{loading ? <Spinner size={2} color={`#A71523`}/> : t('createButton')}</span>
                                     </button>
                                 </div>
                             </div>
+
                         </form>
                     </div>
+                    <div className={classes?.Left}>
+                        <p>EASYDEIT</p>
+                    </div>
                 </div>
-                <Link href={'/'} passHref>
-                    <button className={classes.Home_Button}>
-                        <span><Image src={'/images/Auth/home-icon.svg'} alt={'home icon'} width={30}
-                                     height={30}/></span>
-                    </button>
-                </Link>
-            </main>
+            </div>
         </>
     )
 }
-export default Register

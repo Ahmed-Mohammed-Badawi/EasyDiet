@@ -1,65 +1,84 @@
-import {useState} from "react";
-import classes from '@/styles/pages/admin/paymentMethod.module.scss'
-import Image from "next/image";
-// IMPORT
-import CustomSelectReports from "@/components/pages/dashboard/custom-select-payment";
-import Spinner from "@/components/layout/spinner/Spinner";
-import axios from "axios";
+import Image from 'next/image';
+import {useState} from 'react';
+import styles from '@/styles/pages/user/paymentMethod.module.scss';
 
-const Reports = () => {
-    const [loading, setLoading] = useState(false);
+const PaymentMethods = () => {
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+
+    const handlePaymentMethodChange = (event) => {
+        setSelectedPaymentMethod(event.target.value);
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // Submit payment method
+    };
 
     return (
-        <>
-            <main className={classes.Main}>
-                <div className={classes.FormContainer}>
-                    <h1>Payment Method</h1>
-                    <form>
-                        <div className={classes.InputsContainer}>
-                            <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
-                                <label htmlFor={'payment_method'}>Method</label>
-                                <CustomSelectReports/>
-                            </div>
-                        </div>
-                        <button type={'submit'}>
-                            <span>
-                                {loading ? <Spinner size={2} color={`#ffffff`}/> : 'Confirm'}
-                            </span>
-                            <Image src={'/images/Send_Icon.svg'} alt={'Send'} width={20} height={20}/>
-                        </button>
-                    </form>
+        <div className={styles.paymentMethods}>
+            <h1>Payment Method</h1>
+            <h2 className={styles.paymentValue}>Total Payment: $50.00</h2>
+            <form onSubmit={handleSubmit}>
+                <div className={styles.paymentMethodList}>
+                    <div className={styles.paymentMethod}>
+                        <input
+                            type="radio"
+                            id="paypal"
+                            name="paymentMethod"
+                            value="knet"
+                            checked={selectedPaymentMethod === 'knet'}
+                            onChange={handlePaymentMethodChange}
+                            className={styles.paymentMethodInput}
+                        />
+                        <label htmlFor="paypal" className={styles.paymentMethodLabel}>
+                            <Image src="/images/knet.jpg" alt="knet" width={50} height={50}/>
+                        </label>
+                    </div>
+                    <div className={styles.paymentMethod}>
+                        <input
+                            type="radio"
+                            id="visa"
+                            name="paymentMethod"
+                            value="visa"
+                            checked={selectedPaymentMethod === 'visa'}
+                            onChange={handlePaymentMethodChange}
+                            className={styles.paymentMethodInput}
+                        />
+                        <label htmlFor="visa" className={styles.paymentMethodLabel}>
+                            <Image
+                                src="/images/visa.jpg"
+                                alt="visa"
+                                width={50}
+                                height={50}
+                            />
+                        </label>
+                    </div>
+                    <div className={styles.paymentMethod}>
+                        <input
+                            type="radio"
+                            id="mastercard"
+                            name="paymentMethod"
+                            value="mastercard"
+                            checked={selectedPaymentMethod === 'mastercard'}
+                            onChange={handlePaymentMethodChange}
+                            className={styles.paymentMethodInput}
+                        />
+                        <label htmlFor="mastercard" className={styles.paymentMethodLabel}>
+                            <Image
+                                src="/images/mastercard.jpg"
+                                alt="mastercard"
+                                width={50}
+                                height={50}
+                            />
+                        </label>
+                    </div>
                 </div>
-            </main>
-        </>
-    )
-}
-export default Reports;
-
-export const getServerSideProps = async (ctx) => {
-    // GET THE TOKEN FROM THE REQUEST
-    const {token} = ctx.req.cookies;
-
-    let tokenInfo;
-    if (token) {
-        await axios.get(`https://api.easydietkw.com/api/v1/get/verify/token`, {
-            params: {
-                token: token,
-            }
-        })
-            .then(res => tokenInfo = res.data.decodedToken)
-            .catch(err => console.log(err))
-    }
-
-    if (!tokenInfo || (tokenInfo.role !== 'admin' && tokenInfo.role !== 'manager') || tokenInfo.active === false) {
-        return {
-            redirect: {
-                destination: '/',
-                permanent: false,
-            },
-        }
-    }
-
-    return {
-        props: {},
-    };
+                <button type="submit" className={styles.submitButton}>
+                    Pay Now
+                </button>
+            </form>
+        </div>
+    );
 };
+
+export default PaymentMethods;

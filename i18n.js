@@ -10,13 +10,26 @@ i18n
             en: {
                 aside: require('./locales/en/aside.json'),
                 home: require('./locales/en/pages/home.json'),
-                packageCard: require('./locales/en/packageCard.json')
+                packageCard: require('./locales/en/packageCard.json'),
+                license: require('./locales/en/pages/license.json'),
+                // AUTHENTICATION
+                login: require('./locales/en/pages/login.json'),
+                register: require('./locales/en/pages/register.json'),
+                newPassword: require('./locales/en/pages/newPassword.json'),
+                resetPassword: require('./locales/en/pages/resetPassword.json'),
+                verifyEmail: require('./locales/en/pages/verifyEmail.json'),
             },
             ar: {
                 aside: require('./locales/ar/aside.json'),
                 home: require('./locales/ar/pages/home.json'),
-                packageCard: require('./locales/ar/packageCard.json')
-
+                packageCard: require('./locales/ar/packageCard.json'),
+                license: require('./locales/ar/pages/license.json'),
+                // AUTHENTICATION
+                login: require('./locales/ar/pages/login.json'),
+                register: require('./locales/ar/pages/register.json'),
+                newPassword: require('./locales/ar/pages/newPassword.json'),
+                resetPassword: require('./locales/ar/pages/resetPassword.json'),
+                verifyEmail: require('./locales/ar/pages/verifyEmail.json'),
             },
         },
         fallbackLng: 'en',

@@ -1,59 +1,84 @@
 import classes from "@/styles/pages/new_password.module.scss";
 import Link from "next/link";
 import Image from "next/image";
+import Spinner from "@/components/layout/spinner/Spinner";
+import {useState} from "react";
+import {useRouter} from "next/router";
+import {useTranslation} from "react-i18next";
+import axios from "axios";
+import {toast} from "react-toastify";
 
 const NewPassword = () => {
+
+    // ROUTER
+    const router = useRouter();
+    // LANGUAGE
+    const {t} = useTranslation('newPassword');
+    // STATES
+    const [loading, setLoading] = useState(false);
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+
+        setLoading(true)
+
+        await axios.post("https://api.easydietkw.com/api/v1/login")
+            .then(res => {
+                setLoading(false);
+
+                // Show success message
+                toast.success(res.data.message);
+            })
+            .catch(err => {
+                setLoading(false)
+                // Show error message
+                toast.error(err.response?.data?.message || err.message || "Invalid username or password");
+            })
+    };
+
+
     return (
         <>
-            <main className={classes.Main}>
-                <div className={classes.Content}>
-                    <div>
-                        <Link href={'/'} passHref>
-                            <Image src={'/images/Auth/logo.svg'} alt={'logo'} width={100} height={100}/>
-                        </Link>
-                    </div>
-                    <div className={classes.Container}>
-                        <div className={classes.Container_Text}>
-                            <h1>EASY DIET</h1>
-                            <p>BE ONE OF US</p>
+            <div className={classes?.Container}>
+                <div className={classes?.Main}>
+                    <div className={classes?.Right}>
+                        <div className={classes?.Logo} onClick={() => router.push('/')}>
+                            <Image src={'/images/Auth/logo.svg'} alt={'logo'} width={70} height={50}/>
                         </div>
-                        <form className={classes.Form}>
-                            <h2 className={classes.Heading_2}>New Password</h2>
+                        <form className={classes.Form} onSubmit={handleFormSubmit}>
+                            <h2 className={classes.Heading_2}>{t("title")}</h2>
                             <div className={classes.Input_Group}>
-                                <label htmlFor={'new_password'}>NEW PASSWORD</label>
-                                <input type={'password'} id={'new_password'} name={'new_password'}/>
+                                <div className={classes.InputBorderContainer}>
+                                    <input type={'password'} id={'new_password'} name={'new_password'} placeholder={t("placeholder1")}/>
+                                </div>
                             </div>
                             <div className={classes.Input_Group}>
-                                <label htmlFor={'confirm_password'}>CONFIRM PASSWORD</label>
-                                <input type={'password'} id={'confirm_password'} name={'confirm_password'}/>
+                                <div className={classes.InputBorderContainer}>
+                                    <input type={'password'} id={'confirm_password'} name={'confirm_password'} placeholder={t("placeholder2")}/>
+                                </div>
                             </div>
 
                             <div className={classes.Form_buttons}>
                                 <div className={classes.Links}>
                                     <Link href={'/auth/login'}>
-                                        &#8592; Back to login
+                                        {t("link1")}
                                     </Link>
                                 </div>
                                 <div className={classes.Buttons_Container}>
                                     <button
                                         className={[classes.Create_button].join(' ')}
                                         type={'submit'}>
-                                        <span>CONFIRM</span>
-                                        <span><Image src={'/images/Auth/next-icon.svg'} alt={'Create User'} width={20}
-                                                     height={20}/></span>
+                                        <span>{loading ? <Spinner size={2} color={`#A71523`}/> : t("createButton")}</span>
                                     </button>
                                 </div>
                             </div>
                         </form>
                     </div>
+                    <div className={classes?.Left}>
+                        <p>EASYDEIT</p>
+                    </div>
                 </div>
-                <Link href={'/'} passHref>
-                    <button className={classes.Home_Button}>
-                        <span><Image src={'/images/Auth/home-icon.svg'} alt={'home icon'} width={30}
-                                     height={30}/></span>
-                    </button>
-                </Link>
-            </main>
+            </div>
         </>
     )
 }

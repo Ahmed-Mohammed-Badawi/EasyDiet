@@ -1,0 +1,22 @@
+{
+  "title": "REGISTER",
+  "placeholder0": "FIRST NAME",
+  "placeholder1": "LAST NAME",
+  "placeholder2": "EMAIL",
+  "placeholder3": "PHONE",
+  "placeholder4": "GENDER",
+  "placeholder5": "PASSWORD",
+  "placeholder6": "CONFIRM PASSWORD",
+  "placeholder7": "REGION",
+  "placeholder8": "STREET",
+  "placeholder9": "HOUSE",
+  "placeholder10": "FLOOR",
+  "placeholder11": "APARTMENT",
+  "terms1": "I HAVE READ",
+  "terms2": "AND ACCEPT IT",
+  "termsLink": "TERMS AND CONDITIONS",
+  "nextButton": "NEXT",
+  "previousButton": "PREVIOUS",
+  "createButton": "CREATE",
+  "link1": "BACK TO LOGIN"
+}

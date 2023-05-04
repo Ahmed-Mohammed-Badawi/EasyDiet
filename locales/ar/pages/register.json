@@ -1,0 +1,22 @@
+{
+  "title": "تسجيل حساب",
+  "placeholder0": "الاسم الأول",
+  "placeholder1": "الاسم الأخير",
+  "placeholder2": "البريد الإلكتروني",
+  "placeholder3": "رقم الهاتف",
+  "placeholder4": "النوع",
+  "placeholder5": "كلمة المرور",
+  "placeholder6": "تأكيد كلمة المرور",
+  "placeholder7": "المنطقة",
+  "placeholder8": "الشارع",
+  "placeholder9": "المنزل",
+  "placeholder10": "الطابق",
+  "placeholder11": "الشقة",
+  "terms1": "لقد فرأت ",
+  "terms2": "وأوافق على ذلك",
+  "termsLink": "الشروط والقوانين",
+  "nextButton": "التالي",
+  "previousButton": "السابق",
+  "createButton": "تسجيل",
+  "link1": "تسجيل الدخول"
+}
