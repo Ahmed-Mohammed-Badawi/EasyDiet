@@ -11,10 +11,15 @@ import {onInputChange, setAll} from "@/redux/slices/user/profile_slice";
 import {useDispatch, useSelector} from "react-redux";
 //HELPERS
 import {extractTokenFromCookie} from "@/helpers/extractToken";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const Profile = (props) => {
     // ROUTER
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('profile')
 
     // STATES
     const [loading, setLoading] = useState(false);
@@ -36,7 +41,7 @@ const Profile = (props) => {
 
     // SET THE EMPLOYEE DATA IF IT'S FOUND
     useEffect(() => {
-        if(props){
+        if (props) {
             console.log(props)
             dispatch(setAll({
                 userId: props._id || '',
@@ -70,13 +75,13 @@ const Profile = (props) => {
 
         const updateProfileObject = {
             clientName: `${firstName} ${lastName}`,
-                phoneNumber: phone,
-                distrect: region,
-                streetName: street,
-                homeNumber: house,
-                floorNumber: floor,
-                appartment: apartment,
-                clientId: userId,
+            phoneNumber: phone,
+            distrect: region,
+            streetName: street,
+            homeNumber: house,
+            floorNumber: floor,
+            appartment: apartment,
+            clientId: userId,
         }
 
         // Send Create Request to the server
@@ -104,16 +109,16 @@ const Profile = (props) => {
             <main className={classes.Main}>
                 <div className={classes.FormContainer}>
                     <div className={classes.Top}>
-                        <h1>Profile</h1>
+                        <h1>{t("title")}</h1>
                         <button className={classes.Status} onClick={() => router.push('/user/my_status')}>
-                            <Image src={'/images/Global/Status_Icon.png'} alt={'user status'} width={25} height={25} />
-                            <span>Status</span>
+                            <Image src={'/images/Global/Status_Icon.png'} alt={'user status'} width={25} height={25}/>
+                            <span>{t("statusButton")}</span>
                         </button>
                     </div>
                     <form onSubmit={submitHandler}>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'firstname'}>First Name</label>
+                                <label htmlFor={'firstname'}>{t("firstName")}</label>
                                 <input
                                     type={'text'}
                                     name={'firstname'}
@@ -129,7 +134,7 @@ const Profile = (props) => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'lastname'}>Last Name</label>
+                                <label htmlFor={'lastname'}>{t("lastName")}</label>
                                 <input
                                     type={'text'}
                                     name={'lastname'}
@@ -147,7 +152,7 @@ const Profile = (props) => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'phoneNumber'}>Phone Number</label>
+                                <label htmlFor={'phoneNumber'}>{t("phoneNumber")}</label>
                                 <input
                                     type={'tel'}
                                     name={'phoneNumber'}
@@ -163,7 +168,7 @@ const Profile = (props) => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'Region'}>Region</label>
+                                <label htmlFor={'Region'}>{t("region")}</label>
                                 <input
                                     type={'text'}
                                     name={'Region'}
@@ -181,7 +186,7 @@ const Profile = (props) => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'street'}>Street</label>
+                                <label htmlFor={'street'}>{t("street")}</label>
                                 <input
                                     type={'text'}
                                     name={'street'}
@@ -197,7 +202,7 @@ const Profile = (props) => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'house'}>House</label>
+                                <label htmlFor={'house'}>{t("house")}</label>
                                 <input
                                     type={'number'}
                                     name={'house'}
@@ -216,7 +221,7 @@ const Profile = (props) => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'floor'}>Floor</label>
+                                <label htmlFor={'floor'}>{t("floor")}</label>
                                 <input
                                     type={'number'}
                                     name={'floor'}
@@ -233,7 +238,7 @@ const Profile = (props) => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'apartment'}>Apartment</label>
+                                <label htmlFor={'apartment'}>{t("apartment")}</label>
                                 <input
                                     type={'number'}
                                     name={'apartment'}
@@ -253,7 +258,7 @@ const Profile = (props) => {
                         <div className={classes.NavigationContainer}>
                             <button type={'submit'}>
                                 <span>
-                                    {loading ? <Spinner size={2} color={`#ffffff`}/> : 'Update'}
+                                    {loading ? <Spinner size={2} color={`#ffffff`}/> : t("updateButton")}
                                 </span>
                                 <Image src={'/images/Send_Icon.svg'} alt={'Send'} width={20} height={20}/>
                             </button>
@@ -309,7 +314,7 @@ export const getServerSideProps = async (ctx) => {
                 // SET THE STATE
                 console.log(err)
             })
-    }else{
+    } else {
         return {
             redirect: {
                 destination: '/',
@@ -320,7 +325,7 @@ export const getServerSideProps = async (ctx) => {
 
     // SET THE EMPLOYEE IF EXIST
     let propObj = {};
-    if(clientInfo){
+    if (clientInfo) {
         propObj = {
             ...clientInfo
         }

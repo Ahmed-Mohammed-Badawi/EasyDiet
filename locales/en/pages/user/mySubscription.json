@@ -1,0 +1,10 @@
+{
+  "title1": "PACKAGE",
+  "title2": "SUBSCRIPTION",
+  "name": "NAME",
+  "time": "TIME",
+  "start": "START",
+  "end": "END",
+  "expires": "EXPIRES AFTER",
+  "days": "Days"
+}

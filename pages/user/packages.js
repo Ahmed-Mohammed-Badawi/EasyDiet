@@ -10,10 +10,16 @@ import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import {onInputChange} from '@/redux/slices/user/packages';
 import {onInputChange as onInputInSubscriptionChange} from '@/redux/slices/user/subscription_info'
+// LANGUAGE
+import {useTranslation} from "react-i18next";
+
 
 const Packages = () => {
     // ROUTER
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('bundles');
 
     //REDUX
     const dispatch = useDispatch();
@@ -46,7 +52,7 @@ const Packages = () => {
                 .catch(err => console.log(err))
         }
 
-    }, [])
+    }, [dispatch])
 
     // EFFECT TO GET THE PACKAGES WHEN PAGE LOAD
     useEffect(() => {
@@ -65,7 +71,7 @@ const Packages = () => {
     return (
         <>
             <div className={classes.Main}>
-                <h1>PACKAGES</h1>
+                <h1>{t("title")}</h1>
 
                 <div className={classes.Bottom}>
                     {packages && packages.map((cur) => {

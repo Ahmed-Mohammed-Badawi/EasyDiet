@@ -7,12 +7,16 @@ import axios from "axios";
 import {onInputChange} from "@/redux/slices/user/nutritionspecialist_slice";
 import {toast} from "react-toastify";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
-
-const Nutritio_specialist = () => {
+const Nutrition_specialist = () => {
 
     // ROUTER
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('nutrition_specialist')
 
     //REDUX
     const dispatch = useDispatch();
@@ -43,7 +47,7 @@ const Nutritio_specialist = () => {
     return (
         <>
             <div className={classes.Main}>
-                <h1>nutrition specialist</h1>
+                <h1>{t("title")}</h1>
                 <div className={classes.Bottom}>
                     {specialists && specialists.map((cur, index) => {
                         return (
@@ -62,7 +66,7 @@ const Nutritio_specialist = () => {
     )
 }
 
-export default Nutritio_specialist;
+export default Nutrition_specialist;
 
 export const getServerSideProps = async (ctx) => {
     // GET THE TOKEN FROM THE REQUEST

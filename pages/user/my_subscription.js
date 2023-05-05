@@ -7,10 +7,15 @@ import axios from "axios";
 import {toast} from "react-toastify";
 import DayItem from "@/components/pages/user/DayItem";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const My_Subscription = () => {
     //REDUX
     const dispatch = useDispatch();
+
+    // LANGUAGE
+    const {t} = useTranslation('mySubscription');
 
     //STATES
     const [packageInfo, setPackageInfo] = useState({
@@ -76,38 +81,43 @@ const My_Subscription = () => {
         <>
             <main className={classes.Main}>
                 <div className={classes.Container}>
-                    <div className={classes.Top}>
+                    <div className={classes.Top} data-title={t("title1")}>
                         <div className={classes.Top_Container}>
                             <div className={classes.Top_Item}>
-                                <h3>NAME</h3>
+                                <h3>{t("name")}</h3>
                                 <span>{packageInfo.bundleName}</span>
                             </div>
                             <div className={classes.Top_Item}>
-                                <h3>TIME</h3>
-                                <span>{packageInfo.bundleDays} Days</span>
+                                <h3>{t("time")}</h3>
+                                <span>{packageInfo.bundleDays} {t("days")}</span>
                             </div>
                             <div className={classes.Top_Item}>
-                                <h3>START</h3>
+                                <h3>{t("start")}</h3>
                                 <span>{packageInfo.startDate}</span>
                             </div>
                             <div className={classes.Top_Item}>
-                                <h3>END</h3>
+                                <h3>{t("end")}</h3>
                                 <span>{packageInfo.endDate}</span>
                             </div>
                             <div className={classes.Top_Item}>
-                                <h3>Expires After</h3>
-                                <span>{packageInfo.remainingDays} Days</span>
+                                <h3>{t("expires")}</h3>
+                                <span>{packageInfo.remainingDays} {t("days")}</span>
                             </div>
                         </div>
                     </div>
-                    <div className={classes.Bottom}>
+                    <div className={classes.Bottom} data-title={t("title2")}>
                         <div className={classes.Days_Container}>
                             {packageDays && packageDays.map((item) => {
-                              return (
-                                  <DayItem key={item._id} ID={item._id} Daydate={item.date}
-                                    title={getDayName(item.date)} Editable={isDateAfterTwoDays(item.date)} isSelected={item.submitted} date={new Date(item.date).toLocaleDateString('en-US', {day: 'numeric', month: 'long'})}
-                                  />
-                              )
+                                return (
+                                    <DayItem key={item._id} ID={item._id} Daydate={item.date}
+                                             title={getDayName(item.date)} Editable={isDateAfterTwoDays(item.date)}
+                                             isSelected={item.submitted}
+                                             date={new Date(item.date).toLocaleDateString('en-US', {
+                                                 day: 'numeric',
+                                                 month: 'long'
+                                             })}
+                                    />
+                                )
                             })}
                         </div>
                     </div>

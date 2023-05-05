@@ -8,10 +8,15 @@ import {toast} from "react-toastify";
 import Image from "next/image";
 import {onInputChange, clearAll} from "@/redux/slices/user/nutritionspecialist_slice";
 import Spinner from "@/components/layout/spinner/Spinner";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const SendMessage = ({ID, fullName, userImage}) => {
     // ROUTER
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('send_message')
 
     // STATES
     const [loading, setLoading] = useState(false);
@@ -93,7 +98,7 @@ const SendMessage = ({ID, fullName, userImage}) => {
                             </div>
                             <div className={classes.Content}>
                                 <h1>{fullName}</h1>
-                                <p>nutrition specialist</p>
+                                <p>{t("specialist")}</p>
                             </div>
                         </div>
                         <div className={classes.Right}>
@@ -105,7 +110,7 @@ const SendMessage = ({ID, fullName, userImage}) => {
                     <form onSubmit={submitHandler}>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'subject'}>Subject</label>
+                                <label htmlFor={'subject'}>{t("subject")}</label>
                                 <input
                                     type={'text'}
                                     name={'subject'}
@@ -121,7 +126,7 @@ const SendMessage = ({ID, fullName, userImage}) => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'content'}>Content</label>
+                                <label htmlFor={'content'}>{t("content")}</label>
                                 <textarea
                                     name={'content'}
                                     id={'content'}
@@ -141,7 +146,7 @@ const SendMessage = ({ID, fullName, userImage}) => {
                                         <div className={classes.Static}>
                                             <Image src={'/images/Upload_Icon.svg'} alt={'Upload Icon'} width={30}
                                                    height={30}/>
-                                            <span>Upload PDF</span>
+                                            <span>{t("upload")}</span>
                                         </div>
                                     </label>
                                     <input id={'pdf_file'} type={'file'} name={'PDF_File'} ref={pdfFileRef} multiple
@@ -159,7 +164,7 @@ const SendMessage = ({ID, fullName, userImage}) => {
                         <div className={classes.NavigationContainer}>
                             <button type={'submit'}>
                                 <span>
-                                    {loading ? <Spinner size={2} color={`#ffffff`}/> : 'Send'}
+                                    {loading ? <Spinner size={2} color={`#ffffff`}/> : t("send")}
                                 </span>
                                 <Image src={'/images/Send_Icon.svg'} alt={'Send'} width={20} height={20}/>
                             </button>
