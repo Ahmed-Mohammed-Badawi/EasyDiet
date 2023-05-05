@@ -5,12 +5,16 @@ import axios from "axios";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
+import {useTranslation} from "react-i18next";
 
 const Choose_Starting_Date = () => {
 
     //REDUX
     const dispatch = useDispatch();
     const {userId, package: {id, friday, language}, selectedDay, selectedMonth} = useSelector(state => state.subscription_user)
+
+    // LANGUAGE
+    const {t} = useTranslation('chooseStartingDate');
 
     // HANDLERS
     const submitHandler = async (event) => {
@@ -50,16 +54,16 @@ const Choose_Starting_Date = () => {
         <>
             <main className={classes.Main}>
                 <div className={classes.FormContainer}>
-                    <h1>CHOOSE STARTING DATE</h1>
+                    <h1>{t("title")}</h1>
                     <form onSubmit={submitHandler}>
                         <div className={classes.InputsContainer}>
                             <div className={[classes.InputGroup].join(' ')}>
-                                <CustomSelectDays />
+                                <CustomSelectDays dayText={t("startingDay")} monthText={t("startingMonth")}  />
                             </div>
                         </div>
                         <button type={'submit'}>
                             <span>
-                                Continue
+                                {t("button")}
                             </span>
                             <Image src={'/images/Send_Icon.svg'} alt={'Send'} width={20} height={20}/>
                         </button>

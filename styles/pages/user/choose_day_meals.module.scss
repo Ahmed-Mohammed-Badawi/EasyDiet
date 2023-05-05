@@ -12,7 +12,7 @@
     padding: 4rem 5rem;
     border-radius: .5rem;
 
-    @media screen and (max-width: 650px){
+    @media screen and (max-width: 650px) {
       padding: 4rem 1rem;
     }
   }
@@ -30,7 +30,7 @@
     width: 100%;
     gap: 1rem;
 
-    @media screen and (max-width: 920px){
+    @media screen and (max-width: 920px) {
       flex-direction: column;
       align-items: initial;
       gap: 1rem;
@@ -47,15 +47,15 @@
     padding: 2rem;
     flex-grow: 1;
 
-    @media screen and (max-width: 920px){
+    @media screen and (max-width: 920px) {
       flex-direction: column-reverse;
       align-items: initial;
       gap: 1rem;
     }
 
 
-    &:before{
-      content: 'Filter';
+    &:before {
+      content: attr(data-word);
       display: inline-block;
       position: absolute;
       top: 0;
@@ -83,7 +83,7 @@
       gap: 4rem;
       padding-left: 2rem;
 
-      @media screen and (max-width: 920px){
+      @media screen and (max-width: 920px) {
         align-items: initial;
         flex-wrap: wrap;
         gap: 1rem;
@@ -97,19 +97,19 @@
       gap: 1rem;
       cursor: pointer;
 
-      @media screen and (max-width: 920px){
+      @media screen and (max-width: 920px) {
         width: calc(50% - .5rem);
       }
     }
 
-    ul + span{
+    ul + span {
       display: flex;
       align-items: center;
       justify-content: flex-start;
       gap: 1rem;
       cursor: pointer;
 
-      @media screen and (max-width: 920px){
+      @media screen and (max-width: 920px) {
         padding-left: 2rem;
       }
     }
@@ -133,19 +133,19 @@
       transition: all 0.2s ease-in-out;
       cursor: pointer;
 
-      span{
+      span {
         font-size: 1.2rem;
         text-transform: uppercase;
       }
 
-      &:active{
+      &:active {
         transform: scale(0.95);
         box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.16);
       }
     }
   }
 
-  .AvailableMeals{
+  .AvailableMeals {
     position: relative;
     width: 100%;
     flex-grow: 1;
@@ -161,7 +161,7 @@
       width: calc(50% - .5rem);
       color: var(--color-gray-444);
 
-      span{
+      span {
         font-size: 1.8rem;
         font-weight: 500;
         font-family: var(--font-montserrat);
@@ -169,7 +169,7 @@
       }
     }
 
-    &:after{
+    &:after {
       content: attr(data-day);
       display: inline-block;
       position: absolute;
@@ -190,7 +190,7 @@
   .Bottom {
     position: relative;
 
-    .Cards{
+    .Cards {
       display: flex;
       justify-content: flex-start;
       align-items: center;
@@ -212,7 +212,7 @@
     }
 
     .Create_button,
-    .Back_button{
+    .Back_button {
       position: absolute;
       bottom: 0;
       right: 0;
@@ -227,6 +227,7 @@
       background-color: var(--color-white-background);
       border: 1px solid var(--color-input-border);
       cursor: pointer;
+      font-family: var(--font-roboto);
 
       span.Next_Span {
         position: absolute;
@@ -250,7 +251,7 @@
           box-shadow: inset 0 0 .3rem rgba(0, 0, 0, 0.16);
           transform: scale(.95) translate(50%);
 
-          @media screen and (max-width: 650px){
+          @media screen and (max-width: 650px) {
             transform: scale(.95);
           }
         }
@@ -261,14 +262,14 @@
       }
     }
 
-    .Back_button{
+    .Back_button {
       top: 0;
       left: 0;
       transform: translate(-20%, -50%) !important;
       background-color: transparent !important;
       border: transparent;
 
-      @media screen and (max-width: 920px){
+      @media screen and (max-width: 920px) {
         display: none;
       }
 
@@ -281,10 +282,293 @@
         background-color: rgba(236, 79, 79, 0.29);
       }
 
-      img{
+      img {
         transform: rotate(180deg);
       }
     }
   }
 
+}
+
+
+:global(.ARABIC) {
+  .Main {
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    height: calc(100vh - 14rem);
+
+    .Container {
+      width: 100%;
+      max-width: 140rem;
+      padding: 4rem 5rem;
+      border-radius: .5rem;
+
+      @media screen and (max-width: 650px) {
+        padding: 4rem 1rem;
+      }
+    }
+
+    .Top {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 4rem;
+    }
+
+    .Top_Container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      width: 100%;
+      gap: 1rem;
+
+      @media screen and (max-width: 920px) {
+        flex-direction: column;
+        align-items: initial;
+        gap: 1rem;
+      }
+    }
+
+    .Navigation {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--color-white-background);
+      border: 1px solid var(--color-dashboard-border);
+      padding: 2rem;
+      flex-grow: 1;
+
+      @media screen and (max-width: 920px) {
+        flex-direction: column-reverse;
+        align-items: initial;
+        gap: 1rem;
+      }
+
+
+      &:before {
+        content: attr(data-word);
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: initial;
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 0.5rem 1rem;
+        color: var(--color-white-text);
+        background-color: #39353B;
+        text-align: center;
+        transform: translate(50%, -50%) rotate(45deg);
+
+        @media screen and (max-width: 650px) {
+          top: 1.5rem;
+          right: 1.5rem;
+        }
+      }
+
+      ul {
+        list-style: none;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 4rem;
+        padding-right: 2rem;
+
+        @media screen and (max-width: 920px) {
+          align-items: initial;
+          flex-wrap: wrap;
+          gap: 1rem;
+        }
+      }
+
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
+        cursor: pointer;
+
+        @media screen and (max-width: 920px) {
+          width: calc(50% - .5rem);
+        }
+      }
+
+      ul + span {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
+        cursor: pointer;
+
+        @media screen and (max-width: 920px) {
+          padding-right: 2rem;
+        }
+      }
+    }
+
+    .Buttons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 1rem;
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        font-family: var(--font-almarai);
+        gap: .5rem;
+        padding: 2rem;
+        background-color: var(--color-white-background);
+        border: 1px solid var(--color-dashboard-border);
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+
+        span {
+          font-size: 1.2rem;
+          text-transform: uppercase;
+        }
+
+        &:active {
+          transform: scale(0.95);
+          box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.16);
+        }
+      }
+    }
+
+    .AvailableMeals {
+      position: relative;
+      width: 100%;
+      flex-grow: 1;
+      padding: 2rem;
+      background-color: var(--color-white-background);
+      border: 1px solid var(--color-dashboard-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+
+      p {
+        width: calc(50% - .5rem);
+        color: var(--color-gray-444);
+
+        span {
+          font-size: 1.8rem;
+          font-weight: 500;
+          font-family: var(--font-montserrat);
+          color: var(--color-black-text);
+        }
+      }
+
+      &:after {
+        content: attr(data-day);
+        display: inline-block;
+        position: absolute;
+        bottom: 0;
+        right: 50%;
+        left: initial;
+        font-size: 1rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 0.3rem 1rem;
+        color: var(--color-white-text);
+        background-color: #534e56;
+        text-align: center;
+        transform: translate(50%, 50%);
+
+      }
+    }
+
+    .Bottom {
+      position: relative;
+
+      .Cards {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        background-color: var(--color-white-background);
+        border: 1px solid var(--color-dashboard-border);
+        padding: 4rem;
+        margin-top: 3rem;
+        max-height: 60rem;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+
+        @media screen and (max-width: 650px) {
+          justify-content: center;
+          padding: 1rem;
+        }
+      }
+
+      .Create_button,
+      .Back_button {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transform: translate(-10%, 50%);
+        height: 6rem;
+        padding: 1rem 2rem 1rem .5rem;
+        width: 14rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10rem;
+        background-color: var(--color-white-background);
+        border: 1px solid var(--color-input-border);
+        cursor: pointer;
+        font-family: var(--font-almarai);
+
+        span.Next_Span {
+        }
+
+        //&:active {
+        //  span.Next_Span {
+        //    box-shadow: inset 0 0 .3rem rgba(0, 0, 0, 0.16);
+        //    transform: scale(.95) translate(-50%);
+        //
+        //    @media screen and (max-width: 650px){
+        //      transform: scale(.95);
+        //    }
+        //  }
+        //}
+
+        &.Un_Active {
+          display: none;
+        }
+      }
+
+      .Back_button {
+        top: 0;
+        right: 0;
+        transform: translate(20%, -50%) !important;
+        background-color: transparent !important;
+        border: transparent;
+
+        @media screen and (max-width: 920px) {
+          display: none;
+        }
+
+        span.Next_Span {
+          position: absolute;
+          top: .5rem !important;
+          right: 0.5rem !important;
+          left: initial !important;
+          transform: translate(0) !important;
+          background-color: rgba(236, 79, 79, 0.29);
+        }
+
+        img {
+          transform: rotate(-180deg);
+        }
+      }
+    }
+  }
 }

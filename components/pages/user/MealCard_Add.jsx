@@ -5,6 +5,7 @@ import {useRouter} from "next/router";
 import {onInputChange} from "@/redux/slices/user/daymeals_slice";
 import {useSelector, useDispatch} from "react-redux";
 import selectedMeals from "@/components/pages/user/SelectedMeals";
+import {useTranslation} from "react-i18next";
 
 
 const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, lang}) => {
@@ -14,6 +15,9 @@ const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, 
     //REDUX
     const dispatch = useDispatch();
     const {selectedMeals} = useSelector(state => state.daymeals_user);
+
+    // LANGUAGE
+    const {t} = useTranslation('chooseDayMeals');
 
     // ADD HANDLER
     const addHandler = async () => {
@@ -48,20 +52,20 @@ const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, 
                 <h2>{name}</h2>
                 <div className={classes.Info_Container}>
                     <div className={classes.Info_Item}>
-                        <h3>calories</h3>
-                        <span>{calories}g</span>
+                        <h3>{t("calories")}</h3>
+                        <span>{calories} cal</span>
                     </div>
                     <div className={classes.Info_Item}>
-                        <h3>Protein</h3>
-                        <span>{protein}g</span>
+                        <h3>{t("protein")}</h3>
+                        <span>{protein} {t("gram")}</span>
                     </div>
                     <div className={classes.Info_Item}>
-                        <h3>Fat</h3>
-                        <span>{fats}g</span>
+                        <h3>{t("fat")}</h3>
+                        <span>{fats} {t("gram")}</span>
                     </div>
                     <div className={classes.Info_Item}>
-                        <h3>Carbohydrate</h3>
-                        <span>{carbohydrate}g</span>
+                        <h3>{t("carbohydrate")}</h3>
+                        <span>{carbohydrate} {t("gram")}</span>
                     </div>
                 </div>
                 <div className={classes.Buttons}>

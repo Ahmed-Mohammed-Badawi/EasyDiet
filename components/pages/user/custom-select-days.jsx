@@ -89,7 +89,7 @@ function MySelect(props) {
     return (
         <>
             <div>
-                <label htmlFor="month-select">STARTING Month:</label>
+                <label htmlFor="month-select">{props.monthText}</label>
                 <Select
                     inputId="month-select"
                     options={monthOptions}
@@ -102,7 +102,7 @@ function MySelect(props) {
                 />
             </div>
             <div>
-                <label htmlFor="day-select">STARTING Day:</label>
+                <label htmlFor="day-select">{props.dayText}</label>
                 <Select
                     inputId="day-select"
                     options={dayOptions}

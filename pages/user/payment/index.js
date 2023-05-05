@@ -1,9 +1,15 @@
 import Image from 'next/image';
 import {useState} from 'react';
 import styles from '@/styles/pages/user/paymentMethod.module.scss';
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const PaymentMethods = () => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+
+    // LANGUAGE
+    const {t} = useTranslation('paymentMethod');
+
 
     const handlePaymentMethodChange = (event) => {
         setSelectedPaymentMethod(event.target.value);
@@ -16,8 +22,8 @@ const PaymentMethods = () => {
 
     return (
         <div className={styles.paymentMethods}>
-            <h1>Payment Method</h1>
-            <h2 className={styles.paymentValue}>Total Payment: $50.00</h2>
+            <h1>{t("title")}</h1>
+            <h2 className={styles.paymentValue}>{t("paymentValue")} 50.00 {t("price")}</h2>
             <form onSubmit={handleSubmit}>
                 <div className={styles.paymentMethodList}>
                     <div className={styles.paymentMethod}>
@@ -74,7 +80,7 @@ const PaymentMethods = () => {
                     </div>
                 </div>
                 <button type="submit" className={styles.submitButton}>
-                    Pay Now
+                    {t("button")}
                 </button>
             </form>
         </div>

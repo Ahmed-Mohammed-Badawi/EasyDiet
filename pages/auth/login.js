@@ -27,6 +27,12 @@ export default function Login({isAuthenticated, userData}) {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
+        // CHECK THE VALIDATION
+        if(!username || !password){
+            toast.error('Please fill all inputs');
+            return;
+        }
+
         setLoading(true)
 
         await axios.post(

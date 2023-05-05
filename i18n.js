@@ -18,6 +18,12 @@ i18n
                 newPassword: require('./locales/en/pages/newPassword.json'),
                 resetPassword: require('./locales/en/pages/resetPassword.json'),
                 verifyEmail: require('./locales/en/pages/verifyEmail.json'),
+                // USER
+                paymentMethod: require('./locales/en/pages/user/paymentMethod.json'),
+                chooseDayMeals: require('./locales/en/pages/user/chooseDayMeals.json'),
+                chooseStartingDate: require('./locales/en/pages/user/chooseStartingDay.json'),
+                menu: require('./locales/en/pages/user/menu.json'),
+                myStatus: require('./locales/en/pages/user/myStatus.json'),
             },
             ar: {
                 aside: require('./locales/ar/aside.json'),
@@ -30,6 +36,12 @@ i18n
                 newPassword: require('./locales/ar/pages/newPassword.json'),
                 resetPassword: require('./locales/ar/pages/resetPassword.json'),
                 verifyEmail: require('./locales/ar/pages/verifyEmail.json'),
+                // USER
+                paymentMethod: require('./locales/ar/pages/user/paymentMethod.json'),
+                chooseDayMeals: require('./locales/ar/pages/user/chooseDayMeals.json'),
+                chooseStartingDate: require('./locales/ar/pages/user/chooseStartingDay.json'),
+                menu: require('./locales/ar/pages/user/menu.json'),
+                myStatus: require('./locales/ar/pages/user/myStatus.json'),
             },
         },
         fallbackLng: 'en',

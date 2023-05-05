@@ -10,10 +10,15 @@ import MealCard_User from "@/components/pages/user/MealCard_Add";
 import SelectedMeals from "@/components/pages/user/SelectedMeals";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import {useRouter} from "next/router";
+    // LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const Choose_Day_Meals = () => {
     //ROUTER
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('chooseDayMeals');
 
     //STATES
     const [overlay, setOverlay] = useState(false);
@@ -128,31 +133,31 @@ const Choose_Day_Meals = () => {
                 <div className={classes.Container}>
                     <div className={classes.Top}>
                         <div className={classes.Top_Container}>
-                            <div className={classes.Navigation}>
+                            <div className={classes.Navigation} data-word={t("filter")}>
                                 <ul>
                                     <li>
-                                        <span onClick={() => setMealType('افطار')}>BREAKFAST</span>
+                                        <span onClick={() => setMealType('افطار')}>{t("breakfast")}</span>
                                         {mealType === 'افطار' && <span className={classes.Check_Icon}>
                                             <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
                                                    height={18}/>
                                         </span>}
                                     </li>
                                     <li>
-                                        <span onClick={() => setMealType('غداء')}>LUNCH</span>
+                                        <span onClick={() => setMealType('غداء')}>{t("lunch")}</span>
                                         {mealType === 'غداء' && <span className={classes.Check_Icon}>
                                             <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
                                                    height={18}/>
                                         </span>}
                                     </li>
                                     <li>
-                                        <span onClick={() => setMealType('عشاء')}>DINNER</span>
+                                        <span onClick={() => setMealType('عشاء')}>{t("dinner")}</span>
                                         {mealType === 'عشاء' && <span className={classes.Check_Icon}>
                                             <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
                                                    height={18}/>
                                         </span>}
                                     </li>
                                     <li>
-                                        <span onClick={() => setMealType('سناك')}>SNACKS</span>
+                                        <span onClick={() => setMealType('سناك')}>{t("snacks")}</span>
                                         {mealType === 'سناك' && <span className={classes.Check_Icon}>
                                             <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
                                                    height={18}/>
@@ -160,7 +165,7 @@ const Choose_Day_Meals = () => {
                                     </li>
                                 </ul>
                                 <span title={'All Meals'} onClick={() => setMealType('الكل')}>
-                                    ALL
+                                    {t("all")}
                                     {mealType === 'الكل' &&
                                         <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
                                                height={18}/>}
@@ -174,17 +179,17 @@ const Choose_Day_Meals = () => {
                                     <Image style={{transform: 'rotate(180deg)'}} src={'/images/Auth/next-icon.svg'}
                                            alt={'Selected Meals'}
                                            width={20} height={20}/>
-                                    <span>Back</span>
+                                    <span>{t("back")}</span>
                                 </button>
                                 <button title={'Selected Meals'} onClick={() => setOverlay(true)}>
                                     <Image src={'/images/Global/SelectedMeals_Icon.svg'} alt={'Selected Meals'}
                                            width={20} height={20}/>
-                                    <span>Selected</span>
+                                    <span>{t("selected")}</span>
                                 </button>
                                 <button title={'Reset All Meals'} onClick={resetMealsHandler}>
                                     <Image src={'/images/Global/ResetMeals_Icon.svg'} alt={'Selected Meals'} width={20}
                                            height={20}/>
-                                    <span>Reset</span>
+                                    <span>{t("reset")}</span>
                                 </button>
                             </div>
                             <div className={classes.AvailableMeals}
@@ -193,8 +198,8 @@ const Choose_Day_Meals = () => {
                                      month: 'long',
                                      year: 'numeric'
                                  })}>
-                                <p>Available Meals <span>{availableMeals}</span></p>
-                                <p>Available Snacks <span>{availableSnacks}</span></p>
+                                <p>{t("availableMeals")} <span>{availableMeals}</span></p>
+                                <p>{t("availableSnacks")} <span>{availableSnacks}</span></p>
                             </div>
                         </div>
                     </div>
@@ -221,14 +226,17 @@ const Choose_Day_Meals = () => {
                             type={'submit'}
                             onClick={submitHandler}
                         >
-                            <span style={{marginLeft: '-5rem'}}>CONFIRM</span>
+                            <span style={{marginLeft: '-5rem'}}>{t("button")}</span>
                             <span className={classes.Next_Span}><Image src={'/images/Auth/next-icon.svg'}
                                                                        alt={'Choose Day Meals'} width={20}
                                                                        height={20}/></span>
                         </button>
                         <button
                             className={[classes.Back_button].join(' ')}
-                            type={'button'}>
+                            type={'button'} onClick={() => {
+                            resetMealsHandler()
+                            router.push('/user/my_subscription');
+                        }}>
                             <span className={classes.Next_Span}><Image src={'/images/Auth/next-icon.svg'}
                                                                        alt={'GO BACK'} width={20}
                                                                        height={20}/></span>
@@ -237,7 +245,7 @@ const Choose_Day_Meals = () => {
                 </div>
             </main>
             <Overlay active={overlay} clicked={hideOverlay}>
-                <SelectedMeals isActive={overlay} selectedMeals={selectedMeals} closeTheOverlay={hideOverlay}/>
+                <SelectedMeals text1={t("selectedMeals")} text2={t("noMeals")} isActive={overlay} selectedMeals={selectedMeals} closeTheOverlay={hideOverlay}/>
             </Overlay>
         </>
 

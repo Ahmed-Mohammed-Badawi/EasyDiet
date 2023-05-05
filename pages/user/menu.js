@@ -10,14 +10,15 @@ import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import {onInputChange} from '@/redux/slices/user/menu';
 import i18n from "@/i18n";
+import {useTranslation} from "react-i18next";
 
 const Packages = () => {
     // ROUTER
     const router = useRouter();
 
-    // STATES
+    // LANGUAGE
     const Language = i18n.language;
-
+    const {t} = useTranslation('menu')
 
     //REDUX
     const dispatch = useDispatch();
@@ -42,7 +43,7 @@ const Packages = () => {
     return (
         <>
             <div className={classes.Main}>
-                <h1>MENU</h1>
+                <h1>{t("title")}</h1>
                 <div className={classes.Bottom}>
                     {menu && menu.map((cur) => {
                         return (

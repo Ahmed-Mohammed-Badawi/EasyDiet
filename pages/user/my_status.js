@@ -6,10 +6,17 @@ import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const My_Status = () => {
     //ROUTER
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('myStatus')
+
+    // STATES
     const [messages, setMessages] = useState([]);
     const [userInfo, setUserInfo] = useState({
         weight: '',
@@ -44,7 +51,7 @@ const My_Status = () => {
                 <div className={classes.FormContainer}>
                     <div className={classes.Top}>
                         <div className={classes.Left}>
-                            <h1>Medical Record</h1>
+                            <h1>{t("title")}</h1>
                         </div>
                         <div className={classes.Right} onClick={() => router.push('/user/profile')}>
                             <button className={classes.Close}>
@@ -56,8 +63,8 @@ const My_Status = () => {
                         <div className={classes.Bottom_P1}>
                             <div className={classes.P1_Item}>
                                 <div>
-                                    <p>weight</p>
-                                    <span>{userInfo?.weight || ''} KG</span>
+                                    <p>{t("weight")}</p>
+                                    <span>{userInfo?.weight || ''} {t("weightUnit")}</span>
                                 </div>
                                 <div className={classes.Image_Container}>
                                     <Image src={'/images/Global/weight.png'} alt={'weight'} width={50} height={50}/>
@@ -65,8 +72,8 @@ const My_Status = () => {
                             </div>
                             <div className={classes.P1_Item}>
                                 <div>
-                                    <p>Height</p>
-                                    <span>{userInfo?.height || ''} CM</span>
+                                    <p>{t("height")}</p>
+                                    <span>{userInfo?.height || ''} {t("heightUnit")}</span>
                                 </div>
                                 <div className={classes.Image_Container}>
                                     <Image src={'/images/Global/height.png'} alt={'weight'} width={60} height={60}/>
@@ -77,11 +84,11 @@ const My_Status = () => {
                             {messages && messages.map((message) => {
                                 return (
                                     <div key={message._id} className={classes.Message}>
-                                        <h3>QUESTION</h3>
+                                        <h3>{t("question")}</h3>
                                         <p>{message?.body}?</p>
 
                                         <div className={classes.Response}>
-                                            <h4>DOCTOR RESPONSE ({message?.specialistId?.fullName})</h4>
+                                            <h4>{t("doctorResponse")} ({message?.specialistId?.fullName})</h4>
                                             <p>
                                                 {message?.reply}
                                             </p>
