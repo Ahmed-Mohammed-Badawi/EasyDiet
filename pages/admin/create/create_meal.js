@@ -13,10 +13,15 @@ import {toast} from "react-toastify";
 import axios from "axios";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import {useRouter} from "next/router";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const CreatePackage = () => {
     //ROUTER
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('createMeal');
 
     // STATES
     const [selectedImage, setSelectedImage] = useState('');
@@ -118,13 +123,13 @@ const CreatePackage = () => {
         <>
             <main className={classes.Main}>
                 <div className={classes.FormContainer}>
-                    <h1>Create Meal</h1>
+                    <h1>{t("title")}</h1>
                     <form onSubmit={submitHandler}>
                         <div className={classes.Image_Uploader}>
                             <label htmlFor={'meal_image'}>
                                 <div className={classes.Static}>
                                     <Image src={'/images/Upload_Icon.svg'} alt={'Upload Icon'} width={30} height={30}/>
-                                    <span>Upload Image</span>
+                                    <span>{t("upload")}</span>
                                 </div>
                                 <div className={classes.ImagePreviewer}>
                                     {preview && <Image src={preview} alt="Preview" width={80} height={50}/>}
@@ -135,7 +140,7 @@ const CreatePackage = () => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'meal_name'}>Meal Name</label>
+                                <label htmlFor={'meal_name'}>{t("mealName")}</label>
                                 <input
                                     type={'text'}
                                     name={'meal_name'}
@@ -151,7 +156,7 @@ const CreatePackage = () => {
                                 />
                             </div>
                             <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
-                                <label htmlFor={'meal_category'}>Meal Category</label>
+                                <label htmlFor={'meal_category'}>{t("mealCategory")}</label>
                                 <CustomSelectMealType
                                     defaultValue={category}
                                     changed={(values) => {
@@ -173,7 +178,7 @@ const CreatePackage = () => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'meal_carbohydrate'}>carbohydrate (Grams)</label>
+                                <label htmlFor={'meal_carbohydrate'}>{t("carbohydrate")}</label>
                                 <input
                                     type={'number'}
                                     min={'0'}
@@ -190,7 +195,7 @@ const CreatePackage = () => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'meal_fat'}>FAT (Grams)</label>
+                                <label htmlFor={'meal_fat'}>{t("fat")}</label>
                                 <input
                                     type={'number'}
                                     min={'0'}
@@ -209,7 +214,7 @@ const CreatePackage = () => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'meal_calories'}>Calories (Number)</label>
+                                <label htmlFor={'meal_calories'}>{t("calories")}</label>
                                 <input
                                     type={'number'}
                                     min={'0'}
@@ -226,7 +231,7 @@ const CreatePackage = () => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'meal_protein'}>protein (Grams)</label>
+                                <label htmlFor={'meal_protein'}>{t("protein")}</label>
                                 <input
                                     type={'number'}
                                     min={'0'}
@@ -245,7 +250,7 @@ const CreatePackage = () => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'recurrence_period'}>recurrence period (number)</label>
+                                <label htmlFor={'recurrence_period'}>{t("reputation")}</label>
                                 <input
                                     type={'number'}
                                     min={'0'}
@@ -262,7 +267,7 @@ const CreatePackage = () => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'number_of_repetitions'}>number of repetitions (number)</label>
+                                <label htmlFor={'number_of_repetitions'}>{t("nOfReputation")}</label>
                                 <input
                                     type={'number'}
                                     min={'0'}
@@ -282,7 +287,7 @@ const CreatePackage = () => {
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <div className={classes.togglerInput}>
-                                    <label htmlFor="package_friday_included">Block Meal</label>
+                                    <label htmlFor="package_friday_included">{t("block")}</label>
                                     <div className={classes.toggler}>
                                         <input
                                             type="checkbox"
@@ -302,7 +307,7 @@ const CreatePackage = () => {
                                 </div>
                             </div>
                             <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
-                                <label htmlFor={'package_real_time'}>Package Language</label>
+                                <label htmlFor={'package_real_time'}>{t("language")}</label>
                                 <CustomSelectLanguage
                                     defaultValue={language}
                                     changed={(values) => {
@@ -317,7 +322,7 @@ const CreatePackage = () => {
                         </div>
                         <button type={'submit'}>
                             <span>
-                                {loading ? <Spinner size={2} color={`#ffffff`}/> : 'Create'}
+                                {loading ? <Spinner size={2} color={`#ffffff`}/> : t("create")}
                             </span>
                             <Image src={'/images/Send_Icon.svg'} alt={'Send'} width={20} height={20}/>
                         </button>

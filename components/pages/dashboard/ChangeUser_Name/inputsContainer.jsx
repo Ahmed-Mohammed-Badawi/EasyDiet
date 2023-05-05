@@ -7,8 +7,14 @@ import {toast} from "react-toastify";
 //REDUX
 import {useDispatch, useSelector} from "react-redux";
 import {setUsers} from '@/redux/slices/Admin/users-slice';
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const ChangeNameForm = ({clientId, clicked}) => {
+
+    // LANGUAGE
+    const {t} = useTranslation('managePages')
+
     const [firstName, setFirstName] = useState('');
 
     //REDUX
@@ -20,7 +26,7 @@ const ChangeNameForm = ({clientId, clicked}) => {
     };
 
     // CHANGE NAME IN UI HANDLER
-    function changeNameUI(){
+    function changeNameUI() {
         const usersCopy = [...users];
 
         const index = usersCopy.findIndex(item => item._id === clientId);
@@ -76,10 +82,10 @@ const ChangeNameForm = ({clientId, clicked}) => {
     return (
         <form className={classes.change_name_form} onSubmit={handleSubmit}>
             <div className={classes.InputGroup}>
-                <label htmlFor="first-name-input">Full Name: (ENGLISH)</label>
+                <label htmlFor="first-name-input">{t("fullName")}</label>
                 <input type="text" id="first-name-input" value={firstName} onChange={handleFirstNameChange}/>
             </div>
-            <button type="submit">Save Changes</button>
+            <button type="submit">{t("saveBtn")}</button>
         </form>
     );
 };

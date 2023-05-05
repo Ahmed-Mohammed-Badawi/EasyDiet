@@ -1,0 +1,15 @@
+{
+  "title": "CREATE MEAL",
+  "upload": "UPLOAD IMAGE",
+  "mealName": "MEAL NAME",
+  "mealCategory": "MEAL CATEGORY",
+  "carbohydrate": "CARBOHYDRATE (GRAMS)",
+  "fat": "FAT (GRAMS)",
+  "calories": "CALORIES (NUMBER)",
+  "protein": "PROTEIN (GRAMS)",
+  "reputation": "RECURRENCE PERIOD (NUMBER)",
+  "nOfReputation": "NUMBER OF REPETITIONS (NUMBER)",
+  "language": "PACKAGE LANGUAGE",
+  "block": "BLOCK MEAL",
+  "create": "CREATE"
+}

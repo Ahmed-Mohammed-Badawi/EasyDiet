@@ -7,8 +7,13 @@ import Spinner from "@/components/layout/spinner/Spinner";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
 import Link from "next/link";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const Doctor = () => {
+
+    // LANGUAGE
+    const {t} = useTranslation('doctor')
 
     //STATES
     const [messages, setMessages] = useState([]);
@@ -233,7 +238,7 @@ const Doctor = () => {
                         <div className={classes.Questions}>
                             {(showActiveUser && userMessages) && (
                                 <div className={classes.Current_Question}>
-                                    <h3>Question of client</h3>
+                                    <h3>{t("currentQuestion")}</h3>
                                     <h4>q: {userMessages[0]?.body}?</h4>
                                     <time>{new Date(userMessages[0]?.updatedAt).toLocaleDateString('en-US', {
                                         day: "numeric",
@@ -241,7 +246,7 @@ const Doctor = () => {
                                         year: 'numeric',
                                     })}</time>
                                     {userMessages[0]?.reply && (<p>({userMessages[0]?.specialistId?.fullName.toUpperCase()}): {userMessages[0]?.reply}</p>)}
-                                    <h5>ATTACHMENTS</h5>
+                                    <h5>{t("attachments")}</h5>
                                     {userMessages[0] && userMessages[0]?.attachments.map((attachment, attachIndex) => {
                                         return (
                                             <Link href={attachment} target={'_blank'}
@@ -252,7 +257,7 @@ const Doctor = () => {
                             )}
                             {(showActiveUser && userMessages) && (
                                 <div className={classes.Previous_Questions}>
-                                    <h3>Previous Question</h3>
+                                    <h3>{t("previousQuestion")}</h3>
                                     <div className={classes.Previous_Questions__container}>
                                         {userMessages && userMessages.map((message, messageIndex) => {
                                             if (messageIndex !== 0) {
@@ -265,7 +270,7 @@ const Doctor = () => {
                                                             year: 'numeric',
                                                         })}</time>
                                                         <p>({message?.specialistId?.fullName.toUpperCase()}): {message?.reply}</p>
-                                                        <h5>ATTACHMENTS</h5>
+                                                        <h5>{t("attachments")}</h5>
                                                         {message && message?.attachments.map((attachment, attachIndex) => {
                                                             return (
                                                                 <Link href={attachment} target={'_blank'}
@@ -284,21 +289,21 @@ const Doctor = () => {
                             <form onSubmit={submitHandler}>
                                 <div className={classes.Input_Container}>
                                     <div className={classes.Input_Group}>
-                                        <input ref={heightRef} autoComplete={'off'} placeholder={'Height'}
+                                        <input ref={heightRef} autoComplete={'off'} placeholder={t("height")}
                                                type={'number'}
                                                name={'height'} step={1} min={0}/>
-                                        <span><span>CM</span></span>
+                                        <span><span>{t("heightUnit")}</span></span>
                                     </div>
                                     <div className={classes.Input_Group}>
-                                        <input ref={weightRef} autoComplete={'off'} placeholder={'Weight'}
+                                        <input ref={weightRef} autoComplete={'off'} placeholder={t("weight")}
                                                type={'number'}
                                                name={'weight'} step={0.01} min={0}/>
-                                        <span><span>KG</span></span>
+                                        <span><span>{t("weightUnit")}</span></span>
                                     </div>
                                 </div>
                                 <div className={classes.Input_Container}>
                                     <div className={classes.Input_Group}>
-                                        <textarea ref={messageRef} placeholder={'Type your Message...'}
+                                        <textarea ref={messageRef} placeholder={t("message")}
                                                   name={'Message'}/>
                                         <button type={'submit'}>
                                             <Image src={'/images/Global/SendDoctor_Icon.svg'} alt={'send'} width={22}

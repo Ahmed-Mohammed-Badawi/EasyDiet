@@ -10,7 +10,8 @@
   "packages": "packages",
   "meals": "meals",
   "users": "users",
-  "branchManager": "branchManager",
+  "branchManager": "branch Manager",
+  "defaultMeals": "Default Meals",
   "reports": "reports",
   "logout": "logout"
 }

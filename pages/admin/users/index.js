@@ -14,10 +14,15 @@ import {toast} from "react-toastify";
 //IMPORTS
 import Overlay from "@/components/pages/dashboard/ChangeUser_Name/overlay";
 import InputsContainer from "@/components/pages/dashboard/ChangeUser_Name/inputsContainer";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const Users = () => {
     // ROUTER
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('managePages')
 
     // STATES
     const [clientEditId, setClientEditId] = useState(false);
@@ -242,10 +247,10 @@ const Users = () => {
                     <div className={classes.Top}>
                         <button onClick={() => isOn ? router.push(`/admin/create/create_employee`) : router.push(`/admin/create/create_user`)}>
                             <Image src={'/images/Add_Icon.svg'} alt={'Add Icon'} width={18} height={18}/>
-                            <span>{isOn ? `Create An Employee` : `Create a client`}</span>
+                            <span>{isOn ? t("createEmployee") : t("createClient")}</span>
                         </button>
                         <div className={classes.Toggle_container}>
-                            <span onClick={checkClients}>CLIENTS</span>
+                            <span onClick={checkClients}>{t("clients")}</span>
                             <div className={classes.UserToggler}>
                                 <label htmlFor={'users_type'}
                                        className={[classes.toggle_container, isOn ? classes.Employees : ''].join(' ')}>
@@ -258,7 +263,7 @@ const Users = () => {
                                     onChange={handleClick}
                                 />
                             </div>
-                            <span onClick={checkEmployees}>EMPLOYEES</span>
+                            <span onClick={checkEmployees}>{t("employees")}</span>
                         </div>
                         {usersType === "clients" && (
                             <div className={classes.Search}>
@@ -303,13 +308,13 @@ const Users = () => {
                                                                 handleUnfreeze(user._id)
                                                             }
                                                         }}>
-                                                    {user.clientStatus.paused ? `UnFreeze` : `Freez`}
+                                                    {user.clientStatus.paused ? t("unfreeze") : t("freeze")}
 
                                                 </button>
                                                 <button className={classes.Delete}
                                                         onClick={() => handleDelete(user._id)}>
                                                     <Image src={'/images/Delete_Icon.svg'} alt={'Delete'} width={14}
-                                                           height={14}/> Delete
+                                                           height={14}/> {t("delete")}
                                                 </button>
                                             </td>
                                         </tr>
@@ -347,16 +352,16 @@ const Users = () => {
                                             </td>
                                             <td className={classes.Actions}>
                                                 <button className={classes.Edit}
-                                                        onClick={() => router.push(`/admin/edit/edit_employee?ID=${user._id}`)}>Edit
+                                                        onClick={() => router.push(`/admin/edit/edit_employee?ID=${user._id}`)}>{t("edit")}
                                                 </button>
                                                 <button className={classes.Deactivate} onClick={() => {
                                                     employeeStatusChangeHandler(user._id, user.isActive)
-                                                }}>{user.isActive ? 'Deactivate' : 'Activate'}</button>
+                                                }}>{user.isActive ? t("deactivate") : t("activate")}</button>
                                                 <button className={classes.Delete} onClick={() => {
                                                     employeeDeleteHandler(user._id)
                                                 }}>
                                                     <Image src={'/images/Delete_Icon.svg'} alt={'Delete'} width={14}
-                                                           height={14}/> Delete
+                                                           height={14}/> {t("delete")}
                                                 </button>
                                             </td>
                                         </tr>

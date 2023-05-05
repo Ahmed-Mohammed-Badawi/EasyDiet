@@ -1,9 +1,15 @@
 import Image from "next/image";
 import classes from '@/styles/pages/global/about.module.scss';
 import {useRouter} from "next/router";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
+
 
 const About = () => {
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('about')
 
 
     return (
@@ -19,21 +25,12 @@ const About = () => {
                         </button>
                     </div>
                     <div className={classes.Bottom}>
-                        <h1 className={classes.Header}>who are we</h1>
+                        <h1 className={classes.Header}>{t("title")}</h1>
                         <div className={classes.Content}>
                             <div className={classes.Content_Text}>
-                                <p>EasyDiet: Providing Healthy Meals for Over 5 Years</p>
-                                <p>EasyDiet is a company that has been providing healthy meal options for over five
-                                    years. Their restaurant offers a diverse menu of delicious, healthy meals that are
-                                    perfect for people who are looking to maintain a healthy lifestyle. The company has
-                                    a team of experienced chefs who use fresh, locally-sourced ingredients to prepare
-                                    each meal.</p>
-                                <p>EasyDiet&apos;s dedication to providing healthy meals that are both delicious and
-                                    convenient has made them a popular choice for many people. Customers have reported
-                                    feeling more energized and healthier after consuming their meals. If you are looking
-                                    for a healthy meal option that is both tasty and convenient, EasyDiet is the way to
-                                    go.
-                                </p>
+                                <p>{t("p1")}</p>
+                                <p>{t("p2")}</p>
+                                <p>{t("p3")}</p>
                             </div>
                             <div className={classes.Content_Social}>
                                 <button>

@@ -15,10 +15,15 @@ import axios from "axios";
 import {clearAll, onInputChange} from "@/redux/slices/Admin/createUser-slice";
 import {useDispatch, useSelector} from "react-redux";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const CreateUser = () => {
     // ROUTER
-    const router = useRouter()
+    const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('createClient')
 
     // STATES
     const [loading, setLoading] = useState(false);
@@ -88,11 +93,11 @@ const CreateUser = () => {
         <>
             <main className={classes.Main}>
                 <div className={classes.FormContainer}>
-                    <h1>Create Client</h1>
+                    <h1>{t("title")}</h1>
                     <form onSubmit={submitHandler}>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'fullName'}>Full Name</label>
+                                <label htmlFor={'fullName'}>{t("fullName")}</label>
                                 <input
                                     type={'text'}
                                     name={'fullName'}
@@ -108,7 +113,7 @@ const CreateUser = () => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'phone'}>Mobile</label>
+                                <label htmlFor={'phone'}>{t("mobile")}</label>
                                 <input
                                     type={'tel'}
                                     name={'phone'}
@@ -127,6 +132,7 @@ const CreateUser = () => {
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <PackageSelect
+                                    labelSelect={t("package")}
                                     defaultValue={selectedPackage || ''}
                                     changed={(values) => {
                                         dispatch(onInputChange({key: 'selectedPackage', value: values?.value}))
@@ -134,7 +140,7 @@ const CreateUser = () => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'gender'}>Gender</label>
+                                <label htmlFor={'gender'}>{t("gender")}</label>
                                 <CustomSelect defaultValue={gender || ''} changed={(values) => {
                                     dispatch(onInputChange({key: 'gender', value: values?.value}))
                                 }} />
@@ -142,7 +148,7 @@ const CreateUser = () => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'email'}>Email</label>
+                                <label htmlFor={'email'}>{t("email")}</label>
                                 <input
                                     type={'email'}
                                     name={'email'}
@@ -159,7 +165,7 @@ const CreateUser = () => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'password'}>Password</label>
+                                <label htmlFor={'password'}>{t("password")}</label>
                                 <input
                                     type={'password'}
                                     name={'password'}
@@ -177,7 +183,7 @@ const CreateUser = () => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'region'}>Region</label>
+                                <label htmlFor={'region'}>{t("region")}</label>
                                 <input
                                     type={'text'}
                                     name={'region'}
@@ -193,7 +199,7 @@ const CreateUser = () => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'street'}>street</label>
+                                <label htmlFor={'street'}>{t("street")}</label>
                                 <input
                                     type={'text'}
                                     name={'street'}
@@ -211,7 +217,7 @@ const CreateUser = () => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'house'}>house</label>
+                                <label htmlFor={'house'}>{t("house")}</label>
                                 <input
                                     type={'text'}
                                     name={'house'}
@@ -227,7 +233,7 @@ const CreateUser = () => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'floor'}>floor</label>
+                                <label htmlFor={'floor'}>{t("floor")}</label>
                                 <input
                                     type={'text'}
                                     name={'floor'}
@@ -246,7 +252,7 @@ const CreateUser = () => {
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <div className={classes.togglerInput}>
-                                    <label htmlFor="payment">payment done</label>
+                                    <label htmlFor="payment">{t("payment")}</label>
                                     <div className={classes.toggler}>
                                         <input
                                             type="checkbox"
@@ -265,7 +271,7 @@ const CreateUser = () => {
                                 </div>
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'apartment'}>apartment</label>
+                                <label htmlFor={'apartment'}>{t("apartment")}</label>
                                 <input
                                     type={'text'}
                                     name={'apartment'}
@@ -283,7 +289,7 @@ const CreateUser = () => {
                         </div>
                         <button type={'submit'}>
                             <span>
-                                {loading ? <Spinner size={2} color={`#ffffff`}/> : 'Create'}
+                                {loading ? <Spinner size={2} color={`#ffffff`}/> : t("button")}
                             </span>
                             <Image src={'/images/Send_Icon.svg'} alt={'Send'} width={20} height={20}/>
                         </button>

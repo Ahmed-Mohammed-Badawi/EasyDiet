@@ -22,7 +22,7 @@ const customStyles = {
     }),
 };
 
-const PackageSelect = ({changed, defaultValue}) => {
+const PackageSelect = ({changed, defaultValue, labelSelect}) => {
     const [options, setOptions] = useState([]);
 
     useEffect(() => {
@@ -53,7 +53,7 @@ const PackageSelect = ({changed, defaultValue}) => {
                 textTransform: 'uppercase',
                 color: 'var(--color-black-text)',
                 marginBottom: '.5rem'
-            }}>Package</label>
+            }}>{labelSelect}</label>
             <Select instanceId={useId()} styles={customStyles} value={defaultOption || ''} options={options} onChange={changed}/>
         </div>
     );

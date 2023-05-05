@@ -1,0 +1,16 @@
+{
+  "title": "CREATE CLIENT",
+  "fullName": "FULL NAME",
+  "mobile": "MOBILE",
+  "package": "PACKAGE",
+  "gender": "GENDER",
+  "email": "EMAIL",
+  "password": "PASSWORD",
+  "region": "REGION",
+  "street": "STREET",
+  "house": "HOUSE",
+  "floor": "FLOOR",
+  "apartment": "APARTMENT",
+  "payment": "PAYMENT DONE",
+  "button": "CREATE"
+}

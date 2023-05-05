@@ -10,10 +10,16 @@ import {useDispatch, useSelector} from "react-redux";
 import wrapper from "@/redux/store";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import CustomSelectUserRole from "@/components/pages/dashboard/custom-select-userRole";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
+import Spinner from "@/components/layout/spinner/Spinner";
 
 const EditEmployee = ({ID, employee}) => {
     // ROUTER
     const router = useRouter()
+
+    // LANGUAGE
+    const {t} = useTranslation('editEmployee')
 
     // STATES
     const [selectedImage, setSelectedImage] = useState(null);
@@ -26,7 +32,7 @@ const EditEmployee = ({ID, employee}) => {
 
     // SET THE EMPLOYEE DATA IF IT'S FOUND
     useEffect(() => {
-        if(employee){
+        if (employee) {
             dispatch(setAll({
                 fullName: employee.fullName,
                 username: employee.username,
@@ -110,13 +116,13 @@ const EditEmployee = ({ID, employee}) => {
         <>
             <main className={classes.Main}>
                 <div className={classes.FormContainer}>
-                    <h1>Edit Employee</h1>
+                    <h1>{t("title")}</h1>
                     <form onSubmit={submitHandler}>
                         <div className={classes.Image_Uploader}>
                             <label htmlFor={'meal_image'}>
                                 <div className={classes.Static}>
                                     <Image src={'/images/Upload_Icon.svg'} alt={'Upload Icon'} width={30} height={30}/>
-                                    <span>Upload Image</span>
+                                    <span>{t("upload")}</span>
                                 </div>
                                 <div className={classes.ImagePreviewer}>
                                     {preview && <Image src={preview} alt="Preview" width={80} height={50}/>}
@@ -127,7 +133,7 @@ const EditEmployee = ({ID, employee}) => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'employee_name'}>Employee Name</label>
+                                <label htmlFor={'employee_name'}>{t("name")}</label>
                                 <input
                                     value={fullName}
                                     type={'text'}
@@ -143,7 +149,7 @@ const EditEmployee = ({ID, employee}) => {
                                 />
                             </div>
                             <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
-                                <label htmlFor={'user_role'}>User Role</label>
+                                <label htmlFor={'user_role'}>{t("role")}</label>
                                 <CustomSelectUserRole
                                     defaultValue={role}
                                     changed={(values) => {
@@ -158,7 +164,7 @@ const EditEmployee = ({ID, employee}) => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'employee_address'}>Employee Address</label>
+                                <label htmlFor={'employee_address'}>{t("address")}</label>
                                 <input
                                     value={address}
                                     type={'text'}
@@ -174,7 +180,7 @@ const EditEmployee = ({ID, employee}) => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'employee_phone'}>Mobile</label>
+                                <label htmlFor={'employee_phone'}>{t("phone")}</label>
                                 <input
                                     value={phone}
                                     type={'tel'}
@@ -192,7 +198,7 @@ const EditEmployee = ({ID, employee}) => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'employee_username'}>Username</label>
+                                <label htmlFor={'employee_username'}>{t("username")}</label>
                                 <input
                                     type={'text'}
                                     name={'employee_username'}
@@ -208,7 +214,7 @@ const EditEmployee = ({ID, employee}) => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'employee_password'}>Password</label>
+                                <label htmlFor={'employee_password'}>{t("password")}</label>
                                 <input
                                     type={'password'}
                                     name={'employee_password'}
@@ -226,7 +232,7 @@ const EditEmployee = ({ID, employee}) => {
                         </div>
                         <button type={'submit'}>
                             <span>
-                                Edit
+                                {loading ? <Spinner size={2} color={`#ffffff`}/> : t("button")}
                             </span>
                             <Image src={'/images/Send_Icon.svg'} alt={'Send'} width={20} height={20}/>
                         </button>

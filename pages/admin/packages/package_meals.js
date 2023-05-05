@@ -8,10 +8,16 @@ import Spinner from "@/components/layout/spinner/Spinner";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import {toast} from "react-toastify";
 import axios from "axios";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
+
 
 const Users = () => {
     //ROUTER
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('createPackage');
 
     // STATES
     const [isOn, setIsOn] = useState(false);
@@ -57,7 +63,7 @@ const Users = () => {
                 <div className={classes.Container}>
                     <div className={classes.Top}>
                         <div className={classes.Toggle_container}>
-                            <span onClick={checkClients}>ENGLISH</span>
+                            <span onClick={checkClients}>{t("english")}</span>
                             <div className={classes.UserToggler}>
                                 <label htmlFor={'users_type'}
                                        className={[classes.toggle_container, isOn ? classes.Employees : ''].join(' ')}>
@@ -70,7 +76,7 @@ const Users = () => {
                                     onChange={handleClick}
                                 />
                             </div>
-                            <span onClick={checkEmployees}>ARABIC</span>
+                            <span onClick={checkEmployees}>{t("arabic")}</span>
                         </div>
                     </div>
                     <div className={classes.Bottom}>
@@ -119,7 +125,7 @@ const Users = () => {
                         </div>
                         <button type={'submit'} className={classes.Submit} onClick={() => router.push(`/admin/create/create_package`)}>
                             <span>
-                                {loading ? <Spinner size={2} color={`#ffffff`}/> : 'CONFIRM'}
+                                {loading ? <Spinner size={2} color={`#ffffff`}/> : t("confirm")}
                             </span>
                             <Image src={'/images/Send_Icon.svg'} alt={'Send'} width={20} height={20}/>
                         </button>

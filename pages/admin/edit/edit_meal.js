@@ -14,10 +14,16 @@ import {onInputChange, clearAll, setAll} from '@/redux/slices/Admin/editmeal-sli
 import {toast} from "react-toastify";
 import axios from "axios";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const EditMeal = ({meal}) => {
     // ROUTER
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('editMeal');
+
     //GET THE QUERIES
     const {mealName} = router.query;
     // STATES
@@ -140,14 +146,14 @@ const EditMeal = ({meal}) => {
         <>
             <main className={classes.Main}>
                 <div className={classes.FormContainer}>
-                    <h1>Edit Meal</h1>
-                    <p>You will edit the ({mealName}) Meal</p>
+                    <h1>{t("title")}</h1>
+                    <p>{t("underTitle")} ({mealName})</p>
                     <form onSubmit={submitHandler}>
                         <div className={classes.Image_Uploader}>
                             <label htmlFor={'meal_image'}>
                                 <div className={classes.Static}>
                                     <Image src={'/images/Upload_Icon.svg'} alt={'Upload Icon'} width={30} height={30}/>
-                                    <span>Update Image</span>
+                                    <span>{t("upload")}</span>
                                 </div>
                                 <div className={classes.ImagePreviewer}>
                                     {preview && <Image src={preview} alt="Preview" width={80} height={50}/>}
@@ -158,7 +164,7 @@ const EditMeal = ({meal}) => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'package_name'}>Meal Name</label>
+                                <label htmlFor={'package_name'}>{t("mealName")}</label>
                                 <input
                                     type={'text'}
                                     name={'package_name'}
@@ -174,7 +180,7 @@ const EditMeal = ({meal}) => {
                                 />
                             </div>
                             <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
-                                <label htmlFor={'meal_category'}>Meal Category</label>
+                                <label htmlFor={'meal_category'}>{t("mealCategory")}</label>
                                 <CustomSelectMealType
                                     defaultValue={category}
                                     changed={(values) => {
@@ -189,7 +195,7 @@ const EditMeal = ({meal}) => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'meal_carbohydrate'}>carbohydrate (Grams)</label>
+                                <label htmlFor={'meal_carbohydrate'}>{t("carbohydrate")}</label>
                                 <input
                                     type={'number'}
                                     name={'meal_carbohydrate'}
@@ -206,7 +212,7 @@ const EditMeal = ({meal}) => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'meal_fat'}>FAT (Grams)</label>
+                                <label htmlFor={'meal_fat'}>{t("fat")}</label>
                                 <input
                                     type={'number'}
                                     name={'meal_fat'}
@@ -225,7 +231,7 @@ const EditMeal = ({meal}) => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'meal_calories'}>Calories (Number)</label>
+                                <label htmlFor={'meal_calories'}>{t("calories")}</label>
                                 <input
                                     type={'number'}
                                     name={'meal_calories'}
@@ -242,7 +248,7 @@ const EditMeal = ({meal}) => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'meal_protein'}>protein (Grams)</label>
+                                <label htmlFor={'meal_protein'}>{t("protein")}</label>
                                 <input
                                     type={'number'}
                                     name={'meal_protein'}
@@ -261,7 +267,7 @@ const EditMeal = ({meal}) => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'recurrence_period'}>recurrence period (number)</label>
+                                <label htmlFor={'recurrence_period'}>{t("reputation")}</label>
                                 <input
                                     type={'number'}
                                     name={'recurrence_period'}
@@ -278,7 +284,7 @@ const EditMeal = ({meal}) => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'number_of_repetitions'}>number of repetitions (number)</label>
+                                <label htmlFor={'number_of_repetitions'}>{t("nOfReputation")}</label>
                                 <input
                                     type={'number'}
                                     name={'number_of_repetitions'}
@@ -298,7 +304,7 @@ const EditMeal = ({meal}) => {
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <div className={classes.togglerInput}>
-                                    <label htmlFor="package_friday_included">Block Meal</label>
+                                    <label htmlFor="package_friday_included">{t("block")}</label>
                                     <div className={classes.toggler}>
                                         <input
                                             type="checkbox"
@@ -318,7 +324,7 @@ const EditMeal = ({meal}) => {
                                 </div>
                             </div>
                             <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
-                                <label htmlFor={'package_real_time'}>Package Language</label>
+                                <label htmlFor={'package_real_time'}>{t("language")}</label>
                                 <CustomSelectLanguage
                                     defaultValue={language}
                                     changed={(values) => {
@@ -333,7 +339,7 @@ const EditMeal = ({meal}) => {
                         </div>
                         <button type={'submit'}>
                             <span>
-                                {loading ? <Spinner size={2} color={`#ffffff`}/> : 'Edit'}
+                                {loading ? <Spinner size={2} color={`#ffffff`}/> : t("title")}
                             </span>
                             <Image src={'/images/Send_Icon.svg'} alt={'Send'} width={20} height={20}/>
                         </button>

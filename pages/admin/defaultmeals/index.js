@@ -11,10 +11,15 @@ import axios from "axios";
 // REDUX
 import {useSelector, useDispatch} from "react-redux";
 import {onInputChange, clearAll} from '@/redux/slices/Admin/defaultmeals_slice';
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const Users = () => {
     //ROUTER
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('defaultMeals');
 
     // STATES
     const [isOn, setIsOn] = useState(false);
@@ -79,7 +84,7 @@ const Users = () => {
                 <div className={classes.Container}>
                     <div className={classes.Top}>
                         <div className={classes.Toggle_container}>
-                            <span onClick={checkClients}>ENGLISH</span>
+                            <span onClick={checkClients}>{t("english")}</span>
                             <div className={classes.UserToggler}>
                                 <label htmlFor={'users_type'}
                                        className={[classes.toggle_container, isOn ? classes.Employees : ''].join(' ')}>
@@ -92,10 +97,10 @@ const Users = () => {
                                     onChange={handleClick}
                                 />
                             </div>
-                            <span onClick={checkEmployees}>ARABIC</span>
+                            <span onClick={checkEmployees}>{t("arabic")}</span>
                         </div>
                         <div className={classes.Day_container}>
-                            <label htmlFor={'selectedDay'}>Selected Day: </label>
+                            <label htmlFor={'selectedDay'}>{t("day")}</label>
                             <input
                                 id={'selectedDay'}
                                 type={'date'}
@@ -152,7 +157,7 @@ const Users = () => {
                         </div>
                         <button type={'submit'} className={classes.Submit} onClick={() => router.push(`/admin/create/create_package`)}>
                             <span>
-                                {loading ? <Spinner size={2} color={`#ffffff`}/> : 'CONFIRM'}
+                                {loading ? <Spinner size={2} color={`#ffffff`}/> : t("button")}
                             </span>
                             <Image src={'/images/Send_Icon.svg'} alt={'Send'} width={20} height={20}/>
                         </button>

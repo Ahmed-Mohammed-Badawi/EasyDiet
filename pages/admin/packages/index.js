@@ -9,10 +9,16 @@ import axios from "axios";
 import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import {onInputChange} from '@/redux/slices/Admin/packages-slice';
+// LANGUAGE
+import {useTranslation} from "react-i18next";
+
 
 const Packages = () => {
     // ROUTER
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('managePages')
 
     //REDUX
     const dispatch = useDispatch();
@@ -44,7 +50,7 @@ const Packages = () => {
                 <div className={classes.Top}>
                     <button onClick={() => router.push(`/admin/create/create_package`)}>
                         <Image src={'/images/Add_Icon.svg'} alt={'Add Icon'} width={18} height={18}/>
-                        <span>Create Package</span>
+                        <span>{t("createPackage")}</span>
                     </button>
                 </div>
                 <div className={classes.Bottom}>

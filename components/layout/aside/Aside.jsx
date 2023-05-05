@@ -140,7 +140,7 @@ const Aside = ({isAuthenticated, userData}) => {
                         <span className={classes.Image_Container}>
                             <Image src={'/images/dashboard.png'} alt={'Icon'} width={20} height={20}/>
                         </span>
-                    <span className={classes.Text}>{t('Dashboard')}</span>
+                    <span className={classes.Text}>{t('dashboard')}</span>
                 </Link></li>)}
             {(isAuthenticated && userData?.decodedToken?.role === "admin") && (<li className={classes.Aside_List__Item}>
                 <Link onClick={handleResize} href={'/admin/packages'} className={router.pathname === '/admin/packages' ? classes.Active : ''}>
@@ -177,7 +177,7 @@ const Aside = ({isAuthenticated, userData}) => {
                         <span className={classes.Image_Container}>
                             <Image src={'/images/defaultmeals.png'} alt={'Icon'} width={20} height={20}/>
                         </span>
-                        <span className={classes.Text}>{t('default meals')}</span>
+                        <span className={classes.Text}>{t('defaultMeals')}</span>
                     </Link></li>)}
             {(isAuthenticated && (userData?.decodedToken?.role === "manager" || userData?.decodedToken?.role === "admin")) && (
                 <li className={classes.Aside_List__Item}>

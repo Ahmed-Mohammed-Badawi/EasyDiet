@@ -9,10 +9,16 @@ import {useDispatch, useSelector} from "react-redux";
 import {onInputChange} from '@/redux/slices/Admin/meals-slice';
 import {useRouter} from "next/router";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
+
 
 const Meals = () => {
     //ROUTER
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('managePages')
 
     // REDUX
     const dispatch = useDispatch();
@@ -45,7 +51,7 @@ const Meals = () => {
                 <div className={classes.Top}>
                     <button onClick={() => router.push(`/admin/create/create_meal`)}>
                         <Image src={'/images/Add_Icon.svg'} alt={'Add Icon'} width={18} height={18}/>
-                        <span>Create Meal</span>
+                        <span>{t("createMeal")}</span>
                     </button>
                 </div>
                 <div className={classes.Bottom}>

@@ -14,10 +14,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import axios from "axios";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const EditPackage = ({bundle}) => {
     // ROUTER
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('editPackage');
 
     // STATES
     const [loading, setLoading] = useState(false);
@@ -132,12 +137,12 @@ const EditPackage = ({bundle}) => {
         <>
             <main className={classes.Main}>
                 <div className={classes.FormContainer}>
-                    <h1>Edit Package</h1>
-                    <p>You will edit the ({name})</p>
+                    <h1>{t("title")}</h1>
+                    <p>{t("underTitle")} ({name})</p>
                     <form onSubmit={submitHandler}>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'package_name'}>Package Name</label>
+                                <label htmlFor={'package_name'}>{t("name")}</label>
                                 <input
                                     type={'text'}
                                     name={'package_name'}
@@ -153,7 +158,7 @@ const EditPackage = ({bundle}) => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'package_time_onCard'}>PACKAGE time on card</label>
+                                <label htmlFor={'package_time_onCard'}>{t("timeCard")}</label>
                                 <input
                                     type={'text'}
                                     name={'package_time_onCard'}
@@ -171,7 +176,7 @@ const EditPackage = ({bundle}) => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
-                                <label htmlFor={'package_real_time'}>Package time (Real)</label>
+                                <label htmlFor={'package_real_time'}>{t("timeReal")}</label>
                                 <CustomSelectTime
                                     defaultValue={realTime}
                                     changed={(values) => {
@@ -184,7 +189,7 @@ const EditPackage = ({bundle}) => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'package_price'}>Package Price (NUMBER)</label>
+                                <label htmlFor={'package_price'}>{t("price")}</label>
                                 <input
                                     type={'number'} step={'.25'}
                                     name={'package_price'}
@@ -203,7 +208,7 @@ const EditPackage = ({bundle}) => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'number_of_meals'}>Number of meals (NUMBER)</label>
+                                <label htmlFor={'number_of_meals'}>{t("numberOfMeals")}</label>
                                 <input
                                     type={'number'}
                                     name={'number_of_meals'}
@@ -220,7 +225,7 @@ const EditPackage = ({bundle}) => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'Snacks_meals'}>SNACKS Meals (NUMBER)</label>
+                                <label htmlFor={'Snacks_meals'}>{t("numberOfSnacks")}</label>
                                 <input
                                     type={'number'}
                                     name={'Snacks_meals'}
@@ -239,7 +244,7 @@ const EditPackage = ({bundle}) => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
-                                <label htmlFor={'package_real_time'}>Package Language</label>
+                                <label htmlFor={'package_real_time'}>{t("language")}</label>
                                 <CustomSelectLanguage
                                     defaultValue={language}
                                     changed={(values) => {
@@ -252,7 +257,7 @@ const EditPackage = ({bundle}) => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'offers_days'}>Offers Days (NUMBER)</label>
+                                <label htmlFor={'offers_days'}>{t("offer")}</label>
                                 <input
                                     type={'number'}
                                     name={'offers_days'}
@@ -272,7 +277,7 @@ const EditPackage = ({bundle}) => {
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <div className={classes.togglerInput}>
-                                    <label htmlFor="package_friday_included">Include Fridays</label>
+                                    <label htmlFor="package_friday_included">{t("fridays")}</label>
                                     <div className={classes.toggler}>
                                         <input
                                             type="checkbox"
@@ -302,7 +307,7 @@ const EditPackage = ({bundle}) => {
                                                }}
                                         />
                                         <span className={classes.checkmark}></span>
-                                        Breakfast
+                                        {t("breakfast")}
                                     </label>
                                     <label className={classes.checkbox}>
                                         <input type="checkbox" checked={lunch}
@@ -314,7 +319,7 @@ const EditPackage = ({bundle}) => {
                                                }}
                                         />
                                         <span className={classes.checkmark}></span>
-                                        Lunch
+                                        {t("lunch")}
                                     </label>
                                     <label className={classes.checkbox}>
                                         <input type="checkbox" checked={dinner}
@@ -326,7 +331,7 @@ const EditPackage = ({bundle}) => {
                                                }}
                                         />
                                         <span className={classes.checkmark}></span>
-                                        Dinner
+                                        {t("dinner")}
                                     </label>
                                 </div>
                             </div>
@@ -335,11 +340,11 @@ const EditPackage = ({bundle}) => {
                         <div className={classes.NavigationContainer}>
                             <button className={classes.SelectMeals} type={'button'}
                                     onClick={() => router.push(`/admin/packages/editpackage_meals`)}>
-                                Select Meals
+                                {t("select")}
                             </button>
                             <button type={'submit'}>
                                 <span>
-                                    {loading ? <Spinner size={2} color={`#ffffff`}/> : 'Edit'}
+                                    {loading ? <Spinner size={2} color={`#ffffff`}/> : t("create")}
                                 </span>
                                 <Image src={'/images/Send_Icon.svg'} alt={'Send'} width={20} height={20}/>
                             </button>

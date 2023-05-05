@@ -7,10 +7,15 @@ import {setUsers} from "@/redux/slices/Admin/users-slice";
 import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import {onCheck} from '@/redux/slices/Admin/branchManager-slice';
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const Branch_Manager = () => {
     //STATES
     const [users, setUsers] = useState([]);
+
+    // LANGUAGE
+    const {t} = useTranslation('branch')
 
     const user = {
         clientName: 'Ahmed Mohammed',
@@ -95,7 +100,7 @@ const Branch_Manager = () => {
                                         }))
                                     }} />
                                     <label htmlFor="All" className={classes.label}>
-                                        <span className={classes.labelText}>All</span>
+                                        <span className={classes.labelText}>{t("all")}</span>
                                     </label>
                                 </div>
                                 <div className={classes.checkboxGroup}>
@@ -106,7 +111,7 @@ const Branch_Manager = () => {
                                         }))
                                     }} />
                                     <label htmlFor="breakfast" className={classes.label}>
-                                        <span className={classes.labelText}>Breakfast</span>
+                                        <span className={classes.labelText}>{t("breakfast")}</span>
                                     </label>
                                 </div>
                                 <div className={classes.checkboxGroup}>
@@ -117,7 +122,7 @@ const Branch_Manager = () => {
                                         }))
                                     }} />
                                     <label htmlFor="lunch" className={classes.label}>
-                                        <span className={classes.labelText}>Lunch</span>
+                                        <span className={classes.labelText}>{t("lunch")}</span>
                                     </label>
                                 </div>
                                 <div className={classes.checkboxGroup}>
@@ -128,7 +133,7 @@ const Branch_Manager = () => {
                                         }))
                                     }} />
                                     <label htmlFor="dinner" className={classes.label}>
-                                        <span className={classes.labelText}>Dinner</span>
+                                        <span className={classes.labelText}>{t("dinner")}</span>
                                     </label>
                                 </div>
                                 <div className={classes.checkboxGroup}>
@@ -139,7 +144,7 @@ const Branch_Manager = () => {
                                         }))
                                     }} />
                                     <label htmlFor="snacks" className={classes.label}>
-                                        <span className={classes.labelText}>Snacks</span>
+                                        <span className={classes.labelText}>{t("snacks")}</span>
                                     </label>
                                 </div>
                             </div>
@@ -178,11 +183,11 @@ const Branch_Manager = () => {
                                                     onClick={() => {
 
                                                     }}>
-                                                Unable to Arrive
+                                                {t("unable")}
                                             </button>
                                             <button className={classes.Delete}
                                                     onClick={() => handleDelete(user._id)}>
-                                                Arrived
+                                                {t("arrived")}
                                             </button>
                                         </td>
                                     </tr>

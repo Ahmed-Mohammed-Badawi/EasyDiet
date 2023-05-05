@@ -8,10 +8,15 @@ import Spinner from "@/components/layout/spinner/Spinner";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import {toast} from "react-toastify";
 import axios from "axios";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const Users = () => {
     //ROUTER
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('editPackage');
 
     // STATES
     const [isOn, setIsOn] = useState(false);
@@ -46,7 +51,7 @@ const Users = () => {
                     console.log(res);
                     setMeals(res.data.data.meals);
                 })
-        }catch (err) {
+        } catch (err) {
             toast.error(err.response?.data?.message || err.message)
         }
     }, [isOn])
@@ -57,7 +62,7 @@ const Users = () => {
                 <div className={classes.Container}>
                     <div className={classes.Top}>
                         <div className={classes.Toggle_container}>
-                            <span onClick={checkClients}>ENGLISH</span>
+                            <span onClick={checkClients}>{t("english")}</span>
                             <div className={classes.UserToggler}>
                                 <label htmlFor={'users_type'}
                                        className={[classes.toggle_container, isOn ? classes.Employees : ''].join(' ')}>
@@ -70,7 +75,7 @@ const Users = () => {
                                     onChange={handleClick}
                                 />
                             </div>
-                            <span onClick={checkEmployees}>ARABIC</span>
+                            <span onClick={checkEmployees}>{t("arabic")}</span>
                         </div>
                     </div>
                     <div className={classes.Bottom}>
@@ -117,9 +122,10 @@ const Users = () => {
                                 <Image src={'/images/Arrow-Right_Icon.svg'} alt={'Arrow Right'} width={15} height={15}/>
                             </button>
                         </div>
-                        <button type={'submit'} className={classes.Submit} onClick={() => router.push(`/admin/edit/edit_package`)}>
+                        <button type={'submit'} className={classes.Submit}
+                                onClick={() => router.push(`/admin/edit/edit_package`)}>
                             <span>
-                                {loading ? <Spinner size={2} color={`#ffffff`}/> : 'CONFIRM'}
+                                {loading ? <Spinner size={2} color={`#ffffff`}/> : t("confirm")}
                             </span>
                             <Image src={'/images/Send_Icon.svg'} alt={'Send'} width={20} height={20}/>
                         </button>

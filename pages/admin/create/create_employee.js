@@ -12,10 +12,15 @@ import {clearAll, onInputChange} from "@/redux/slices/Admin/createEmployee-slice
 import {useDispatch, useSelector} from "react-redux";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import Spinner from "@/components/layout/spinner/Spinner";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const CreateEmployee = () => {
     // ROUTER
     const router = useRouter()
+
+    // LANGUAGE
+    const {t} = useTranslation('createEmployee')
 
     // STATES
     const [selectedImage, setSelectedImage] = useState(null);
@@ -99,13 +104,13 @@ const CreateEmployee = () => {
         <>
             <main className={classes.Main}>
                 <div className={classes.FormContainer}>
-                    <h1>Create Employee</h1>
+                    <h1>{t("title")}</h1>
                     <form onSubmit={submitHandler}>
                         <div className={classes.Image_Uploader}>
                             <label htmlFor={'meal_image'}>
                                 <div className={classes.Static}>
                                     <Image src={'/images/Upload_Icon.svg'} alt={'Upload Icon'} width={30} height={30}/>
-                                    <span>Upload Image</span>
+                                    <span>{t("upload")}</span>
                                 </div>
                                 <div className={classes.ImagePreviewer}>
                                     {preview && <Image src={preview} alt="Preview" width={80} height={50}/>}
@@ -116,7 +121,7 @@ const CreateEmployee = () => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'employee_name'}>Employee Name</label>
+                                <label htmlFor={'employee_name'}>{t("name")}</label>
                                 <input
                                     type={'text'}
                                     name={'employee_name'}
@@ -132,7 +137,7 @@ const CreateEmployee = () => {
                                 />
                             </div>
                             <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
-                                <label htmlFor={'user_role'}>User Role</label>
+                                <label htmlFor={'user_role'}>{t("role")}</label>
                                 <CustomSelectRoleType
                                     defaultValue={role}
                                     changed={(values) => {
@@ -147,7 +152,7 @@ const CreateEmployee = () => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'employee_address'}>Employee Address</label>
+                                <label htmlFor={'employee_address'}>{t("address")}</label>
                                 <input
                                     type={'text'}
                                     name={'employee_address'}
@@ -163,7 +168,7 @@ const CreateEmployee = () => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'employee_phone'}>Mobile</label>
+                                <label htmlFor={'employee_phone'}>{t("phone")}</label>
                                 <input
                                     type={'tel'}
                                     name={'employee_phone'}
@@ -181,7 +186,7 @@ const CreateEmployee = () => {
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'employee_username'}>Username</label>
+                                <label htmlFor={'employee_username'}>{t("username")}</label>
                                 <input
                                     type={'text'}
                                     name={'employee_username'}
@@ -197,7 +202,7 @@ const CreateEmployee = () => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'employee_password'}>Password</label>
+                                <label htmlFor={'employee_password'}>{t("password")}</label>
                                 <input
                                     type={'password'}
                                     name={'employee_password'}
@@ -215,7 +220,7 @@ const CreateEmployee = () => {
                         </div>
                         <button type={'submit'}>
                             <span>
-                                {loading ? <Spinner size={2} color={`#ffffff`}/> : 'Create'}
+                                {loading ? <Spinner size={2} color={`#ffffff`}/> : t("button")}
                             </span>
                             <Image src={'/images/Send_Icon.svg'} alt={'Send'} width={20} height={20}/>
                         </button>

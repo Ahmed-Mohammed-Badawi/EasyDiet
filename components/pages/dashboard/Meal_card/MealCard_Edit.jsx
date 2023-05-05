@@ -7,11 +7,16 @@ import {toast} from "react-toastify";
 //REDUX
 import {onInputChange} from "@/redux/slices/Admin/meals-slice";
 import {useSelector, useDispatch} from "react-redux";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 
 const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, lang}) => {
     // ROUTER
     const router = useRouter();
+
+    // LANGUAGE
+    const {t} = useTranslation('menu');
 
     //REDUX
     const dispatch = useDispatch();
@@ -51,20 +56,20 @@ const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, 
                 <h2>{name}</h2>
                 <div className={classes.Info_Container}>
                     <div className={classes.Info_Item}>
-                        <h3>calories</h3>
-                        <span>{calories}g</span>
+                        <h3>{t("calories")}</h3>
+                        <span>{calories} cal</span>
                     </div>
                     <div className={classes.Info_Item}>
-                        <h3>Protein</h3>
-                        <span>{protein}g</span>
+                        <h3>{t("protein")}</h3>
+                        <span>{protein} {t("gram")}</span>
                     </div>
                     <div className={classes.Info_Item}>
-                        <h3>Fat</h3>
-                        <span>{fats}g</span>
+                        <h3>{t("fat")}</h3>
+                        <span>{fats} {t("gram")}</span>
                     </div>
                     <div className={classes.Info_Item}>
-                        <h3>Carbohydrate</h3>
-                        <span>{carbohydrate}g</span>
+                        <h3>{t("carbohydrate")}</h3>
+                        <span>{carbohydrate} {t("gram")}</span>
                     </div>
                 </div>
                 <div className={classes.Buttons}>

@@ -4,12 +4,13 @@ import classes from '@/styles/pages/admin/dashboard.module.scss';
 import {useRouter} from "next/router";
 // NEW
 import {useTranslation} from "react-i18next";
-//TEST
+// LANGUAGE
 import ProjectsChart from "@/components/pages/dashboard/ProjectsChart";
 // IMPORTS
 import PackageAdminCard from "@/components/pages/dashboard/Package_card/PackageCard";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
+
 
 export default function Dashboard() {
     // ROUTER
@@ -29,7 +30,8 @@ export default function Dashboard() {
     // REFS
     const cardContainerRef = useRef();
 
-    const {t} = useTranslation();
+    // LANGUAGE
+    const {t} = useTranslation('dashboard');
 
     const handleScroll = (event) => {
         if (cardContainerRef.current) {
@@ -89,7 +91,7 @@ export default function Dashboard() {
                     <div className={classes.Reports}>
                         <div className={classes.Report}>
                             <div className={classes.Report_Title}>
-                                <p>Packages Number</p>
+                                <p>{t("packagesNumber")}</p>
                             </div>
                             <div className={classes.Report_Number}>
                                 <p>{packages}</p>
@@ -97,7 +99,7 @@ export default function Dashboard() {
                         </div>
                         <div className={classes.Report}>
                             <div className={classes.Report_Title}>
-                                <p>Meals Number</p>
+                                <p>{t("mealsNumber")}</p>
                             </div>
                             <div className={classes.Report_Number}>
                                 <p>{meals}</p>
@@ -105,7 +107,7 @@ export default function Dashboard() {
                         </div>
                         <div className={classes.Report}>
                             <div className={classes.Report_Title}>
-                                <p>Number of nutritionists</p>
+                                <p>{t("specialistNumber")}</p>
                             </div>
                             <div className={classes.Report_Number}>
                                 <p>{doctors}</p>
@@ -114,7 +116,7 @@ export default function Dashboard() {
                     </div>
                 </section>
                 <section className={classes.Bottom}>
-                    <h2>Best Selling Packages</h2>
+                    <h2>{t("bestSelling")}</h2>
                     <div className={classes.Cards_Container} onWheel={handleScroll} ref={cardContainerRef}>
                         {topSelling && topSelling.map((cur) => {
                             return (
