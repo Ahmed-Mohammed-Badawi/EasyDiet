@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {useRouter} from "next/router";
@@ -11,35 +11,72 @@ import {toast} from "react-toastify";
 // Language
 import {useTranslation} from "react-i18next";
 import Spinner from "@/components/layout/spinner/Spinner";
+// REDUX
+import {useSelector, useDispatch} from "react-redux";
+import {onInputChange} from '@/redux/slices/Auth/resetPasswordSlice';
 
 export default function VerifyEmail({isAuthenticated, userData}) {
-    // STATES
-    const [loading, setLoading] = useState(false);
-
 
     // ROUTER
     const router = useRouter();
     // LANGUAGE
     const {t} = useTranslation('verifyEmail');
 
+    // STATES
+    const [loading, setLoading] = useState(false);
+
+    // REDUX
+    const dispatch = useDispatch();
+    const {email, code} = useSelector(state => state.resetPassword);
+
+    useEffect(()=> {
+
+        if(!email){
+            router.push('/auth/reset_password');
+        }
+
+    }, [email, router])
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
-        setLoading(true)
+        setLoading(true);
 
-        await axios.post("https://api.easydietkw.com/api/v1/login")
+        await axios.post("https://api.easydietkw.com/api/v1/verify/code", {
+            email: email,
+            code: code
+        })
             .then(res => {
                 setLoading(false);
 
+                // Show success message
+                toast.success(res.data.message);
+                // REDIRECT TO NEW PASSWORD PAGE
+                router.push('/auth/new_password')
+            })
+            .catch(err => {
+                setLoading(false)
+                // Show error message
+                toast.error(err.response?.data?.message || err.message || "Something went wrong");
+            })
+    };
+
+    // RESEND EMAIL HANDLER
+    const resendCodeHandler = async () => {
+        await axios.post("https://api.easydietkw.com/api/v1/forgot/password", {
+            email: email
+        })
+            .then(res => {
+                setLoading(false);
                 // Show success message
                 toast.success(res.data.message);
             })
             .catch(err => {
                 setLoading(false)
                 // Show error message
-                toast.error(err.response?.data?.message || err.message || "Invalid username or password");
+                toast.error(err.response?.data?.message || err.message || "Something went wrong");
             })
-    };
+    }
 
 
     return (
@@ -52,12 +89,20 @@ export default function VerifyEmail({isAuthenticated, userData}) {
                         </div>
                         <form className={classes.Form} onSubmit={handleFormSubmit}>
                             <h2 className={classes.Heading_2}>{t("title")}</h2>
-                            <button type={'button'} className={classes.Resend_Code}>
+                            <button type={'button'} className={classes.Resend_Code} onClick={resendCodeHandler}>
                                 {t("resendButton")}
                             </button>
                             <div className={classes.Input_Group}>
                                 <div className={classes.InputBorderContainer}>
-                                    <input type={'text'} id={'CODE'} name={'CODE'} placeholder={t("placeholder1")}/>
+                                    <input
+                                        type={'number'}
+                                        id={'CODE'}
+                                        name={'CODE'}
+                                        placeholder={t("placeholder1")}
+                                        onChange={(event) => {
+                                            dispatch(onInputChange({key: 'code', value: event.target.value}))
+                                        }}
+                                    />
                                 </div>
                             </div>
 

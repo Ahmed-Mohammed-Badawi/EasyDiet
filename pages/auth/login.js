@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {useRouter} from "next/router";
@@ -24,11 +24,28 @@ export default function Login({isAuthenticated, userData}) {
     // LANGUAGE
     const {t} = useTranslation('login');
 
+    // EFFECT TO SET THE TOKEN AND REDIRECT THE USER
+    useEffect(() => {
+        const token = router.query.token;
+        const hasProfile = router.query.hasProfile;
+
+        if (token && document) {
+            document.cookie = `token=${token}; path=/;`;
+
+            if (hasProfile === 'true') {
+                router.push(`/user/my_subscription`).then(() => router.reload())
+            } else {
+                router.push(`/user/profile`).then(() => router.reload())
+            }
+        }
+    }, [router.query]);
+
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
         // CHECK THE VALIDATION
-        if(!username || !password){
+        if (!username || !password) {
             toast.error('Please fill all inputs');
             return;
         }
@@ -72,6 +89,23 @@ export default function Login({isAuthenticated, userData}) {
     };
 
 
+    // GOOGLE HANDLER
+    const googleHandler = () => {
+        axios.get('https://api.easydietkw.com/api/v1/auth/google')
+            .then(res => {
+                if (res.data?.authUrl) {
+                    // console.log(res.data.authUrl)
+                    window.location.href = res.data.authUrl
+                } else {
+                    toast.error('Something is wrong with the auth url')
+                }
+            })
+            .catch(err => {
+                toast.error(err.response?.data?.message || err.message)
+            })
+    }
+
+
     return (
         <>
             <div className={classes?.Container}>
@@ -112,7 +146,7 @@ export default function Login({isAuthenticated, userData}) {
                                     </Link>
                                 </div>
                                 <div className={classes.Buttons_Container}>
-                                    <button type={'button'} className={classes.Google_button}>
+                                    <button type={'button'} className={classes.Google_button} onClick={googleHandler}>
                                         <span><Image src={'/images/Auth/google-icon.svg'} alt={'Create User'} width={30}
                                                      height={30}/></span>
                                     </button>

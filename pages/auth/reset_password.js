@@ -7,6 +7,9 @@ import {useRouter} from "next/router";
 import {useTranslation} from "react-i18next";
 import axios from "axios";
 import {toast} from "react-toastify";
+// REDUX
+import {useSelector, useDispatch} from "react-redux";
+import {onInputChange} from '@/redux/slices/Auth/resetPasswordSlice';
 
 const ResetPassword = () => {
 
@@ -18,21 +21,36 @@ const ResetPassword = () => {
     // LANGUAGE
     const {t} = useTranslation('resetPassword');
 
+    // REDUX
+    const dispatch = useDispatch();
+    const {email} = useSelector(state => state.resetPassword)
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if(!regex.test(email)){
+            toast.error('Please enter a valid email');
+            return;
+        }
+
         setLoading(true)
 
-        await axios.post("https://api.easydietkw.com/api/v1/login")
+        await axios.post("https://api.easydietkw.com/api/v1/forgot/password", {
+            email: email
+        })
             .then(res => {
                 setLoading(false);
                 // Show success message
                 toast.success(res.data.message);
+                // REDIRECT TO CODE PAGE
+                router.push('/auth/verify_email')
             })
             .catch(err => {
                 setLoading(false)
                 // Show error message
-                toast.error(err.response?.data?.message || err.message || "Invalid username or password");
+                toast.error(err.response?.data?.message || err.message || "Something went wrong");
             })
     };
 
@@ -50,7 +68,9 @@ const ResetPassword = () => {
                             <div className={classes.Input_Group}>
                                 <div className={classes.InputBorderContainer}>
                                     <input
-                                        onChange={(e) => {}}
+                                        onChange={(e) => {
+                                            dispatch(onInputChange({key: 'email', value: e.target.value}))
+                                        }}
                                         type={'email'}
                                         id={'email'}
                                         placeholder={t("placeholder1")}

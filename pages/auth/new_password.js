@@ -2,11 +2,14 @@ import classes from "@/styles/pages/new_password.module.scss";
 import Link from "next/link";
 import Image from "next/image";
 import Spinner from "@/components/layout/spinner/Spinner";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import {useTranslation} from "react-i18next";
 import axios from "axios";
 import {toast} from "react-toastify";
+// REDUX
+import {useSelector, useDispatch} from "react-redux";
+import {onInputChange} from '@/redux/slices/Auth/resetPasswordSlice';
 
 const NewPassword = () => {
 
@@ -17,22 +20,53 @@ const NewPassword = () => {
     // STATES
     const [loading, setLoading] = useState(false);
 
+    // REDUX
+    const dispatch = useDispatch();
+    const {email, password, newPassword} = useSelector(state => state.resetPassword);
+
+
+    useEffect(()=> {
+
+        if(!email){
+            router.push('/auth/reset_password');
+        }
+
+    }, [email, router])
+
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
+
+        if(!password || !newPassword){
+            toast.error('Please fill all fields');
+            return
+        }
+
+        if(password !== newPassword){
+            toast.error('Password and confirm is not the same');
+            return
+        }
+
         setLoading(true)
 
-        await axios.post("https://api.easydietkw.com/api/v1/login")
+        await axios.post("https://api.easydietkw.com/api/v1/reset/password", {
+            email: email,
+            password: password,
+            confirmPassword: newPassword
+        })
             .then(res => {
                 setLoading(false);
 
                 // Show success message
                 toast.success(res.data.message);
+                //ROUTER REDIRECT
+                router.push('/auth/login');
             })
             .catch(err => {
                 setLoading(false)
                 // Show error message
-                toast.error(err.response?.data?.message || err.message || "Invalid username or password");
+                toast.error(err.response?.data?.message || err.message || "Something went wrong");
             })
     };
 
@@ -49,12 +83,28 @@ const NewPassword = () => {
                             <h2 className={classes.Heading_2}>{t("title")}</h2>
                             <div className={classes.Input_Group}>
                                 <div className={classes.InputBorderContainer}>
-                                    <input type={'password'} id={'new_password'} name={'new_password'} placeholder={t("placeholder1")}/>
+                                    <input
+                                        type={'password'}
+                                        id={'new_password'}
+                                        name={'new_password'}
+                                        placeholder={t("placeholder1")}
+                                        onChange={event => {
+                                            dispatch(onInputChange({key: 'password', value: event.target.value}))
+                                        }}
+                                    />
                                 </div>
                             </div>
                             <div className={classes.Input_Group}>
                                 <div className={classes.InputBorderContainer}>
-                                    <input type={'password'} id={'confirm_password'} name={'confirm_password'} placeholder={t("placeholder2")}/>
+                                    <input
+                                        type={'password'}
+                                        id={'confirm_password'}
+                                        name={'confirm_password'}
+                                        placeholder={t("placeholder2")}
+                                        onChange={event => {
+                                            dispatch(onInputChange({key: 'newPassword', value: event.target.value}))
+                                        }}
+                                    />
                                 </div>
                             </div>
 

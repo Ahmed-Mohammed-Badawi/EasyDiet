@@ -160,7 +160,7 @@ export default function Register({isAuthenticated, userData}) {
 
             // router.push('/')
             // Display success message
-            toast.success('Form submitted successfully');
+            toast.success('User created successfully');
 
         } catch (e) {
             // SET THE LOADING STATE
@@ -324,11 +324,11 @@ export default function Register({isAuthenticated, userData}) {
                                     </Link>
                                 </div>
                                 <div className={classes.Buttons_Container}>
-                                    <button type={'button'} onClick={googleHandler}
-                                            className={classes.Google_button}>
-                                        <span><Image src={'/images/Auth/google-icon.svg'} alt={'Create User'} width={30}
-                                                     height={30}/></span>
-                                    </button>
+                                    {/*<button type={'button'} onClick={googleHandler}*/}
+                                    {/*        className={classes.Google_button}>*/}
+                                    {/*    <span><Image src={'/images/Auth/google-icon.svg'} alt={'Create User'} width={30}*/}
+                                    {/*                 height={30}/></span>*/}
+                                    {/*</button>*/}
                                     <button onClick={showPreviousPart} ref={PreviousPartRef}
                                             className={[classes.Next_button, classes.Un_Active].join(' ')}
                                             type={'button'}>

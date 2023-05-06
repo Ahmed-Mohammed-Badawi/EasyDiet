@@ -21,6 +21,8 @@ import subscriptionSlice from "@/redux/slices/user/subscription_info";
 import dayMealsSlice from "@/redux/slices/user/daymeals_slice";
 import profileSlice from "@/redux/slices/user/profile_slice";
 import nutrition_specialistSlice from "@/redux/slices/user/nutritionspecialist_slice";
+// AUTH
+import resetPasswordSlice from "@/redux/slices/Auth/resetPasswordSlice";
 
 export const store = configureStore({
     reducer: {
@@ -44,6 +46,8 @@ export const store = configureStore({
         [dayMealsSlice.name]: dayMealsSlice.reducer,
         [profileSlice.name]: profileSlice.reducer,
         [nutrition_specialistSlice.name]: nutrition_specialistSlice.reducer,
+        // AUTH
+        [resetPasswordSlice.name]: resetPasswordSlice.reducer
     },
 })
 
