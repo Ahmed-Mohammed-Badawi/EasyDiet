@@ -1,5 +1,6 @@
 import classes from '@/styles/pages/doctor/doctor.module.scss';
 import Image from "next/image";
+import Head from "next/head";
 import {useEffect, useRef, useState} from "react";
 import {toast} from "react-toastify";
 // IMPORTS
@@ -16,6 +17,8 @@ const Doctor = () => {
     const {t} = useTranslation('doctor')
 
     //STATES
+    const [hasNextPage, setHasNextPage] = useState(false);
+    const [nextPage, setNextPage] = useState();
     const [messages, setMessages] = useState([]);
     const [userMessages, setUserMessages] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -32,6 +35,8 @@ const Doctor = () => {
     const heightRef = useRef();
     const weightRef = useRef();
     const messageRef = useRef();
+    const messagesRef = useRef();
+
 
     //HELPERS
     function getObjectIndexById(array, id) {
@@ -173,16 +178,68 @@ const Doctor = () => {
             }
         })
             .then(res => {
+                console.log(res)
+                // SET THE STATE OF HAS NEXT PAGE AND NEXT PAGE
+                setHasNextPage(res.data.data.hasNextPage);
+                setNextPage(res.data.data.nextPage);
+
                 // SET THE MEALS IN THE STATE
                 setMessages(res.data.data.messages)
             })
             .catch(err => console.log(err))
     }, [])
 
+    // FUNCTION TO LOAD THE DATA FROM THE SERVER WHEN THE USER SCROLL TO THE BOTTOM MESSAGES LIST IF THE HAS NEXT PAGE IS TRUE AND UPDATE THE STATE
+    useEffect(() => {
+        function handleScroll() {
+            const scrollHeight = messagesRef.current.scrollHeight;
+            const scrollTop = messagesRef.current.scrollTop;
+            const clientHeight = messagesRef.current.clientHeight;
+
+            if (scrollHeight === scrollTop + clientHeight && hasNextPage) {
+                axios
+                    .get(`https://api.easydietkw.com/api/v1/clients/messages?page=${nextPage}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                    .then(res => {
+                        setHasNextPage(res.data.data.hasNextPage);
+                        setNextPage(res.data.data.nextPage);
+                        setMessages(prevMessages => [...prevMessages, ...res.data.data.messages]);
+                    })
+                    .catch(err => {
+                        toast.error(err?.response?.data?.message || err.message);
+                    });
+            }
+        }
+
+        messagesRef.current.addEventListener("scroll", handleScroll);
+        return () => {
+            // messagesRef.current.removeEventListener("scroll", handleScroll);
+        };
+    }, [hasNextPage, nextPage]);
+
     return (
         <>
+            {/*OPTIMIZE THE SEO FOR THIS PAGE IN NEXTJS */}
+            <Head>
+                <title>Dashboard</title>
+                <meta name="description" content="Dashboard for the doctor to review the questions of the clients" />
+                <meta name="keywords" content="Dashboard, Doctor, EasyDiet" />
+                <meta name="author" content="EasyDiet Team" />
+
+                {/* OPEN GRAPH */}
+                <meta property="og:title" content="Dashboard" />
+                <meta property="og:description" content="Dashboard for the doctor to review the questions of the clients" />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://easydietkw.com/doctor" />
+                <meta property="og:image" content="/images/Auth/logo.svg" />
+                <meta property="og:site_name" content="EasyDiet" />
+            </Head>
+
             <div className={classes.Doctor}>
-                <div className={classes.Clients}>
+                <div className={classes.Clients} ref={messagesRef}>
                     {messages && messages.map((message) => {
                         return (
                             <div

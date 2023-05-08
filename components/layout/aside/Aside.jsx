@@ -127,8 +127,8 @@ const Aside = ({isAuthenticated, userData}) => {
                     </Link></li>)}
             {(isAuthenticated && userData?.decodedToken?.role === "diet specialist") && (
                 <li className={classes.Aside_List__Item}>
-                    <Link onClick={handleResize} href={'/admin/doctor'}
-                          className={router.pathname === '/admin/dashboard' ? classes.Active : ''}>
+                    <Link onClick={handleResize} href={'/doctor'}
+                          className={router.pathname === '/doctor' ? classes.Active : ''}>
                         <span className={classes.Image_Container}>
                             <Image src={'/images/dashboard.png'} alt={'Icon'} width={20} height={20}/>
                         </span>
