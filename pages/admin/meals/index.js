@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import classes from '@/styles/pages/admin/meals.module.scss'
 import Image from "next/image";
 // IMPORTS
@@ -25,6 +25,27 @@ const Meals = () => {
     const dispatch = useDispatch();
     const {meals} = useSelector(state => state.meals);
 
+    // PAGINATION STATES
+    const [pageNumber, setPageNumber] = useState(1);
+    const [hasNextPage, setHasNextPage] = useState(false);
+    const [hasPrevPage, setHasPrevPage] = useState(false);
+
+
+    // PAGINATION LOGIC
+    const prevPage = () => {
+        if (pageNumber === 1) return;
+
+        if (hasPrevPage) {
+            setPageNumber(prev => prev - 1);
+        }
+    }
+
+    const nextPage = () => {
+        if (hasNextPage) {
+            setPageNumber(prev => prev + 1);
+        }
+    }
+
     // EFFECT TO GET THE MEALS WHEN PAGE LOAD
     useEffect(() => {
         //GET THE TOKEN
@@ -32,18 +53,20 @@ const Meals = () => {
 
         axios.get(`https://api.easydietkw.com/api/v1/get/all/meals`, {
             params: {
-                page: 1,
+                page: pageNumber || 1,
             },
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
             .then(res => {
+                setHasNextPage(res.data.data.hasNextPage);
+                setHasPrevPage(res.data.data.hasPreviousPage);
                 // SET THE MEALS IN THE STATE
                 dispatch(onInputChange({key: 'meals', value: res.data.data.meals}))
             })
             .catch(err => console.log(err))
-    }, [dispatch])
+    }, [dispatch, pageNumber])
 
 
     return (
@@ -89,8 +112,19 @@ const Meals = () => {
                                 lang={item.lang}
                             />
                         )
-                    })
-                    }
+                    })}
+                    {(hasNextPage || hasPrevPage) && (
+                        <div className={classes.Table_Pagination}>
+                            <button onClick={prevPage} disabled={!hasPrevPage} title={String(pageNumber - 1)}>
+                                <Image src={'/images/Arrow-Left_Icon.svg'} alt={'Arrow Left'} width={15}
+                                       height={15}/>
+                            </button>
+                            <button onClick={nextPage} disabled={!hasNextPage} title={String(pageNumber + 1)}>
+                                <Image src={'/images/Arrow-Right_Icon.svg'} alt={'Arrow Right'} width={15}
+                                       height={15}/>
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </>

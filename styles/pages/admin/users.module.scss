@@ -476,6 +476,13 @@
                 box-shadow: inset 0 0 .2rem rgba(0, 0, 0, 0.16);
                 transform: scale(0.95);
             }
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                box-shadow: initial;
+                transform: scale(1);
+            }
         }
     }
 }
@@ -962,6 +969,13 @@
                 &:active{
                     box-shadow: inset 0 0 .2rem rgba(0, 0, 0, 0.16);
                     transform: scale(0.95);
+                }
+
+                &:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                    box-shadow: initial;
+                    transform: scale(1);
                 }
             }
         }

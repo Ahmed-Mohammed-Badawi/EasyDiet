@@ -55,6 +55,9 @@ export default function Home({isAuthenticated, userData}) {
                             <button className={classes?.Button} onClick={() => router.push('/user/packages')}>
                                 {t('button')}
                             </button>
+                            <button className={[classes?.Button, classes.MenuButton].join(' ')} onClick={() => router.push('/user/menu')}>
+                                {t('menuButton')}
+                            </button>
                         </div>
                     </div>
                     <div className={classes?.Left}>

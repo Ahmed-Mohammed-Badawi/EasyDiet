@@ -159,9 +159,12 @@ export default function Register({isAuthenticated, userData}) {
             // SET THE LOADING STATE
             setLoading(false)
 
-            // router.push('/')
-            // Display success message
-            toast.success('User created successfully');
+            // REDIRECT TO THE LOGIN PAGE
+            router.push('/auth/login')
+                .then(()=>{
+                    // Display success message
+                    toast.success('User created successfully');
+                })
 
         } catch (e) {
             // SET THE LOADING STATE

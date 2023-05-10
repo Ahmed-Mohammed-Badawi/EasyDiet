@@ -6,5 +6,7 @@
   "start": "START",
   "end": "END",
   "expires": "EXPIRES AFTER",
-  "days": "Days"
+  "days": "Days",
+  "notLoadedMessage": "No subscription loaded yet or you are not subscribed to any package. Please subscribe to a package to see your subscription details.",
+  "button": "PACKAGES"
 }

@@ -25,8 +25,13 @@ const Users = () => {
     // STATES
     const [isOn, setIsOn] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
     const [meals, setMeals] = useState(null);
+    // PAGINATION STATES
+    const [pageNumber, setPageNumber] = useState(1);
+    const [hasNextPage, setHasNextPage] = useState(false);
+    const [hasPrevPage, setHasPrevPage] = useState(false);
+
+
 
     // REDUX
     const dispatch = useDispatch();
@@ -42,7 +47,23 @@ const Users = () => {
     const checkClients = () => {
         setIsOn(false);
     }
-    
+
+    // PAGINATION LOGIC
+    const prevPage = () => {
+        if (pageNumber === 1) return;
+
+        if (hasPrevPage) {
+            setPageNumber(prev => prev - 1);
+        }
+    }
+
+    const nextPage = () => {
+        if (hasNextPage) {
+            setPageNumber(prev => prev + 1);
+        }
+    }
+
+
     useEffect(() => {
         const token = extractTokenFromCookie(document.cookie);
         
@@ -52,18 +73,19 @@ const Users = () => {
                     Authorization: `Bearer ${token}`
                 },
                 params: {
-                    page: currentPage,
+                    page: pageNumber || 1,
                     lang: isOn ? 'AR' : 'EN',
                 }
             })
                 .then(res => {
-                    console.log(res);
+                    setHasNextPage(res.data.data.hasNextPage);
+                    setHasPrevPage(res.data.data.hasPreviousPage);
                     setMeals(res.data.data.meals);
                 })
         }catch (err) {
             toast.error(err.response?.data?.message || err.message)
         }
-    }, [isOn, currentPage]);
+    }, [isOn, pageNumber]);
 
     // SUBMIT HANDLER
     const submitHandler = async () => {
@@ -167,14 +189,18 @@ const Users = () => {
                         </table>
                     </div>
                     <div className={classes.Buttons_Container}>
-                        <div className={classes.Table_Pagination}>
-                            <button>
-                                <Image src={'/images/Arrow-Left_Icon.svg'} alt={'Arrow Left'} width={15} height={15}/>
-                            </button>
-                            <button>
-                                <Image src={'/images/Arrow-Right_Icon.svg'} alt={'Arrow Right'} width={15} height={15}/>
-                            </button>
-                        </div>
+                        {(hasNextPage || hasPrevPage) && (
+                            <div className={classes.Table_Pagination}>
+                                <button onClick={prevPage} disabled={!hasPrevPage} title={String(pageNumber - 1)}>
+                                    <Image src={'/images/Arrow-Left_Icon.svg'} alt={'Arrow Left'} width={15}
+                                           height={15}/>
+                                </button>
+                                <button onClick={nextPage} disabled={!hasNextPage} title={String(pageNumber + 1)}>
+                                    <Image src={'/images/Arrow-Right_Icon.svg'} alt={'Arrow Right'} width={15}
+                                           height={15}/>
+                                </button>
+                            </div>
+                        )}
                         <button type={'submit'} className={classes.Submit} onClick={() => router.push(`/admin/create/create_package`)}>
                             <span>
                                 {loading ? <Spinner size={2} color={`#ffffff`}/> : t("button")}

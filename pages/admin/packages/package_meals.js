@@ -24,6 +24,10 @@ const Users = () => {
     const [isOn, setIsOn] = useState(false);
     const [loading, setLoading] = useState(false);
     const [meals, setMeals] = useState(null);
+    // PAGINATION STATES
+    const [pageNumber, setPageNumber] = useState(1);
+    const [hasNextPage, setHasNextPage] = useState(false);
+    const [hasPrevPage, setHasPrevPage] = useState(false);
 
     const handleClick = (e) => {
         setIsOn(e.target.checked);
@@ -35,36 +39,54 @@ const Users = () => {
     const checkClients = () => {
         setIsOn(false);
     }
-    
+
+    // PAGINATION LOGIC
+    const prevPage = () => {
+        if (pageNumber === 1) return;
+
+        if (hasPrevPage) {
+            setPageNumber(prev => prev - 1);
+        }
+    }
+
+    const nextPage = () => {
+        if (hasNextPage) {
+            setPageNumber(prev => prev + 1);
+        }
+    }
+
     useEffect(() => {
         const token = extractTokenFromCookie(document.cookie);
-        
+
         try {
             axios.get(`https://api.easydietkw.com/api/v1/get/meals`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
                 params: {
-                    page: 1,
+                    page: pageNumber || 1,
                     lang: isOn ? 'AR' : 'EN',
                 }
             })
                 .then(res => {
-                    console.log(res);
+                    setHasNextPage(res.data.data.hasNextPage);
+                    setHasPrevPage(res.data.data.hasPreviousPage);
                     setMeals(res.data.data.meals);
                 })
-        }catch (err) {
+        } catch (err) {
             toast.error(err.response?.data?.message || err.message)
         }
-    }, [isOn])
+    }, [isOn, pageNumber])
 
     return (
         <>
             {/*SEO OPTIMIZATION*/}
             <Head>
                 <title>EasyDiet | Package Meals</title>
-                <meta name="description" content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
-                <meta name="keywords" content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
+                <meta name="description"
+                      content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
+                <meta name="keywords"
+                      content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
                 <meta name="author" content="EasyDiet"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 <meta name="robots" content="index, follow"/>
@@ -73,11 +95,12 @@ const Users = () => {
                 <meta name="revisit-after" content="7 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://easydietkw.com/" />
-                <meta property="og:image" content="/images/Auth/logo.svg" />
-                <meta property="og:site_name" content="EasyDiet" />
-                <meta property="og:description" content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet." />
+                <meta property="og:type" content="website"/>
+                <meta property="og:url" content="https://easydietkw.com/"/>
+                <meta property="og:image" content="/images/Auth/logo.svg"/>
+                <meta property="og:site_name" content="EasyDiet"/>
+                <meta property="og:description"
+                      content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet."/>
             </Head>
             <main className={classes.Main}>
                 <div className={classes.Container}>
@@ -135,15 +158,20 @@ const Users = () => {
                         </table>
                     </div>
                     <div className={classes.Buttons_Container}>
-                        <div className={classes.Table_Pagination}>
-                            <button>
-                                <Image src={'/images/Arrow-Left_Icon.svg'} alt={'Arrow Left'} width={15} height={15}/>
-                            </button>
-                            <button>
-                                <Image src={'/images/Arrow-Right_Icon.svg'} alt={'Arrow Right'} width={15} height={15}/>
-                            </button>
-                        </div>
-                        <button type={'submit'} className={classes.Submit} onClick={() => router.push(`/admin/create/create_package`)}>
+                        {(hasNextPage || hasPrevPage) && (
+                            <div className={classes.Table_Pagination}>
+                                <button onClick={prevPage} disabled={!hasPrevPage} title={String(pageNumber - 1)}>
+                                    <Image src={'/images/Arrow-Left_Icon.svg'} alt={'Arrow Left'} width={15}
+                                           height={15}/>
+                                </button>
+                                <button onClick={nextPage} disabled={!hasNextPage} title={String(pageNumber + 1)}>
+                                    <Image src={'/images/Arrow-Right_Icon.svg'} alt={'Arrow Right'} width={15}
+                                           height={15}/>
+                                </button>
+                            </div>
+                        )}
+                        <button type={'submit'} className={classes.Submit}
+                                onClick={() => router.push(`/admin/create/create_package`)}>
                             <span>
                                 {loading ? <Spinner size={2} color={`#ffffff`}/> : t("confirm")}
                             </span>

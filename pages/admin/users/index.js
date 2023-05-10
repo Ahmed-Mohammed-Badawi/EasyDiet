@@ -27,6 +27,10 @@ const Users = () => {
 
     // STATES
     const [clientEditId, setClientEditId] = useState(false);
+    // PAGINATION STATES
+    const [pageNumber, setPageNumber] = useState(1);
+    const [hasNextPage, setHasNextPage] = useState(false);
+    const [hasPrevPage, setHasPrevPage] = useState(false);
 
     //REF
     const searchInputRef = useRef();
@@ -210,6 +214,21 @@ const Users = () => {
         setClientEditId('')
     }
 
+    // PAGINATION LOGIC
+    const prevPage = () => {
+        if (pageNumber === 1) return;
+
+        if (hasPrevPage) {
+            setPageNumber(prev => prev - 1);
+        }
+    }
+
+    const nextPage = () => {
+        if (hasNextPage) {
+            setPageNumber(prev => prev + 1);
+        }
+    }
+
     // EFFECT TO GET THE USERS
     useEffect(() => {
         const token = extractTokenFromCookie(document.cookie);
@@ -228,18 +247,23 @@ const Users = () => {
 
         } else {
             // GET THE USERS
-            axios.get(`https://api.easydietkw.com/api/v1/all/clients?page=1`, {
+            axios.get(`https://api.easydietkw.com/api/v1/all/clients`, {
                 headers: {
                     Authorization: `Bearer ${token}`
+                },
+                params: {
+                    page: pageNumber || 1
                 }
             })
                 .then(res => {
+                    setHasNextPage(res.data.data.hasNextPage);
+                    setHasPrevPage(res.data.data.hasPreviousPage);
                     // SET THE USERS IN REDUX
                     dispatch(setUsers({users: res.data.data.clients, usersType: 'clients'}))
                 })
                 .catch(err => console.log(err))
         }
-    }, [isOn, dispatch])
+    }, [isOn, dispatch, pageNumber])
 
     return (
         <>
@@ -390,14 +414,18 @@ const Users = () => {
                                 </tbody>
                             </table>}
                     </div>
-                    <div className={classes.Table_Pagination}>
-                        <button>
-                            <Image src={'/images/Arrow-Left_Icon.svg'} alt={'Arrow Left'} width={15} height={15}/>
-                        </button>
-                        <button>
-                            <Image src={'/images/Arrow-Right_Icon.svg'} alt={'Arrow Right'} width={15} height={15}/>
-                        </button>
-                    </div>
+                    {(hasNextPage || hasPrevPage) && (
+                        <div className={classes.Table_Pagination}>
+                            <button onClick={prevPage} disabled={!hasPrevPage} title={String(pageNumber - 1)}>
+                                <Image src={'/images/Arrow-Left_Icon.svg'} alt={'Arrow Left'} width={15}
+                                       height={15}/>
+                            </button>
+                            <button onClick={nextPage} disabled={!hasNextPage} title={String(pageNumber + 1)}>
+                                <Image src={'/images/Arrow-Right_Icon.svg'} alt={'Arrow Right'} width={15}
+                                       height={15}/>
+                            </button>
+                        </div>
+                    )}
                 </div>
             </main>
             <Overlay active={clientEditId.length > 5} clicked={clearTheIdOfUser}>

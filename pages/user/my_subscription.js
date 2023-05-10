@@ -6,6 +6,7 @@ import {onInputChange} from '@/redux/slices/user/daymeals_slice';
 import axios from "axios";
 import {toast} from "react-toastify";
 import DayItem from "@/components/pages/user/DayItem";
+import MySubscription from "@/components/pages/user/MySubscription/MySubscription";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
@@ -83,8 +84,10 @@ const My_Subscription = () => {
             {/*SEO OPTIMIZATION*/}
             <Head>
                 <title>EasyDiet | My Subscription</title>
-                <meta name="description" content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
-                <meta name="keywords" content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
+                <meta name="description"
+                      content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
+                <meta name="keywords"
+                      content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
                 <meta name="author" content="EasyDiet"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 <meta name="robots" content="index, follow"/>
@@ -93,54 +96,61 @@ const My_Subscription = () => {
                 <meta name="revisit-after" content="7 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://easydietkw.com/" />
-                <meta property="og:image" content="/images/Auth/logo.svg" />
-                <meta property="og:site_name" content="EasyDiet" />
-                <meta property="og:description" content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet." />
+                <meta property="og:type" content="website"/>
+                <meta property="og:url" content="https://easydietkw.com/"/>
+                <meta property="og:image" content="/images/Auth/logo.svg"/>
+                <meta property="og:site_name" content="EasyDiet"/>
+                <meta property="og:description"
+                      content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet."/>
             </Head>
             <main className={classes.Main}>
                 <div className={classes.Container}>
-                    <div className={classes.Top} data-title={t("title1")}>
-                        <div className={classes.Top_Container}>
-                            <div className={classes.Top_Item}>
-                                <h3>{t("name")}</h3>
-                                <span>{packageInfo.bundleName}</span>
-                            </div>
-                            <div className={classes.Top_Item}>
-                                <h3>{t("time")}</h3>
-                                <span>{packageInfo.bundleDays} {t("days")}</span>
-                            </div>
-                            <div className={classes.Top_Item}>
-                                <h3>{t("start")}</h3>
-                                <span>{packageInfo.startDate}</span>
-                            </div>
-                            <div className={classes.Top_Item}>
-                                <h3>{t("end")}</h3>
-                                <span>{packageInfo.endDate}</span>
-                            </div>
-                            <div className={classes.Top_Item}>
-                                <h3>{t("expires")}</h3>
-                                <span>{packageInfo.remainingDays} {t("days")}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={classes.Bottom} data-title={t("title2")}>
-                        <div className={classes.Days_Container}>
-                            {packageDays && packageDays.map((item) => {
-                                return (
-                                    <DayItem key={item._id} ID={item._id} Daydate={item.date}
-                                             title={getDayName(item.date)} Editable={isDateAfterTwoDays(item.date)}
-                                             isSelected={item.submitted}
-                                             date={new Date(item.date).toLocaleDateString('en-US', {
-                                                 day: 'numeric',
-                                                 month: 'long'
-                                             })}
-                                    />
-                                )
-                            })}
-                        </div>
-                    </div>
+                    {
+                        packageInfo?.bundleName && packageDays.length > 0 ? (
+                            <>
+                                <div className={classes.Top} data-title={t("title1")}>
+                                    <div className={classes.Top_Container}>
+                                        <div className={classes.Top_Item}>
+                                            <h3>{t("name")}</h3>
+                                            <span>{packageInfo.bundleName}</span>
+                                        </div>
+                                        <div className={classes.Top_Item}>
+                                            <h3>{t("time")}</h3>
+                                            <span>{packageInfo.bundleDays} {t("days")}</span>
+                                        </div>
+                                        <div className={classes.Top_Item}>
+                                            <h3>{t("start")}</h3>
+                                            <span>{packageInfo.startDate}</span>
+                                        </div>
+                                        <div className={classes.Top_Item}>
+                                            <h3>{t("end")}</h3>
+                                            <span>{packageInfo.endDate}</span>
+                                        </div>
+                                        <div className={classes.Top_Item}>
+                                            <h3>{t("expires")}</h3>
+                                            <span>{packageInfo.remainingDays} {t("days")}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={classes.Bottom} data-title={t("title2")}>
+                                    <div className={classes.Days_Container}>
+                                        {packageDays && packageDays.map((item) => {
+                                            return (
+                                                <DayItem key={item._id} ID={item._id} Daydate={item.date}
+                                                         title={getDayName(item.date)}
+                                                         Editable={isDateAfterTwoDays(item.date)}
+                                                         isSelected={item.submitted}
+                                                         date={new Date(item.date).toLocaleDateString('en-US', {
+                                                             day: 'numeric',
+                                                             month: 'long'
+                                                         })}
+                                                />
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                            </>
+                        ) : <MySubscription/>}
                 </div>
             </main>
         </>

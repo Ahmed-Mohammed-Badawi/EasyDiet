@@ -25,6 +25,7 @@ export default function VerifyEmail({isAuthenticated, userData}) {
 
     // STATES
     const [loading, setLoading] = useState(false);
+    const [resendLoading, setResendLoading] = useState(false);
 
     // REDUX
     const dispatch = useDispatch();
@@ -64,16 +65,18 @@ export default function VerifyEmail({isAuthenticated, userData}) {
 
     // RESEND EMAIL HANDLER
     const resendCodeHandler = async () => {
+        setResendLoading(true);
+
         await axios.post("https://api.easydietkw.com/api/v1/forgot/password", {
             email: email
         })
             .then(res => {
-                setLoading(false);
+                setResendLoading(false);
                 // Show success message
                 toast.success(res.data.message);
             })
             .catch(err => {
-                setLoading(false)
+                setResendLoading(false)
                 // Show error message
                 toast.error(err.response?.data?.message || err.message || "Something went wrong");
             })
@@ -110,7 +113,7 @@ export default function VerifyEmail({isAuthenticated, userData}) {
                         <form className={classes.Form} onSubmit={handleFormSubmit}>
                             <h2 className={classes.Heading_2}>{t("title")}</h2>
                             <button type={'button'} className={classes.Resend_Code} onClick={resendCodeHandler}>
-                                {t("resendButton")}
+                                <span>{resendLoading ? <Spinner size={2} color={`#A71523`}/> : t("resendButton")}</span>
                             </button>
                             <div className={classes.Input_Group}>
                                 <div className={classes.InputBorderContainer}>
