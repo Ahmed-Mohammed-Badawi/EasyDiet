@@ -2,9 +2,9 @@ import {createSlice} from "@reduxjs/toolkit";
 
 //Initial Value
 const initialValue = {
-    activeTye: '',
+    activeTye: 'all',
     checks: {
-        All: false,
+        All: true,
         Breakfast: false,
         Lunch: false,
         Dinner: false,

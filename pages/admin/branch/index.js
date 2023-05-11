@@ -1,85 +1,127 @@
-import {useRef, useState} from "react";
+import {useEffect} from "react";
 import classes from '@/styles/pages/admin/branch_manager.module.scss';
-import Image from "next/image";
 import Head from "next/head";
+import Image from "next/image";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
-import {setUsers} from "@/redux/slices/Admin/users-slice";
 import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
-import {onCheck} from '@/redux/slices/Admin/branchManager-slice';
+import {onCheck, onInputChange} from '@/redux/slices/Admin/branchManager-slice';
 // LANGUAGE
 import {useTranslation} from "react-i18next";
 
-const Branch_Manager = () => {
-    //STATES
-    const [users, setUsers] = useState([]);
+const Branch_Manager = ({role}) => {
 
     // LANGUAGE
     const {t} = useTranslation('branch')
 
-    const user = {
-        clientName: 'Ahmed Mohammed',
-        subscriptionId: '012844154512',
-        _id: '15245463515634',
-        phoneNumber: '01020985828'
-    }
-
-    //REF
-    const searchInputRef = useRef();
-
     //REDUX
     const dispatch = useDispatch();
-    const {meals, checks: {All, Breakfast, Lunch, Dinner, Snacks}} = useSelector(state => state.branch);
+    const {meals, checks: {All, Breakfast, Lunch, Dinner, Snacks}, activeTye} = useSelector(state => state.branch);
 
-    async function handleSearch() {
+
+    async function handleSuccess(clientID, dateID, meal_ID) {
         const token = extractTokenFromCookie(document.cookie);
 
+
+        // SET DYNAMIC URL BASED ON THE ROLE
+        let url = `https://api.easydietkw.com/api/v1/set/meal/delivered`;
+        if (role === 'manager') {
+            url = `https://api.easydietkw.com/api/v1/manager/set/meal/delivered`;
+        }
+
         // GET THE EMPLOYEES
-        axios.get(`https://api.easydietkw.com/api/v1/find/client?searchTerm=${searchInputRef.current.value}`, {
+        axios.put(url, {
+            clientId: clientID,
+            dateId: dateID,
+            dayMealId: meal_ID,
+        }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
             .then(res => {
-                // SET THE USERS IN REDUX
-                dispatch(setUsers({users: res.data.clients, usersType: 'clients'}))
+                // UPDATE THE STATE OF MEALS TO REMOVE THE MEAL THAT HAS BEEN DELIVERED
+                // GET COPY OF THE MEALS
+                const mealsCopy = [...meals];
+                // GET THE INDEX OF THE MEAL THAT HAS BEEN DELIVERED
+                const clientIndex = mealsCopy.findIndex(meal => meal.clientId === clientID);
+                // GET THE CLIENT THAT HAS BEEN DELIVERED
+                const client = mealsCopy[clientIndex];
+                // FILTER THE MEALS OF THE CLIENT TO REMOVE THE DELIVERED MEAL
+                const filteredMeals = client.dayMeals.filter(meal => meal._id !== meal_ID);
+                // CREATE A NEW CLIENT OBJECT WITH UPDATED dayMeals
+                const updatedClient = {...client, dayMeals: filteredMeals};
+                // REPLACE THE CLIENT OBJECT IN mealsCopy ARRAY
+                mealsCopy[clientIndex] = updatedClient;
+                // UPDATE THE MEALS IN REDUX
+                dispatch(onInputChange({key: 'meals', value: mealsCopy}));
+                // SHOW SUCCESS MESSAGE
+                toast.success(res.data?.message || 'Meal has been delivered successfully');
             })
             .catch(err => {
                 toast.error(err.response?.data?.message || err.message);
             })
     }
 
-    async function handleSuccess(mealId) {
+
+    // EFFECT TO GET THE MEALS DATA WHEN THE PAGE LOADS
+    useEffect(() => {
+
+        // GET THE TOKEN
         const token = extractTokenFromCookie(document.cookie);
 
-        // GET THE EMPLOYEES
-        axios.get(`https://api.easydietkw.com/api/v1/find/client?searchTerm=${searchInputRef.current.value}`, {
+
+        // SET DYNAMIC URL BASED ON THE ROLE
+        let url = `https://api.easydietkw.com/api/v1/today/delivery/meals`;
+        if (role === 'manager') {
+            url = `https://api.easydietkw.com/api/v1/manager/delivery/meals`;
+        }
+
+        // GET THE DATA FROM THE API
+        axios.get(url, {
             headers: {
                 Authorization: `Bearer ${token}`
+            },
+            params: {
+                mealsFilter: activeTye || 'all'
             }
         })
             .then(res => {
-                // SET THE USERS IN REDUX
-                dispatch(setUsers({users: res.data.clients, usersType: 'clients'}))
+                console.log(res.data.clients)
+                // SET THE MEALS IN REDUX
+                dispatch(onInputChange({key: 'meals', value: res.data.clients}))
             })
             .catch(err => {
                 toast.error(err.response?.data?.message || err.message);
             })
-    }
 
-    async function handleFail(mealId) {
+    }, [dispatch, activeTye, role]);
+
+    // HANDLE THE PRINTING OF THE MEALS
+    function handlePrint() {
+
+        // GET THE TOKEN
         const token = extractTokenFromCookie(document.cookie);
 
-        // GET THE EMPLOYEES
-        axios.get(`https://api.easydietkw.com/api/v1/find/client?searchTerm=${searchInputRef.current.value}`, {
+        // SET DYNAMIC URL BASED ON THE ROLE
+        let url = `https://api.easydietkw.com/api/v1/print/labels`;
+        if (role === 'manager') {
+            url = `https://api.easydietkw.com/api/v1/manager/print/labels`;
+        }
+
+        // GET THE DATA FROM THE API
+        axios.get(url, {
             headers: {
                 Authorization: `Bearer ${token}`
+            },
+            params: {
+                mealFilter: activeTye || 'all'
             }
         })
             .then(res => {
-                // SET THE USERS IN REDUX
-                dispatch(setUsers({users: res.data.clients, usersType: 'clients'}))
+                // OPEN THE PRINT WINDOW
+                window.open(res.data.url, '_blank');
             })
             .catch(err => {
                 toast.error(err.response?.data?.message || err.message);
@@ -91,8 +133,10 @@ const Branch_Manager = () => {
             {/*SEO OPTIMIZATION*/}
             <Head>
                 <title>EasyDiet | Branch</title>
-                <meta name="description" content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
-                <meta name="keywords" content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
+                <meta name="description"
+                      content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
+                <meta name="keywords"
+                      content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
                 <meta name="author" content="EasyDiet"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 <meta name="robots" content="index, follow"/>
@@ -101,11 +145,12 @@ const Branch_Manager = () => {
                 <meta name="revisit-after" content="7 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://easydietkw.com/" />
-                <meta property="og:image" content="/images/Auth/logo.svg" />
-                <meta property="og:site_name" content="EasyDiet" />
-                <meta property="og:description" content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet." />
+                <meta property="og:type" content="website"/>
+                <meta property="og:url" content="https://easydietkw.com/"/>
+                <meta property="og:image" content="/images/Auth/logo.svg"/>
+                <meta property="og:site_name" content="EasyDiet"/>
+                <meta property="og:description"
+                      content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet."/>
             </Head>
             <main className={classes.Main}>
                 <div className={classes.Container}>
@@ -113,67 +158,82 @@ const Branch_Manager = () => {
                         <div className={classes.Filter}>
                             <div className={classes.container}>
                                 <div className={classes.checkboxGroup}>
-                                    <input onChange={() => {}} checked={All} type="checkbox" id="All" className={classes.checkbox} onClick={(event) => {
-                                        dispatch(onCheck({
-                                            key: 'All',
-                                            value: true
-                                        }))
-                                    }} />
+                                    <input onChange={() => {
+                                    }} checked={All} type="checkbox" id="All" className={classes.checkbox}
+                                           onClick={(event) => {
+                                               dispatch(onCheck({
+                                                   key: 'All',
+                                                   value: true
+                                               }))
+                                               dispatch(onInputChange({key: 'activeTye', value: 'all'}))
+                                           }}/>
                                     <label htmlFor="All" className={classes.label}>
                                         <span className={classes.labelText}>{t("all")}</span>
                                     </label>
                                 </div>
                                 <div className={classes.checkboxGroup}>
-                                    <input onChange={() => {}} checked={Breakfast} type="checkbox" id="breakfast" className={classes.checkbox} onClick={(event) => {
-                                        dispatch(onCheck({
-                                            key: 'Breakfast',
-                                            value: true
-                                        }))
-                                    }} />
+                                    <input onChange={() => {
+                                    }} checked={Breakfast} type="checkbox" id="breakfast" className={classes.checkbox}
+                                           onClick={(event) => {
+                                               dispatch(onCheck({
+                                                   key: 'Breakfast',
+                                                   value: true
+                                               }))
+                                               dispatch(onInputChange({key: 'activeTye', value: 'breakfast'}))
+                                           }}/>
                                     <label htmlFor="breakfast" className={classes.label}>
                                         <span className={classes.labelText}>{t("breakfast")}</span>
                                     </label>
                                 </div>
                                 <div className={classes.checkboxGroup}>
-                                    <input onChange={() => {}} checked={Lunch} type="checkbox" id="lunch" className={classes.checkbox} onClick={(event) => {
-                                        dispatch(onCheck({
-                                            key: 'Lunch',
-                                            value: true
-                                        }))
-                                    }} />
+                                    <input onChange={() => {
+                                    }} checked={Lunch} type="checkbox" id="lunch" className={classes.checkbox}
+                                           onClick={(event) => {
+                                               dispatch(onCheck({
+                                                   key: 'Lunch',
+                                                   value: true
+                                               }))
+                                               dispatch(onInputChange({key: 'activeTye', value: 'lunch'}))
+                                           }}/>
                                     <label htmlFor="lunch" className={classes.label}>
                                         <span className={classes.labelText}>{t("lunch")}</span>
                                     </label>
                                 </div>
                                 <div className={classes.checkboxGroup}>
-                                    <input onChange={() => {}} checked={Dinner} type="checkbox" id="dinner" className={classes.checkbox} onClick={(event) => {
-                                        dispatch(onCheck({
-                                            key: 'Dinner',
-                                            value: true
-                                        }))
-                                    }} />
+                                    <input onChange={() => {
+                                    }} checked={Dinner} type="checkbox" id="dinner" className={classes.checkbox}
+                                           onClick={(event) => {
+                                               dispatch(onCheck({
+                                                   key: 'Dinner',
+                                                   value: true
+                                               }))
+                                               dispatch(onInputChange({key: 'activeTye', value: 'dinner'}))
+                                           }}/>
                                     <label htmlFor="dinner" className={classes.label}>
                                         <span className={classes.labelText}>{t("dinner")}</span>
                                     </label>
                                 </div>
                                 <div className={classes.checkboxGroup}>
-                                    <input onChange={() => {}} checked={Snacks} type="checkbox" id="snacks" className={classes.checkbox} onClick={(event) => {
-                                        dispatch(onCheck({
-                                            key: 'Snacks',
-                                            value: true
-                                        }))
-                                    }} />
+                                    <input onChange={() => {
+                                    }} checked={Snacks} type="checkbox" id="snacks" className={classes.checkbox}
+                                           onClick={(event) => {
+                                               dispatch(onCheck({
+                                                   key: 'Snacks',
+                                                   value: true
+                                               }))
+                                               dispatch(onInputChange({key: 'activeTye', value: 'snack'}))
+                                           }}/>
                                     <label htmlFor="snacks" className={classes.label}>
                                         <span className={classes.labelText}>{t("snacks")}</span>
                                     </label>
                                 </div>
                             </div>
                         </div>
-                        <div className={classes.Search}>
-                            <button onClick={handleSearch}>
-                                <Image src={'/images/Search_Icon.svg'} alt={'Add Icon'} width={18} height={18}/>
+                        <div className={classes.Print}>
+                            <button onClick={handlePrint}>
+                                <Image src={'/images/printer.png'} alt={'Add Icon'} width={18} height={18}/>
+                                <span>{t("print")}</span>
                             </button>
-                            <input ref={searchInputRef} type={'text'} alt={'search'} placeholder={'search'}/>
                         </div>
 
                     </div>
@@ -184,45 +244,39 @@ const Branch_Manager = () => {
                                 <th>USER ID</th>
                                 <th>USER NAME</th>
                                 <th>MOBILE</th>
+                                <th>MEAL NAME</th>
                                 <th>TYPE</th>
                                 <th>ACTIONS</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {/*{users && users.map((user) => {*/}
-                            {/*    return (*/}
-                                    <tr className={classes.row} key={user._id}>
-                                        <td>{user.subscriptionId}</td>
-                                        <td className={classes.ClientName}>{user?.clientNameEn || user.clientName}</td>
-                                        <td>{user.phoneNumber}</td>
-                                        <td><span
-                                            className={[classes.SubscriptionButton]}>{'BREAKFAST'}</span>
-                                        </td>
-                                        <td className={classes.Actions}>
-                                            <button className={classes.Freeze}
-                                                    onClick={() => {
-
-                                                    }}>
-                                                {t("unable")}
-                                            </button>
-                                            <button className={classes.Delete}
-                                                    onClick={() => handleDelete(user._id)}>
-                                                {t("arrived")}
-                                            </button>
-                                        </td>
-                                    </tr>
-                                {/*)*/}
-                            {/*})}*/}
+                            {meals && meals.map((user) => {
+                                if (user?.dayMeals?.length > 0) {
+                                    return user?.dayMeals?.map((meal) => {
+                                        if (meal !== null) {
+                                            return (
+                                                <tr className={classes.row} key={meal?._id}>
+                                                    <td>{user?.subscriptionId}</td>
+                                                    <td className={classes.ClientName}>{user?.clientNameEn || user?.clientName}</td>
+                                                    <td>{user?.phoneNumber}</td>
+                                                    <td>{meal?.title}</td>
+                                                    <td><span
+                                                        className={[classes.SubscriptionButton]}>{meal?.mealType}</span>
+                                                    </td>
+                                                    <td className={classes.Actions}>
+                                                        <button className={classes.Delete}
+                                                                onClick={() => handleSuccess(user.clientId, user.dateId, meal._id)}>
+                                                            {t("arrived")}
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        }
+                                    })
+                                }
+                            })}
                             </tbody>
                         </table>
-                    </div>
-                    <div className={classes.Table_Pagination}>
-                        <button>
-                            <Image src={'/images/Arrow-Left_Icon.svg'} alt={'Arrow Left'} width={15} height={15}/>
-                        </button>
-                        <button>
-                            <Image src={'/images/Arrow-Right_Icon.svg'} alt={'Arrow Right'} width={15} height={15}/>
-                        </button>
                     </div>
                 </div>
             </main>
@@ -258,6 +312,6 @@ export const getServerSideProps = async (ctx) => {
     }
 
     return {
-        props: {},
+        props: {role: tokenInfo.role}
     };
 };

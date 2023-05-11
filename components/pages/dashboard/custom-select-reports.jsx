@@ -30,9 +30,7 @@ const customStyles = {
 };
 
 const options = [
-    {value: 'Sell', label: 'Sell'},
-    {value: 'Packages', label: 'Packages'},
-    {value: 'Users', label: 'Users'},
+    {value: 'active clients', label: 'العملاء النشطين حالياَ'},
 ];
 
 const CustomSelect = ({changed, defaultValue}) => {
@@ -44,7 +42,7 @@ const CustomSelect = ({changed, defaultValue}) => {
 
     return (
         <>
-            <Select instanceId={id} options={options} styles={customStyles} value={defaultOption} onChange={changed} />
+            <Select instanceId={id} options={options} styles={customStyles} value={defaultOption || ''} onChange={changed} />
         </>
     )
 }

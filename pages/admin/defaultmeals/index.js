@@ -15,7 +15,7 @@ import {onInputChange, clearAll} from '@/redux/slices/Admin/defaultmeals_slice';
 import {useTranslation} from "react-i18next";
 import Head from "next/head";
 
-const Users = () => {
+const DefaultMeals = ({role}) => {
     //ROUTER
     const router = useRouter();
 
@@ -35,7 +35,7 @@ const Users = () => {
 
     // REDUX
     const dispatch = useDispatch();
-    const {meals: selectedMeals} = useSelector(state => state.defaultmeals)
+    const {meals: selectedMeals, selectedDay} = useSelector(state => state.defaultmeals)
 
     const handleClick = (e) => {
         setIsOn(e.target.checked);
@@ -66,9 +66,15 @@ const Users = () => {
 
     useEffect(() => {
         const token = extractTokenFromCookie(document.cookie);
-        
+
+        // SET DYNAMIC URL BASED ON THE ROLE
+        let url = `https://api.easydietkw.com/api/v1/get/meals`;
+        if (role === 'manager') {
+            url = `https://api.easydietkw.com/api/v1/manager/get/meals`;
+        }
+
         try {
-            axios.get(`https://api.easydietkw.com/api/v1/get/meals`, {
+            axios.get(url, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -91,12 +97,49 @@ const Users = () => {
     const submitHandler = async () => {
         const token = extractTokenFromCookie(document.cookie);
 
-        await axios.put(``)
+        // CHECK IF THE USER SELECTED A DAY
+        if (!selectedDay) {
+            return toast.error(t('selectDay'))
+        }
+
+        // CHECK IF THE USER SELECTED MEALS LENGTH IS 0
+        if (selectedMeals.length <= 0) {
+            return toast.error(t('selectMeals'))
+        }
+
+        // SET THE LOADING TO TRUE
+        setLoading(true);
+
+
+        // SET DYNAMIC URL BASED ON THE ROLE
+        let url = `https://api.easydietkw.com/api/v1/add/chiff/menu`;
+        if (role === 'manager') {
+            url = `https://api.easydietkw.com/api/v1/manager/chiff/menu`;
+        }
+
+        await axios.post(url, {
+            date: selectedDay,
+            mealsIds: selectedMeals,
+        },{
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
             .then(res => {
+                // SET THE LOADING TO FALSE
+                setLoading(false);
+
+                // SHOW SUCCESS
+                toast.success(res.data?.message || "Data has been added successfully");
+
                 // CLEAR IT
                 dispatch(clearAll())
             })
             .catch(err => {
+                // SET THE LOADING TO FALSE
+                setLoading(false);
+
+                // SHOW ERROR
                 toast.error(err.response?.data?.message || err.message)
             })
     }
@@ -147,6 +190,7 @@ const Users = () => {
                                 id={'selectedDay'}
                                 type={'date'}
                                 name={'dayMeals'}
+                                value={selectedDay}
                                 onChange={(event) => {
                                     dispatch(onInputChange({key: 'selectedDay', value: event.target.value}))
                                 }}
@@ -201,7 +245,7 @@ const Users = () => {
                                 </button>
                             </div>
                         )}
-                        <button type={'submit'} className={classes.Submit} onClick={() => router.push(`/admin/create/create_package`)}>
+                        <button type={'submit'} className={classes.Submit} onClick={submitHandler}>
                             <span>
                                 {loading ? <Spinner size={2} color={`#ffffff`}/> : t("button")}
                             </span>
@@ -213,4 +257,33 @@ const Users = () => {
         </>
     )
 }
-export default Users
+export default DefaultMeals;
+
+export const getServerSideProps = async (ctx) => {
+    // GET THE TOKEN FROM THE REQUEST
+    const {token} = ctx.req.cookies;
+
+    let tokenInfo;
+    if (token) {
+        await axios.get(`https://api.easydietkw.com/api/v1/get/verify/token`, {
+            params: {
+                token: token,
+            }
+        })
+            .then(res => tokenInfo = res.data.decodedToken)
+            .catch(err => console.log(err))
+    }
+
+    if (!tokenInfo || (tokenInfo.role !== 'admin' && tokenInfo.role !== 'manager') || tokenInfo.active === false) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
+
+    return {
+        props: {role: tokenInfo.role}
+    };
+};
