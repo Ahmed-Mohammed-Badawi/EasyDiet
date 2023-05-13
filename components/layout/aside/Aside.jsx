@@ -1,11 +1,11 @@
 import classes from './Aside.module.scss';
 import Link from "next/link";
 import Image from "next/image";
-// IMPORTS
+// LANGUAGES
 import i18n from "@/i18n";
+import {useTranslation} from "react-i18next";
 
 // HELPERS
-import {useTranslation} from "react-i18next";
 import {useRouter} from "next/router";
 
 const Aside = ({isAuthenticated, userData}) => {
@@ -57,7 +57,6 @@ const Aside = ({isAuthenticated, userData}) => {
 
     // Handle the aside
     function handleResize() {
-        console.log('HANDLE')
         if (window.innerWidth > 1440) {
             if (!document.body.classList.contains("Active_Aside")) {
                 document.body.classList.add("Active_Aside");

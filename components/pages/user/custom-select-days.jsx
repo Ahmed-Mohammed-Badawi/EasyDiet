@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useId } from 'react';
+// IMPORT NEXTJS COMPONENTS
 import Select from 'react-select';
 //REDUX
 import {useDispatch, useSelector} from "react-redux";
@@ -31,6 +32,7 @@ const customStyles = {
     }),
 };
 
+// MONTH OPTIONS
 const monthOptions = Array.from({ length: 6 }, (_, i) => {
     const monthIndex = new Date().getMonth() + i;
     const month = (monthIndex % 12) + 1;
@@ -40,6 +42,7 @@ const monthOptions = Array.from({ length: 6 }, (_, i) => {
     };
 });
 
+// GET DAYS IN MONTH
 function getDaysInMonth(month, year) {
     return new Date(year, month, 0).getDate();
 }
@@ -50,8 +53,10 @@ function MySelect(props) {
     const dispatch = useDispatch();
     const {selectedDay, selectedMonth} = useSelector(state => state.subscription_user);
 
+    // STATE
     const [dayOptions, setDayOptions] = useState([]);
 
+    // EFFECT
     useEffect(() => {
         if (selectedMonth) {
             const month = selectedMonth.value;
@@ -73,10 +78,11 @@ function MySelect(props) {
                 dispatch(onInputChange({key: 'selectedDay', value: null}))
             }
         }
-    }, [selectedMonth, selectedDay]);
+    }, [dispatch, selectedMonth, selectedDay]);
 
 
 
+    // HANDLERS
     function handleMonthChange(option) {
         dispatch(onInputChange({key: 'selectedMonth', value: option}))
         dispatch(onInputChange({key: 'selectedDay', value: null}))

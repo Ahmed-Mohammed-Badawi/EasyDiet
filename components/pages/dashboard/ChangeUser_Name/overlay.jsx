@@ -1,5 +1,5 @@
 import classes from './overlay.module.scss'
-import InputsContainer from "@/components/pages/dashboard/ChangeUser_Name/inputsContainer";
+
 const Overlay = ({children , active, clicked, style}) => {
     return (
         <div style={{...style || ''}} onClick={(e) => {

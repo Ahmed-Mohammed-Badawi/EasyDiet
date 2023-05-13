@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import classes from './Checkbox.module.scss';
 // Redux
 import {useDispatch, useSelector} from "react-redux";

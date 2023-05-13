@@ -1,16 +1,17 @@
 import {useEffect, useState} from "react";
 import classes from "@/styles/pages/user/my_subscription.module.scss";
-import Image from "next/image";
-import {useDispatch, useSelector} from "react-redux";
-import {onInputChange} from '@/redux/slices/user/daymeals_slice';
+import Head from "next/head";
+// REDUX
+import {useDispatch} from "react-redux";
+// HELPERS
 import axios from "axios";
 import {toast} from "react-toastify";
+import {extractTokenFromCookie} from "@/helpers/extractToken";
+// COMPONENTS
 import DayItem from "@/components/pages/user/DayItem";
 import MySubscription from "@/components/pages/user/MySubscription/MySubscription";
-import {extractTokenFromCookie} from "@/helpers/extractToken";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
-import Head from "next/head";
 
 const My_Subscription = () => {
     //REDUX
@@ -41,7 +42,6 @@ const My_Subscription = () => {
                 }
             })
                 .then(res => {
-                    console.log(res.data)
                     setPackageInfo({
                         bundleName: res.data.bundleName,
                         bundleDays: res.data.bundleDays,
@@ -93,7 +93,7 @@ const My_Subscription = () => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website"/>

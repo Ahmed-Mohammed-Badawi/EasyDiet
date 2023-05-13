@@ -1,6 +1,7 @@
 import classes from './MySubscription.module.scss';
-import {useTranslation} from "react-i18next";
 import {useRouter} from "next/router";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 const MySubscription = () => {
 

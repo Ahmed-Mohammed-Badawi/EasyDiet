@@ -30,6 +30,7 @@ i18n
                 bundles: require('./locales/en/pages/user/bundles.json'),
                 profile: require('./locales/en/pages/user/profile.json'),
                 send_message: require('./locales/en/pages/user/send_message.json'),
+                user_global: require('./locales/en/pages/user/globalText.json'),
                 // DOCTOR
                 doctor: require('./locales/en/pages/doctor/doctor.json'),
                 //ADMIN
@@ -69,6 +70,7 @@ i18n
                 bundles: require('./locales/ar/pages/user/bundles.json'),
                 profile: require('./locales/ar/pages/user/profile.json'),
                 send_message: require('./locales/ar/pages/user/send_message.json'),
+                user_global: require('./locales/ar/pages/user/globalText.json'),
                 // DOCTOR
                 doctor: require('./locales/ar/pages/doctor/doctor.json'),
                 //ADMIN

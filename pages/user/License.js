@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from '@/styles/pages/global/License.module.scss';
-import {useTranslation} from "react-i18next";
 import Head from "next/head";
+// TRANSLATIONS
+import {useTranslation} from "react-i18next";
 
 const License = () => {
 
@@ -20,7 +21,7 @@ const License = () => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />

@@ -1,13 +1,14 @@
-import classes from '@/styles/pages/doctor/doctor.module.scss';
-import Image from "next/image";
-import Head from "next/head";
 import {useEffect, useRef, useState} from "react";
+import classes from '@/styles/pages/doctor/doctor.module.scss';
+import Head from "next/head";
+import Link from "next/link";
+import Image from "next/image";
+// HELPERS
 import {toast} from "react-toastify";
-// IMPORTS
-import Spinner from "@/components/layout/spinner/Spinner";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
-import Link from "next/link";
+// IMPORTS
+import Spinner from "@/components/layout/spinner/Spinner";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
 
@@ -86,7 +87,7 @@ const Doctor = () => {
                     'Authorization': `Bearer ${token}`
                 }
             })
-            .then(res => {
+            .then(_ => {
                 // LOGIC
                 setLoading(false)
                 // SET THE RESPONSE IN THE STATE
@@ -128,7 +129,7 @@ const Doctor = () => {
                     'Authorization': `Bearer ${token}`
                 }
             })
-            .then(res => {
+            .then(_ => {
                 // SET THE STATE OF READ
                 const messages_copy = [...messages];
                 const messageIndex = getObjectIndexById(messages_copy, messageID)
@@ -159,7 +160,6 @@ const Doctor = () => {
         })
             .then(res => {
                 // SET THE MEALS IN THE STATE
-                console.log(res)
                 setUserMessages(res.data.messages)
             })
             .catch(err => {
@@ -178,7 +178,6 @@ const Doctor = () => {
             }
         })
             .then(res => {
-                console.log(res)
                 // SET THE STATE OF HAS NEXT PAGE AND NEXT PAGE
                 setHasNextPage(res.data.data.hasNextPage);
                 setNextPage(res.data.data.nextPage);

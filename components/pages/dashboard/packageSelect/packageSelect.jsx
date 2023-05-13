@@ -1,9 +1,13 @@
 import React, {useState, useEffect, useId} from 'react';
-import Select from 'react-select';
 import classes from './packageSelect.module.scss';
+// Components
+import Select from 'react-select';
+// Helpers
 import axios from "axios";
 import {toast} from "react-toastify";
 
+
+// Custom styles for react-select
 const customStyles = {
     control: (provided) => ({
         ...provided,
@@ -23,8 +27,10 @@ const customStyles = {
 };
 
 const PackageSelect = ({changed, defaultValue, labelSelect}) => {
+    // State
     const [options, setOptions] = useState([]);
 
+    // Fetching data from API
     useEffect(() => {
         // Here you would fetch the options from your API or database
         axios.get(`https://api.easydietkw.com/api/v1/client/bundles`)
@@ -43,6 +49,7 @@ const PackageSelect = ({changed, defaultValue, labelSelect}) => {
             })
     }, []);
 
+    // Default option
     const defaultOption = options.find(option => option.value === defaultValue);
 
     return (

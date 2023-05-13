@@ -1,16 +1,16 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import classes from '@/styles/pages/admin/package_meals.module.scss';
+import Head from "next/head";
 import Image from "next/image";
 import {useRouter} from "next/router";
 // IMPORTS
 import MealCheckbox from "@/components/pages/dashboard/Meal_checkbox/MealCheckbox";
-import Spinner from "@/components/layout/spinner/Spinner";
+// HELPERS
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import {toast} from "react-toastify";
 import axios from "axios";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
-import Head from "next/head";
 
 
 const Users = () => {
@@ -22,7 +22,6 @@ const Users = () => {
 
     // STATES
     const [isOn, setIsOn] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [meals, setMeals] = useState(null);
     // PAGINATION STATES
     const [pageNumber, setPageNumber] = useState(1);
@@ -92,7 +91,7 @@ const Users = () => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website"/>
@@ -173,7 +172,7 @@ const Users = () => {
                         <button type={'submit'} className={classes.Submit}
                                 onClick={() => router.push(`/admin/create/create_package`)}>
                             <span>
-                                {loading ? <Spinner size={2} color={`#ffffff`}/> : t("confirm")}
+                                {t("confirm")}
                             </span>
                             <Image src={'/images/Send_Icon.svg'} alt={'Send'} width={20} height={20}/>
                         </button>

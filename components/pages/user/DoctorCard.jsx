@@ -1,6 +1,7 @@
 import classes from './DoctorCard.module.scss';
 import Image from "next/image";
 import {useRouter} from "next/router";
+// REDUX
 import {onInputChange} from '@/redux/slices/user/nutritionspecialist_slice'
 import {useDispatch, useSelector} from "react-redux";
 

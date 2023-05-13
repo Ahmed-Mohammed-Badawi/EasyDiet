@@ -1,5 +1,4 @@
 import {useId} from "react";
-import Image from "next/image";
 // SELECT
 import Select from 'react-select';
 
@@ -30,6 +29,7 @@ const customStyles = {
     }),
 };
 
+// LANGUAGE OPTIONS
 const options = [
     {value: 'EN', label: `English`},
     {value: 'AR', label: 'Arabic'},

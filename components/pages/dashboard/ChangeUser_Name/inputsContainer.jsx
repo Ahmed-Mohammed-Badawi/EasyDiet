@@ -1,6 +1,7 @@
 // ChangeNameForm.js
 import {useState} from 'react';
 import classes from './inputsContainer.module.scss';
+// HELPERS
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
 import {toast} from "react-toastify";
@@ -62,7 +63,6 @@ const ChangeNameForm = ({clientId, clicked}) => {
             })
                 .then(res => {
                     // SET THE USERS IN REDUX
-                    console.log(res);
                     setFirstName('');
                     // CHANGE THE NAME OF CLIENT IN THE UI
                     changeNameUI();

@@ -4,7 +4,7 @@ import {useRouter} from "next/router";
 //REDUX
 import {onInputChange} from "@/redux/slices/user/daymeals_slice";
 import {useSelector, useDispatch} from "react-redux";
-import selectedMeals from "@/components/pages/user/SelectedMeals";
+// LANGUAGE
 import {useTranslation} from "react-i18next";
 
 

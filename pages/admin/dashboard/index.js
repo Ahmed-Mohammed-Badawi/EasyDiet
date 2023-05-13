@@ -2,14 +2,15 @@ import {useEffect, useRef, useState} from "react";
 import Head from 'next/head'
 import classes from '@/styles/pages/admin/dashboard.module.scss';
 import {useRouter} from "next/router";
-// NEW
+// TRANSLATION
 import {useTranslation} from "react-i18next";
-// LANGUAGE
-import ProjectsChart from "@/components/pages/dashboard/ProjectsChart";
 // IMPORTS
+import ProjectsChart from "@/components/pages/dashboard/ProjectsChart";
 import PackageAdminCard from "@/components/pages/dashboard/Package_card/PackageCard";
+// HELPERS
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
+import {toast} from "react-toastify";
 
 
 export default function Dashboard() {
@@ -51,7 +52,6 @@ export default function Dashboard() {
                     }
                 })
                     .then(res => {
-                        console.log(res.data)
                         setPackages(res.data.data.bundlesNumber);
                         setMeals(res.data.data.mealsNumber);
                         setDoctors(res.data.data.specialistsNumber);
@@ -64,6 +64,7 @@ export default function Dashboard() {
                     })
                     .catch(err => console.log(err))
             } catch (e) {
+                toast.error(e.response?.data?.message || e.message || "Something went wrong")
                 console.log(e)
             }
         }
@@ -82,7 +83,7 @@ export default function Dashboard() {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />

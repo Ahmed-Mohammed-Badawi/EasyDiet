@@ -1,6 +1,7 @@
 import classes from './Meal_Edit.module.scss';
 import Image from "next/image";
 import {useRouter} from "next/router";
+// HELPERS
 import axios from "axios";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import {toast} from "react-toastify";
@@ -41,6 +42,7 @@ const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, 
                     dispatch(onInputChange({key: 'meals', value: updatedItems}))
                 })
                 .catch(err => {
+                    toast.error(err.response?.data?.message || err.message || 'Something Went Wrong');
                     console.log(err)
                 })
         }

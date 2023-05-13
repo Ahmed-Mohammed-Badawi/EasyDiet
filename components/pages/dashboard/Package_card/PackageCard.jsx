@@ -1,5 +1,7 @@
 import classes from './PackageCard.module.scss';
+// LANGUAGE
 import {useTranslation} from "react-i18next";
+
 const PackageAdminCard = ({name, price, time, meals, snacks, fridays, offers}) => {
 
     // TRANSLATION

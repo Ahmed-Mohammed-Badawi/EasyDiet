@@ -2,6 +2,7 @@ import {useState} from "react";
 import classes from '@/styles/pages/admin/create_user.module.scss'
 import Image from "next/image";
 import {useRouter} from "next/router";
+import Head from "next/head";
 // IMPORT
 import CustomSelect from "@/components/pages/register/custom-select";
 import PackageSelect from "@/components/pages/dashboard/packageSelect/packageSelect";
@@ -11,13 +12,12 @@ import Spinner from "@/components/layout/spinner/Spinner";
 // HELPERS
 import {toast} from "react-toastify";
 import axios from "axios";
+import {extractTokenFromCookie} from "@/helpers/extractToken";
 // REDUX
 import {clearAll, onInputChange} from "@/redux/slices/Admin/createUser-slice";
 import {useDispatch, useSelector} from "react-redux";
-import {extractTokenFromCookie} from "@/helpers/extractToken";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
-import Head from "next/head";
 
 const CreateUser = () => {
     // ROUTER
@@ -102,7 +102,7 @@ const CreateUser = () => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />

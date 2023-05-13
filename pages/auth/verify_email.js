@@ -1,27 +1,36 @@
 import {useEffect, useState} from "react";
+import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import {useRouter} from "next/router";
-
 //STYLE
 import classes from '@/styles/pages/verify_email.module.scss'
-
+// HELPERS
 import axios from "axios";
 import {toast} from "react-toastify";
 // Language
 import {useTranslation} from "react-i18next";
+// IMPORTS
 import Spinner from "@/components/layout/spinner/Spinner";
 // REDUX
 import {useSelector, useDispatch} from "react-redux";
 import {onInputChange} from '@/redux/slices/Auth/resetPasswordSlice';
-import Head from "next/head";
 
-export default function VerifyEmail({isAuthenticated, userData}) {
+export default function VerifyEmail({isAuthenticated}) {
 
     // ROUTER
     const router = useRouter();
     // LANGUAGE
     const {t} = useTranslation('verifyEmail');
+
+
+    // EFFECT TO REDIRECT TO HOME IF THE USER IS AUTHENTICATED
+    useEffect(() => {
+        if (isAuthenticated) {
+            router.push('/')
+        }
+    }, [isAuthenticated, router]);
+
 
     // STATES
     const [loading, setLoading] = useState(false);
@@ -95,7 +104,7 @@ export default function VerifyEmail({isAuthenticated, userData}) {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />

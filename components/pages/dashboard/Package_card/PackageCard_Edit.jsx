@@ -1,12 +1,14 @@
 import classes from './PackageCard_Edit.module.scss';
 import Image from "next/image";
 import {useRouter} from "next/router";
+// HELPERS
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
 import {toast} from "react-toastify";
 //REDUX
 import {useSelector, useDispatch} from "react-redux";
 import {onInputChange} from "@/redux/slices/Admin/packages-slice";
+// LANGUAGE
 import {useTranslation} from "react-i18next";
 
 

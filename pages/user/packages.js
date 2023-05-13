@@ -1,23 +1,21 @@
+import {useEffect, useState} from "react";
 import classes from '@/styles/pages/user/packages.module.scss'
-import {useRouter} from "next/router";
+import Head from "next/head";
 // IMPORTS
 import PackageCard from "@/components/pages/dashboard/Package_card/PackageCard_User";
-import Image from "next/image";
-import {useEffect, useState} from "react";
+// HELPERS
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
 import {toast} from "react-toastify";
+// REDUX
 import {useDispatch, useSelector} from "react-redux";
 import {onInputChange} from '@/redux/slices/user/packages';
 import {onInputChange as onInputInSubscriptionChange} from '@/redux/slices/user/subscription_info'
 // LANGUAGE
 import {useTranslation} from "react-i18next";
-import Head from "next/head";
 
 
 const Packages = () => {
-    // ROUTER
-    const router = useRouter();
 
     // LANGUAGE
     const {t} = useTranslation('bundles');
@@ -43,7 +41,6 @@ const Packages = () => {
                 }
             })
                 .then(res => {
-                    console.log(res.data)
                     dispatch(onInputInSubscriptionChange({key: 'userId', value: res.data.decodedToken.userId}))
                     setAuthenticationStatus({
                         isAuthenticated: true,
@@ -81,7 +78,7 @@ const Packages = () => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />

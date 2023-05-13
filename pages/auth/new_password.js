@@ -1,23 +1,34 @@
+import {useEffect, useState} from "react";
 import classes from "@/styles/pages/new_password.module.scss";
+import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import Spinner from "@/components/layout/spinner/Spinner";
-import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
+// IMPORTS
+import Spinner from "@/components/layout/spinner/Spinner";
+// HELPERS
 import {useTranslation} from "react-i18next";
 import axios from "axios";
 import {toast} from "react-toastify";
 // REDUX
 import {useSelector, useDispatch} from "react-redux";
 import {onInputChange} from '@/redux/slices/Auth/resetPasswordSlice';
-import Head from "next/head";
 
-const NewPassword = () => {
+const NewPassword = ({isAuthenticated}) => {
 
     // ROUTER
     const router = useRouter();
     // LANGUAGE
     const {t} = useTranslation('newPassword');
+
+    // EFFECT TO REDIRECT TO HOME IF THE USER IS AUTHENTICATED
+    useEffect(() => {
+        if (isAuthenticated) {
+            router.push('/')
+        }
+    }, [isAuthenticated, router]);
+
+
     // STATES
     const [loading, setLoading] = useState(false);
 
@@ -84,7 +95,7 @@ const NewPassword = () => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />

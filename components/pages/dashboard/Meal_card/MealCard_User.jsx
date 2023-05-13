@@ -1,12 +1,6 @@
 import classes from './Meal_User.module.scss';
 import Image from "next/image";
-import {useRouter} from "next/router";
-import axios from "axios";
-import {extractTokenFromCookie} from "@/helpers/extractToken";
-import {toast} from "react-toastify";
-//REDUX
-import {onInputChange} from "@/redux/slices/Admin/meals-slice";
-import {useSelector, useDispatch} from "react-redux";
+
 // LANGUAGE
 import {useTranslation} from "react-i18next";
 

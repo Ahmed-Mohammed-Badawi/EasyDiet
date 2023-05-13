@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import classes from '@/styles/pages/admin/edit_package.module.scss'
+import Head from "next/head";
 import Image from "next/image";
 import {useRouter} from "next/router";
 //IMPORTS
@@ -16,7 +17,6 @@ import axios from "axios";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
-import Head from "next/head";
 
 const EditPackage = ({bundle}) => {
     // ROUTER
@@ -146,7 +146,7 @@ const EditPackage = ({bundle}) => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />
@@ -377,7 +377,7 @@ const EditPackage = ({bundle}) => {
 }
 export default EditPackage
 
-export const getServerSideProps = wrapper.getServerSideProps(store => async ({req, res, query}) => {
+export const getServerSideProps = wrapper.getServerSideProps(_ => async ({req, query}) => {
     // get the Auth
     const cookies = req.headers.cookie;
     const token = cookies.split('=');

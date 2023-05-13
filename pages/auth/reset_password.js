@@ -1,26 +1,37 @@
+import {useState, useEffect} from "react";
 import classes from "@/styles/pages/reset_password.module.scss";
+import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import Spinner from "@/components/layout/spinner/Spinner";
-import {useState} from "react";
 import {useRouter} from "next/router";
-import {useTranslation} from "react-i18next";
+// IMPORTS
+import Spinner from "@/components/layout/spinner/Spinner";
+// HELPERS
 import axios from "axios";
 import {toast} from "react-toastify";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 // REDUX
 import {useSelector, useDispatch} from "react-redux";
 import {onInputChange} from '@/redux/slices/Auth/resetPasswordSlice';
-import Head from "next/head";
 
-const ResetPassword = () => {
-
-    const [loading, setLoading] = useState(false);
-
+const ResetPassword = ({isAuthenticated}) => {
 
     // ROUTER
     const router = useRouter();
     // LANGUAGE
     const {t} = useTranslation('resetPassword');
+
+    // EFFECT TO REDIRECT TO HOME IF THE USER IS AUTHENTICATED
+    useEffect(() => {
+        if (isAuthenticated) {
+            router.push('/')
+        }
+    }, [isAuthenticated, router]);
+
+
+    // STATES
+    const [loading, setLoading] = useState(false);
 
     // REDUX
     const dispatch = useDispatch();
@@ -68,7 +79,7 @@ const ResetPassword = () => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />
@@ -104,10 +115,6 @@ const ResetPassword = () => {
                                     </Link>
                                 </div>
                                 <div className={classes.Buttons_Container}>
-                                    {/*<button type={'button'} className={classes.Google_button}>*/}
-                                    {/*    <span><Image src={'/images/Auth/google-icon.svg'} alt={'Create User'} width={30}*/}
-                                    {/*                 height={30}/></span>*/}
-                                    {/*</button>*/}
                                     <button
                                         className={[classes.Create_button].join(' ')}
                                         type={'submit'}>

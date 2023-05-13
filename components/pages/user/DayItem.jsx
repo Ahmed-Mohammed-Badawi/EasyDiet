@@ -1,7 +1,8 @@
 import classes from "./DayItem.module.scss";
 import Image from "next/image";
 import {useRouter} from "next/router";
-import {useDispatch, useSelector} from "react-redux";
+// REDUX
+import {useDispatch} from "react-redux";
 import {onInputChange} from '@/redux/slices/user/daymeals_slice';
 
 const DayItem = ({ID, title, date, isSelected, Editable, Daydate}) => {

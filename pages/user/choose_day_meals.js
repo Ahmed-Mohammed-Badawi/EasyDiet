@@ -1,17 +1,20 @@
-import classes from "@/styles/pages/user/choose_day_meals.module.scss";
-import Image from "next/image";
-import Head from "next/head";
-import Overlay from "@/components/pages/dashboard/ChangeUser_Name/overlay";
-import {useDispatch, useSelector} from "react-redux";
-import {onInputChange, resetSelectedMeals} from '@/redux/slices/user/daymeals_slice';
 import {useEffect, useState} from "react";
-import axios from "axios";
-import {toast} from "react-toastify";
+import classes from "@/styles/pages/user/choose_day_meals.module.scss";
+import Head from "next/head";
+import Image from "next/image";
+import {useRouter} from "next/router";
+// COMPONENTS
+import Overlay from "@/components/pages/dashboard/ChangeUser_Name/overlay";
 import MealCard_User from "@/components/pages/user/MealCard_Add";
 import SelectedMeals from "@/components/pages/user/SelectedMeals";
+// REDUX
+import {useDispatch, useSelector} from "react-redux";
+import {onInputChange, resetSelectedMeals} from '@/redux/slices/user/daymeals_slice';
+// HELPERS
+import axios from "axios";
+import {toast} from "react-toastify";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
-import {useRouter} from "next/router";
-    // LANGUAGE
+// LANGUAGE
 import {useTranslation} from "react-i18next";
 
 const Choose_Day_Meals = () => {
@@ -43,7 +46,6 @@ const Choose_Day_Meals = () => {
                 }
             })
                 .then(res => {
-                    console.log(res.data)
                     dispatch(onInputChange({key: 'meals', value: res.data.filter}));
                     setAvailableMeals(res.data.numberOfMeals);
                     setAvailableSnacks(res.data.numberOfSnacks)
@@ -52,7 +54,7 @@ const Choose_Day_Meals = () => {
             toast.error(err.response?.data?.message || err.message)
         }
 
-    }, [dispatch, mealType])
+    }, [dispatch, mealType, dateId])
 
     // HIDE OVERLAY
     const hideOverlay = () => {
@@ -96,7 +98,7 @@ const Choose_Day_Meals = () => {
                         Authorization: `Bearer ${token}`
                     }
                 })
-                    .then(res => {
+                    .then(_ => {
                         router.push('/user/my_subscription').then(() => {
                             toast.success('The Meals of the Day Updated Successfully')
                             //Clear the Reducer
@@ -112,7 +114,7 @@ const Choose_Day_Meals = () => {
                         Authorization: `Bearer ${token}`
                     }
                 })
-                    .then(res => {
+                    .then(_ => {
                         router.push('/user/my_subscription').then(() => {
                             toast.success('The Meals of the Day Updated Successfully')
                             //Clear the Reducer
@@ -140,7 +142,7 @@ const Choose_Day_Meals = () => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />

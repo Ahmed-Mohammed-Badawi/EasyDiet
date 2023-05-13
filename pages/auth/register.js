@@ -1,28 +1,34 @@
-import {useState, useRef} from "react";
+import {useState, useRef, useEffect} from "react";
+import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import {useRouter} from "next/router";
 
 //STYLE
 import classes from '@/styles/pages/register.module.scss'
-
 // IMPORTS
 import Spinner from "@/components/layout/spinner/Spinner";
-
+import CustomSelect from "@/components/pages/register/custom-select-new";
+// HELPERS
 import axios from "axios";
 import {toast} from "react-toastify";
 // Language
 import {useTranslation} from "react-i18next";
-import CustomSelect from "@/components/pages/register/custom-select-new";
-import {onInputChange} from "@/redux/slices/Admin/createUser-slice";
-import Head from "next/head";
 
 
-export default function Register({isAuthenticated, userData}) {
+export default function Register({isAuthenticated}) {
     // ROUTER
     const router = useRouter();
     // LANGUAGE
     const {t} = useTranslation('register');
+
+    // EFFECT TO REDIRECT TO HOME IF THE USER IS AUTHENTICATED
+    useEffect(() => {
+        if (isAuthenticated) {
+            router.push('/')
+        }
+    }, [isAuthenticated, router]);
+
 
     // STATES
     const [gender, setGender] = useState();
@@ -111,8 +117,7 @@ export default function Register({isAuthenticated, userData}) {
             return;
         }
 
-        console.log(phoneRef.current.value.length)
-
+        // Check that the phone number is valid
         if (phoneRef.current.value.length !== 8) {
             toast.error("Please Enter valid phone number");
             return;
@@ -198,7 +203,7 @@ export default function Register({isAuthenticated, userData}) {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />
@@ -253,7 +258,6 @@ export default function Register({isAuthenticated, userData}) {
                                                 <CustomSelect
                                                     defaultValue={gender || ''}
                                                     changed={(values) => {
-                                                        console.log(values)
                                                         setGender(values.value)
                                                     }}
                                                     placeholder={t("placeholder4")}

@@ -1,14 +1,13 @@
 import classes from '@/styles/pages/user/my_status.module.scss';
+import Head from "next/head";
 import Image from "next/image";
-import {onInputChange} from "@/redux/slices/user/profile_slice";
-import Spinner from "@/components/layout/spinner/Spinner";
 import {useRouter} from "next/router";
+// HELPERS
 import {useEffect, useState} from "react";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
-import Head from "next/head";
 
 const My_Status = () => {
     //ROUTER
@@ -36,7 +35,6 @@ const My_Status = () => {
         })
             .then(res => {
                 // SET THE MEALS IN THE STATE
-                console.log(res)
                 setMessages(res.data.messages);
                 setUserInfo({
                     height: res.data.bmi.tall,
@@ -58,7 +56,7 @@ const My_Status = () => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />
@@ -87,7 +85,7 @@ const My_Status = () => {
                                     <span>{userInfo?.weight || ''} {t("weightUnit")}</span>
                                 </div>
                                 <div className={classes.Image_Container}>
-                                    <Image src={'/images/Global/weight.png'} alt={'weight'} width={50} height={50}/>
+                                    <Image src={'/images/Global/weight.webp'} alt={'weight'} width={50} height={50}/>
                                 </div>
                             </div>
                             <div className={classes.P1_Item}>
@@ -96,7 +94,7 @@ const My_Status = () => {
                                     <span>{userInfo?.height || ''} {t("heightUnit")}</span>
                                 </div>
                                 <div className={classes.Image_Container}>
-                                    <Image src={'/images/Global/height.png'} alt={'weight'} width={60} height={60}/>
+                                    <Image src={'/images/Global/height.webp'} alt={'weight'} width={60} height={60}/>
                                 </div>
                             </div>
                         </div>

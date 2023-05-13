@@ -1,17 +1,19 @@
+import {useEffect} from "react";
 import classes from '@/styles/pages/admin/packages.module.scss'
+import Head from "next/head";
+import Image from "next/image";
 import {useRouter} from "next/router";
 // IMPORTS
 import PackageCard_Edit from "@/components/pages/dashboard/Package_card/PackageCard_Edit";
-import Image from "next/image";
-import {useEffect} from "react";
+// HELPERS
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
 import {toast} from "react-toastify";
+// REDUX
 import {useDispatch, useSelector} from "react-redux";
 import {onInputChange} from '@/redux/slices/Admin/packages-slice';
 // LANGUAGE
 import {useTranslation} from "react-i18next";
-import Head from "next/head";
 
 
 const Packages = () => {
@@ -57,7 +59,7 @@ const Packages = () => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />

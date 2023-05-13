@@ -1,9 +1,12 @@
 import classes from './PackageCard_User.module.scss';
 import Image from "next/image";
 import {useRouter} from "next/router";
+// HELPERS
 import {toast} from "react-toastify";
+//REDUX
 import {onInputChange} from '@/redux/slices/user/subscription_info';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
+// LANGUAGE
 import {useTranslation} from "react-i18next";
 
 const PackageCard_User = ({

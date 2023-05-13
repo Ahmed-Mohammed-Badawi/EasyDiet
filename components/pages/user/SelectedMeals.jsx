@@ -1,6 +1,9 @@
 import classes from './SelectedMeals.module.scss';
-import SelectedMealCard from "@/components/pages/user/SelectedMealCard";
 import Image from "next/image";
+// IMPORT COMPONENTS
+import SelectedMealCard from "@/components/pages/user/SelectedMealCard";
+
+
 const SelectedMeals = ({text1, text2, isActive, selectedMeals, closeTheOverlay}) => {
     return (
         <>

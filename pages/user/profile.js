@@ -1,19 +1,19 @@
 import {useEffect, useState} from "react";
 import classes from '@/styles/pages/user/profile.module.scss'
+import Head from "next/head";
 import Image from "next/image";
+import {useRouter} from "next/router";
 //IMPORTS
 import Spinner from "@/components/layout/spinner/Spinner";
+// HELPERS
 import {toast} from "react-toastify";
 import axios from "axios";
-import {useRouter} from "next/router";
+import {extractTokenFromCookie} from "@/helpers/extractToken";
 // REDUX
 import {onInputChange, setAll} from "@/redux/slices/user/profile_slice";
 import {useDispatch, useSelector} from "react-redux";
-//HELPERS
-import {extractTokenFromCookie} from "@/helpers/extractToken";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
-import Head from "next/head";
 
 const Profile = (props) => {
     // ROUTER
@@ -43,7 +43,6 @@ const Profile = (props) => {
     // SET THE EMPLOYEE DATA IF IT'S FOUND
     useEffect(() => {
         if (props) {
-            console.log(props)
             dispatch(setAll({
                 userId: props._id || '',
                 firstName: props?.clientName.split(' ')[0] || '',
@@ -117,7 +116,7 @@ const Profile = (props) => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />
@@ -327,7 +326,6 @@ export const getServerSideProps = async (ctx) => {
         })
             .then(res => {
                 // SET THE STATE
-                console.log(res.data)
                 clientInfo = res.data.client
             })
             .catch(err => {

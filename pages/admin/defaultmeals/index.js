@@ -1,10 +1,11 @@
 import {useEffect, useState} from "react";
 import classes from '@/styles/pages/admin/defaultmeals.module.scss';
 import Image from "next/image";
-import {useRouter} from "next/router";
+import Head from "next/head";
 // IMPORTS
 import MealCheckbox from "@/components/pages/dashboard/Meal_checkbox/MealCheckbox_defaultMeals";
 import Spinner from "@/components/layout/spinner/Spinner";
+// HELPERS
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import {toast} from "react-toastify";
 import axios from "axios";
@@ -13,11 +14,8 @@ import {useSelector, useDispatch} from "react-redux";
 import {onInputChange, clearAll} from '@/redux/slices/Admin/defaultmeals_slice';
 // LANGUAGE
 import {useTranslation} from "react-i18next";
-import Head from "next/head";
 
 const DefaultMeals = ({role}) => {
-    //ROUTER
-    const router = useRouter();
 
     // LANGUAGE
     const {t} = useTranslation('defaultMeals');
@@ -91,7 +89,7 @@ const DefaultMeals = ({role}) => {
         }catch (err) {
             toast.error(err.response?.data?.message || err.message)
         }
-    }, [isOn, pageNumber]);
+    }, [isOn, pageNumber, role]);
 
     // SUBMIT HANDLER
     const submitHandler = async () => {
@@ -156,7 +154,7 @@ const DefaultMeals = ({role}) => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />

@@ -1,12 +1,11 @@
 import classes from './SelectedMealCard.module.scss'
 import Image from "next/image";
+
+// REDUX
 import {onInputChange} from "@/redux/slices/user/daymeals_slice";
 import {useDispatch, useSelector} from "react-redux";
-import {useRouter} from "next/router";
 
 const SelectedMeal = ({ID, image, name, number}) => {
-    // ROUTER
-    const router = useRouter();
 
     //REDUX
     const dispatch = useDispatch();

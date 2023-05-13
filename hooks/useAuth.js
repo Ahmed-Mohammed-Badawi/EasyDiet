@@ -1,8 +1,10 @@
 import {useState, useEffect} from 'react';
 import axios from 'axios';
+// HELPER
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 
 export const useAuth = () => {
+    // STATE
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userData, setUserData] = useState({});
 

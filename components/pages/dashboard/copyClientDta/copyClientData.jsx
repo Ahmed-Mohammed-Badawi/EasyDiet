@@ -3,19 +3,23 @@ import classes from './copyClientData.module.scss';
 import Image from "next/image";
 
 const CopyClientData = ({input1Value, input2Value, closeHandler}) => {
+    // Refs for inputs
     const input1Ref = useRef(null);
     const input2Ref = useRef(null);
 
+    // Copy input values to clipboard
     const handleCopy1 = () => {
         input1Ref.current.select();
         document.execCommand('copy');
     };
 
+    // Copy input values to clipboard
     const handleCopy2 = () => {
         input2Ref.current.select();
         document.execCommand('copy');
     };
 
+    // Close the model
     const closeClickedHandler = () => {
         if(window.confirm('Please not that by accepting the user info model will be hidden. \nplease copy these data before continue')){
             closeHandler()

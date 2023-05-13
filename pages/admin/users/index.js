@@ -1,22 +1,20 @@
 import {useEffect, useRef, useState} from "react";
 import classes from '@/styles/pages/admin/users.module.scss';
+import Head from "next/head";
 import Image from "next/image";
 import {useRouter} from "next/router";
-
 //HELPERS
 import axios from "axios";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
-
+import {toast} from "react-toastify";
 // REDUX
 import {useSelector, useDispatch} from "react-redux";
 import {setUsers, onInputChange} from '@/redux/slices/Admin/users-slice';
-import {toast} from "react-toastify";
 //IMPORTS
 import Overlay from "@/components/pages/dashboard/ChangeUser_Name/overlay";
 import InputsContainer from "@/components/pages/dashboard/ChangeUser_Name/inputsContainer";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
-import Head from "next/head";
 
 const Users = () => {
     // ROUTER
@@ -63,7 +61,7 @@ const Users = () => {
                 Authorization: `Bearer ${token}`
             }
         })
-            .then(res => {
+            .then(_ => {
                 const usersCopy = [...users];
                 // SET THE USERS IN REDUX
                 if (isActive) {
@@ -107,7 +105,7 @@ const Users = () => {
                     Authorization: `Bearer ${token}`
                 }
             })
-                .then(res => {
+                .then(_ => {
                     // SET THE USERS IN REDUX
                     const usersCopy = [...users];
                     // SET THE USERS IN REDUX
@@ -140,7 +138,7 @@ const Users = () => {
                     Authorization: `Bearer ${token}`
                 }
             })
-                .then(res => {
+                .then(_ => {
                     toast.success(`Account Froze Successfully`)
                 })
                 .catch(err => {
@@ -162,7 +160,7 @@ const Users = () => {
                     Authorization: `Bearer ${token}`
                 }
             })
-                .then(res => {
+                .then(_ => {
                     // SET THE USERS IN REDUX
                     toast.success(`Account unFroze Successfully`)
                 })
@@ -182,7 +180,7 @@ const Users = () => {
                     Authorization: `Bearer ${token}`
                 }
             })
-                .then(res => {
+                .then(_ => {
                     // SET THE USERS IN REDUX
                     toast.success(`User Deleted Successfully`)
                 })
@@ -277,7 +275,7 @@ const Users = () => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />

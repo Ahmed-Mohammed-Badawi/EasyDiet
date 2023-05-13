@@ -1,6 +1,8 @@
 import {useState} from "react";
 import classes from '@/styles/pages/admin/create_meal.module.scss'
 import Image from "next/image";
+import {useRouter} from "next/router";
+import Head from "next/head";
 // IMPORT
 import CustomSelectMealType from "@/components/pages/dashboard/custom-select-mealType";
 import CustomSelectLanguage from "@/components/pages/dashboard/custom-select-language";
@@ -12,10 +14,8 @@ import {onInputChange, clearAll} from '@/redux/slices/Admin/createmeal-slice';
 import {toast} from "react-toastify";
 import axios from "axios";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
-import {useRouter} from "next/router";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
-import Head from "next/head";
 
 const CreatePackage = () => {
     //ROUTER
@@ -132,7 +132,7 @@ const CreatePackage = () => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />

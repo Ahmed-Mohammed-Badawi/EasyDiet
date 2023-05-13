@@ -1,15 +1,16 @@
 import {useState} from "react";
 import classes from '@/styles/pages/admin/reports.module.scss'
+import Head from "next/head";
 import Image from "next/image";
 // IMPORT
 import CustomSelectReports from "@/components/pages/dashboard/custom-select-reports";
-import axios from "axios";
-// LANGUAGE
-import {useTranslation} from "react-i18next";
 import Spinner from "@/components/layout/spinner/Spinner";
-import Head from "next/head";
+// HELPERS
+import axios from "axios";
 import {toast} from "react-toastify";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
+// LANGUAGE
+import {useTranslation} from "react-i18next";
 
 
 const Reports = ({role}) => {
@@ -85,7 +86,7 @@ const Reports = ({role}) => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website"/>

@@ -1,20 +1,19 @@
-import classes from "@/styles/pages/user/Nutritio_specialist.module.scss";
-import DoctorCard from "@/components/pages/user/DoctorCard";
-import {useRouter} from "next/router";
-import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import axios from "axios";
+import classes from "@/styles/pages/user/Nutritio_specialist.module.scss";
+import Head from "next/head";
+// COMPONENTS
+import DoctorCard from "@/components/pages/user/DoctorCard";
+// REDUX
+import {useDispatch, useSelector} from "react-redux";
 import {onInputChange} from "@/redux/slices/user/nutritionspecialist_slice";
+// HELPERS
+import axios from "axios";
 import {toast} from "react-toastify";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
-import Head from "next/head";
 
 const Nutrition_specialist = () => {
-
-    // ROUTER
-    const router = useRouter();
 
     // LANGUAGE
     const {t} = useTranslation('nutrition_specialist')
@@ -36,7 +35,6 @@ const Nutrition_specialist = () => {
                 }
             })
                 .then(res => {
-                    console.log(res)
                     dispatch(onInputChange({key: 'specialists', value: res.data.specialists}))
                 })
         } catch (err) {
@@ -57,7 +55,7 @@ const Nutrition_specialist = () => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website" />
@@ -69,7 +67,7 @@ const Nutrition_specialist = () => {
             <div className={classes.Main}>
                 <h1>{t("title")}</h1>
                 <div className={classes.Bottom}>
-                    {specialists && specialists.map((cur, index) => {
+                    {specialists && specialists.map((cur) => {
                         return (
                             <DoctorCard
                                 key={cur._id}

@@ -2,9 +2,11 @@ import {useEffect} from "react";
 import classes from '@/styles/pages/admin/branch_manager.module.scss';
 import Head from "next/head";
 import Image from "next/image";
+// HELPERS
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
 import {toast} from "react-toastify";
+// REDUX
 import {useDispatch, useSelector} from "react-redux";
 import {onCheck, onInputChange} from '@/redux/slices/Admin/branchManager-slice';
 // LANGUAGE
@@ -51,9 +53,8 @@ const Branch_Manager = ({role}) => {
                 // FILTER THE MEALS OF THE CLIENT TO REMOVE THE DELIVERED MEAL
                 const filteredMeals = client.dayMeals.filter(meal => meal._id !== meal_ID);
                 // CREATE A NEW CLIENT OBJECT WITH UPDATED dayMeals
-                const updatedClient = {...client, dayMeals: filteredMeals};
                 // REPLACE THE CLIENT OBJECT IN mealsCopy ARRAY
-                mealsCopy[clientIndex] = updatedClient;
+                mealsCopy[clientIndex] = {...client, dayMeals: filteredMeals};
                 // UPDATE THE MEALS IN REDUX
                 dispatch(onInputChange({key: 'meals', value: mealsCopy}));
                 // SHOW SUCCESS MESSAGE
@@ -88,7 +89,6 @@ const Branch_Manager = ({role}) => {
             }
         })
             .then(res => {
-                console.log(res.data.clients)
                 // SET THE MEALS IN REDUX
                 dispatch(onInputChange({key: 'meals', value: res.data.clients}))
             })
@@ -142,7 +142,7 @@ const Branch_Manager = ({role}) => {
                 <meta name="robots" content="index, follow"/>
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="language" content="English"/>
-                <meta name="revisit-after" content="7 days"/>
+                <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
                 <meta property="og:type" content="website"/>
@@ -160,7 +160,7 @@ const Branch_Manager = ({role}) => {
                                 <div className={classes.checkboxGroup}>
                                     <input onChange={() => {
                                     }} checked={All} type="checkbox" id="All" className={classes.checkbox}
-                                           onClick={(event) => {
+                                           onClick={() => {
                                                dispatch(onCheck({
                                                    key: 'All',
                                                    value: true
@@ -174,7 +174,7 @@ const Branch_Manager = ({role}) => {
                                 <div className={classes.checkboxGroup}>
                                     <input onChange={() => {
                                     }} checked={Breakfast} type="checkbox" id="breakfast" className={classes.checkbox}
-                                           onClick={(event) => {
+                                           onClick={() => {
                                                dispatch(onCheck({
                                                    key: 'Breakfast',
                                                    value: true
@@ -188,7 +188,7 @@ const Branch_Manager = ({role}) => {
                                 <div className={classes.checkboxGroup}>
                                     <input onChange={() => {
                                     }} checked={Lunch} type="checkbox" id="lunch" className={classes.checkbox}
-                                           onClick={(event) => {
+                                           onClick={() => {
                                                dispatch(onCheck({
                                                    key: 'Lunch',
                                                    value: true
@@ -202,7 +202,7 @@ const Branch_Manager = ({role}) => {
                                 <div className={classes.checkboxGroup}>
                                     <input onChange={() => {
                                     }} checked={Dinner} type="checkbox" id="dinner" className={classes.checkbox}
-                                           onClick={(event) => {
+                                           onClick={() => {
                                                dispatch(onCheck({
                                                    key: 'Dinner',
                                                    value: true
@@ -216,7 +216,7 @@ const Branch_Manager = ({role}) => {
                                 <div className={classes.checkboxGroup}>
                                     <input onChange={() => {
                                     }} checked={Snacks} type="checkbox" id="snacks" className={classes.checkbox}
-                                           onClick={(event) => {
+                                           onClick={() => {
                                                dispatch(onCheck({
                                                    key: 'Snacks',
                                                    value: true
