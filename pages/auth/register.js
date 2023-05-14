@@ -178,19 +178,6 @@ export default function Register({isAuthenticated}) {
         }
     }
 
-    // GOOGLE HANDLER
-    const googleHandler = async () => {
-        try {
-            await axios.get(`https://api.easydietkw.com/api/v1/auth/google`)
-                .then(res => {
-                    window.location.href = `${res.data.authUrl}`;
-                })
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
-
     return (
         <>
             {/*SEO OPTIMIZATION*/}
@@ -351,11 +338,6 @@ export default function Register({isAuthenticated}) {
                                     </Link>
                                 </div>
                                 <div className={classes.Buttons_Container}>
-                                    {/*<button type={'button'} onClick={googleHandler}*/}
-                                    {/*        className={classes.Google_button}>*/}
-                                    {/*    <span><Image src={'/images/Auth/google-icon.svg'} alt={'Create User'} width={30}*/}
-                                    {/*                 height={30}/></span>*/}
-                                    {/*</button>*/}
                                     <button onClick={showPreviousPart} ref={PreviousPartRef}
                                             className={[classes.Next_button, classes.Un_Active].join(' ')}
                                             type={'button'}>

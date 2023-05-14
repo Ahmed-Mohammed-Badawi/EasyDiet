@@ -29,10 +29,25 @@ const CreateUser = () => {
     // STATES
     const [loading, setLoading] = useState(false);
     const [showUserModel, setShowUserModel] = useState(false);
+    const [emailModel, setEmailModel] = useState('');
+    const [passwordModel, setPasswordModel] = useState('');
 
     // REDUX
     const dispatch = useDispatch();
-    const {fullName, email, gender, password, phone, region, street, house, floor, apartment, selectedPackage, payment} = useSelector(state => state.create_user)
+    const {
+        fullName,
+        email,
+        gender,
+        password,
+        phone,
+        region,
+        street,
+        house,
+        floor,
+        apartment,
+        selectedPackage,
+        payment
+    } = useSelector(state => state.create_user)
 
     // SUBMIT HANDLER
     const submitHandler = async (e) => {
@@ -48,11 +63,24 @@ const CreateUser = () => {
         }
         // Set the loading state for the spinner
         setLoading(true);
-        // Create the Data as formData
-        const createEmployee_formData = new FormData();
+        const clientData = {
+            clientName: fullName,
+            clientNameEn: fullName,
+            phoneNumber: phone,
+            email: email,
+            gender: gender,
+            distrect: region,
+            streetName: street,
+            homeNumber: house,
+            floorNumber: floor,
+            appartment: apartment,
+            password: password,
+            bundleId: selectedPackage,
+        }
+
 
         // Send Create Request to the server
-        await axios.post(`https://api.easydietkw.com/api/v1/create/employee`, createEmployee_formData, {
+        await axios.post(`https://api.easydietkw.com/api/v1/admin/create/client`, clientData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -60,16 +88,14 @@ const CreateUser = () => {
             .then(res => {
                 // SET THE STATE
                 setLoading(false);
+                // SHOW THE MODEL
+                if(res.data.credentials){
+                    setEmailModel(res.data.credentials.username);
+                    setPasswordModel(res.data.credentials.password);
+                    setShowUserModel(true);
+                }
                 // DO WHAT I WANT
                 toast.success(res.data.message);
-                router.push(`/admin/users`)
-                    .then(() => {
-                        // Clear the reducer
-                        dispatch(clearAll());
-                        // Clear the image;
-                        setSelectedImage('');
-                        setPreview('')
-                    })
             })
             .catch(err => {
                 // SET THE STATE
@@ -79,15 +105,11 @@ const CreateUser = () => {
             })
     }
 
-
-    const handleEmailBlur = () => {
-        if (!email.endsWith('@easydeit.com')) {
-            dispatch(onInputChange({key: 'email', value: email + '@easydeit.com'}));
-        }
-    };
-
     const closeHandler = () => {
-        setShowUserModel(false)
+        setShowUserModel(false);
+        dispatch(clearAll());
+        setEmailModel('');
+        setPasswordModel('');
     }
 
     return (
@@ -95,8 +117,10 @@ const CreateUser = () => {
             {/*SEO OPTIMIZATION*/}
             <Head>
                 <title>EasyDiet | Create User</title>
-                <meta name="description" content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
-                <meta name="keywords" content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
+                <meta name="description"
+                      content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
+                <meta name="keywords"
+                      content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
                 <meta name="author" content="EasyDiet"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 <meta name="robots" content="index, follow"/>
@@ -105,11 +129,12 @@ const CreateUser = () => {
                 <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://easydietkw.com/" />
-                <meta property="og:image" content="/images/Auth/logo.svg" />
-                <meta property="og:site_name" content="EasyDiet" />
-                <meta property="og:description" content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet." />
+                <meta property="og:type" content="website"/>
+                <meta property="og:url" content="https://easydietkw.com/"/>
+                <meta property="og:image" content="/images/Auth/logo.svg"/>
+                <meta property="og:site_name" content="EasyDiet"/>
+                <meta property="og:description"
+                      content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet."/>
             </Head>
             <main className={classes.Main}>
                 <div className={classes.FormContainer}>
@@ -163,7 +188,7 @@ const CreateUser = () => {
                                 <label htmlFor={'gender'}>{t("gender")}</label>
                                 <CustomSelect defaultValue={gender || ''} changed={(values) => {
                                     dispatch(onInputChange({key: 'gender', value: values?.value}))
-                                }} />
+                                }}/>
                             </div>
                         </div>
                         <div className={classes.InputsContainer}>
@@ -175,7 +200,6 @@ const CreateUser = () => {
                                     id={'email'}
                                     placeholder={'EX: ahmed2001'}
                                     value={email}
-                                    onBlur={handleEmailBlur}
                                     onChange={(event) => {
                                         dispatch(onInputChange({
                                             key: 'email',
@@ -318,8 +342,8 @@ const CreateUser = () => {
             </main>
             <Overlay active={showUserModel}>
                 <CopyClientData
-                    input1Value={'Ahmed'}
-                    input2Value={'Mohammed'}
+                    input1Value={emailModel}
+                    input2Value={passwordModel}
                     closeHandler={closeHandler}
                 />
             </Overlay>
