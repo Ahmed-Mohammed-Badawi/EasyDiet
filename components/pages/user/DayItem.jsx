@@ -28,7 +28,7 @@ const DayItem = ({ID, title, date, isSelected, Editable, Daydate}) => {
                     {Editable && <span onClick={() => {
                         dispatch(onInputChange({key: 'date', value: Daydate}));
                         dispatch(onInputChange({key: 'dateId', value: ID}));
-                        router.push(`/user/choose_day_meals`)
+                        router.push(`/user/choose_day_meals?dateId=${ID}`)
                     }} className={[classes.Icon_Container, classes.Edit].join(' ')}>
                     <Image src={'/images/Edit_Icon.svg'} alt={'Edit icon'} width={20} height={20}/>
                     </span>}

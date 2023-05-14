@@ -38,23 +38,36 @@ const Choose_Day_Meals = () => {
     useEffect(() => {
         //GET THE TOKEN
         const token = extractTokenFromCookie(document.cookie);
-        // LOGIC
-        try {
-            axios.get(`https://api.easydietkw.com/api/v1/filter/menu/meals?mealType=${mealType}&dateId=${dateId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-                .then(res => {
-                    dispatch(onInputChange({key: 'meals', value: res.data.filter}));
-                    setAvailableMeals(res.data.numberOfMeals);
-                    setAvailableSnacks(res.data.numberOfSnacks)
+
+        // GET THE DATE ID FROM THE URL
+        const {dateId: dateIdQuery} = router.query;
+
+        if (dateIdQuery || dateId) {
+            // LOGIC
+            try {
+                axios.get(`https://api.easydietkw.com/api/v1/filter/menu/meals`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
+                    params: {
+                        mealType: mealType,
+                        dateId: dateId || dateIdQuery
+                    }
                 })
-        } catch (err) {
-            toast.error(err.response?.data?.message || err.message)
+                    .then(res => {
+                        dispatch(onInputChange({key: 'meals', value: res.data.filter}));
+                        setAvailableMeals(res.data.numberOfMeals);
+                        setAvailableSnacks(res.data.numberOfSnacks)
+                    })
+                    .catch(err => {
+                        toast.error(err.response?.data?.message || err.message)
+                    })
+            } catch (err) {
+                toast.error(err.response?.data?.message || err.message)
+            }
         }
 
-    }, [dispatch, mealType, dateId])
+    }, [dispatch, mealType, dateId, router])
 
     // HIDE OVERLAY
     const hideOverlay = () => {
@@ -135,8 +148,10 @@ const Choose_Day_Meals = () => {
             {/*SEO OPTIMIZATION*/}
             <Head>
                 <title>EasyDiet | Choose Day Meals</title>
-                <meta name="description" content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
-                <meta name="keywords" content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
+                <meta name="description"
+                      content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
+                <meta name="keywords"
+                      content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
                 <meta name="author" content="EasyDiet"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 <meta name="robots" content="index, follow"/>
@@ -145,11 +160,12 @@ const Choose_Day_Meals = () => {
                 <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://easydietkw.com/" />
-                <meta property="og:image" content="/images/Auth/logo.svg" />
-                <meta property="og:site_name" content="EasyDiet" />
-                <meta property="og:description" content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet." />
+                <meta property="og:type" content="website"/>
+                <meta property="og:url" content="https://easydietkw.com/"/>
+                <meta property="og:image" content="/images/Auth/logo.svg"/>
+                <meta property="og:site_name" content="EasyDiet"/>
+                <meta property="og:description"
+                      content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet."/>
             </Head>
             <main className={classes.Main}>
                 <div className={classes.Container}>
@@ -228,19 +244,22 @@ const Choose_Day_Meals = () => {
                     <div className={classes.Bottom}>
                         <div className={classes.Cards}>
                             {meals && meals.map((cur) => {
-                                return (
-                                    <MealCard_User
-                                        key={cur.mealId._id}
-                                        ID={cur.mealId._id}
-                                        image={cur.mealId.imagePath}
-                                        carbohydrate={cur.mealId.carbohydrates}
-                                        protein={cur.mealId.protine}
-                                        fats={cur.mealId.fats}
-                                        calories={cur.mealId.calories}
-                                        name={cur.mealId.mealTitle}
-                                        lang={cur.mealId.lang}
-                                    />
-                                )
+                                if (cur?.mealId?._id && cur?.mealId?.lang && cur?.mealId?.mealTitle && cur?.mealId?.imagePath && cur?.mealId?.calories && cur?.mealId?.carbohydrates && cur?.mealId?.protine && cur?.mealId?.fats)
+                                    return (
+                                        <MealCard_User
+                                            key={cur?.mealId?._id}
+                                            ID={cur?.mealId?._id}
+                                            image={cur?.mealId?.imagePath}
+                                            carbohydrate={cur?.mealId?.carbohydrates}
+                                            protein={cur?.mealId?.protine}
+                                            fats={cur?.mealId?.fats}
+                                            calories={cur?.mealId?.calories}
+                                            name={cur?.mealId?.mealTitle}
+                                            lang={cur?.mealId?.lang}
+                                            availableMeals={availableMeals}
+                                            availableSnacks={availableSnacks}
+                                        />
+                                    )
                             })}
                         </div>
                         <button
@@ -267,7 +286,8 @@ const Choose_Day_Meals = () => {
                 </div>
             </main>
             <Overlay active={overlay} clicked={hideOverlay}>
-                <SelectedMeals text1={t("selectedMeals")} text2={t("noMeals")} isActive={overlay} selectedMeals={selectedMeals} closeTheOverlay={hideOverlay}/>
+                <SelectedMeals text1={t("selectedMeals")} text2={t("noMeals")} isActive={overlay}
+                               selectedMeals={selectedMeals} closeTheOverlay={hideOverlay}/>
             </Overlay>
         </>
 

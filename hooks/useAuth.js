@@ -14,6 +14,9 @@ export const useAuth = () => {
                 //GET THE TOKEN
                 const token = extractTokenFromCookie(document.cookie);
 
+                //CHECK IF THE TOKEN IS VALID
+                if(!token) return setIsAuthenticated(false);
+
                 const response = await axios.get(`https://api.easydietkw.com/api/v1/get/verify/token`, {
                     params: {
                         token: token,

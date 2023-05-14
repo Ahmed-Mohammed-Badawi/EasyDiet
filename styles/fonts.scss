@@ -4,7 +4,8 @@
   font-style: normal;
   font-weight: 300;
   src: local('almarai Light'), local('almarai-Light'),
-  url('../fonts/almarai/Almarai-Light.ttf') format('truetype')
+  url('../fonts/almarai/Almarai-Light.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
@@ -12,7 +13,8 @@
   font-style: normal;
   font-weight: 400;
   src: local('almarai Normal'), local('almarai-Normal'),
-  url('../fonts/almarai/Almarai-Regular.ttf') format('truetype')
+  url('../fonts/almarai/Almarai-Regular.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
@@ -20,7 +22,8 @@
   font-style: normal;
   font-weight: 700;
   src: local('almarai Bold'), local('almarai-Bold'),
-  url('../fonts/almarai/Almarai-Bold.ttf') format('truetype')
+  url('../fonts/almarai/Almarai-Bold.ttf') format('truetype');
+  font-display: swap;
 }
 
 //Cairo
@@ -29,7 +32,8 @@
   font-style: normal;
   font-weight: 300;
   src: local('cairo Light'), local('cairo-Light'),
-  url('../fonts/cairo/Cairo-Light.ttf') format('truetype')
+  url('../fonts/cairo/Cairo-Light.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
@@ -37,7 +41,8 @@
   font-style: normal;
   font-weight: 400;
   src: local('cairo Normal'), local('cairo-Normal'),
-  url('../fonts/cairo/Cairo-Regular.ttf') format('truetype')
+  url('../fonts/cairo/Cairo-Regular.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
@@ -45,7 +50,8 @@
   font-style: normal;
   font-weight: 700;
   src: local('cairo Bold'), local('cairo-Bold'),
-  url('../fonts/cairo/Cairo-Bold.ttf') format('truetype')
+  url('../fonts/cairo/Cairo-Bold.ttf') format('truetype');
+  font-display: swap;
 }
 
 //Montserrat
@@ -54,7 +60,8 @@
   font-style: normal;
   font-weight: 300;
   src: local('montserrat Light'), local('montserrat-Light'),
-  url('../fonts/montserrat/Montserrat-Light.ttf') format('truetype')
+  url('../fonts/montserrat/Montserrat-Light.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
@@ -62,7 +69,8 @@
   font-style: normal;
   font-weight: 400;
   src: local('montserrat Normal'), local('montserrat-Normal'),
-  url('../fonts/montserrat/Montserrat-Regular.ttf') format('truetype')
+  url('../fonts/montserrat/Montserrat-Regular.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
@@ -70,7 +78,8 @@
   font-style: normal;
   font-weight: 500;
   src: local('montserrat Medium'), local('montserrat-Medium'),
-  url('../fonts/montserrat/Montserrat-Medium.ttf') format('truetype')
+  url('../fonts/montserrat/Montserrat-Medium.ttf') format('truetype');
+  font-display: swap;
 }
 
 //Roboto
@@ -79,7 +88,8 @@
   font-style: normal;
   font-weight: 300;
   src: local('roboto Light'), local('roboto-Light'),
-  url('../fonts/roboto/Roboto-Light.ttf') format('truetype')
+  url('../fonts/roboto/Roboto-Light.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
@@ -87,7 +97,8 @@
   font-style: normal;
   font-weight: 400;
   src: local('roboto Normal'), local('roboto-Normal'),
-  url('../fonts/roboto/Roboto-Regular.ttf') format('truetype')
+  url('../fonts/roboto/Roboto-Regular.ttf') format('truetype');
+  font-display: swap;
 }
 
 @font-face {
@@ -95,7 +106,8 @@
   font-style: normal;
   font-weight: 500;
   src: local('roboto Medium'), local('roboto-Medium'),
-  url('../fonts/roboto/Roboto-Medium.ttf') format('ttf')
+  url('../fonts/roboto/Roboto-Medium.ttf') format('ttf');
+  font-display: swap;
 }
 
 //Freehouse
@@ -104,5 +116,6 @@
   font-style: normal;
   font-weight: 700;
   src: local('freehouse Bold'), local('freehouse-Bold'),
-  url('../fonts/freehouse/freehouse-wide.otf') format('truetype')
+  url('../fonts/freehouse/freehouse-wide.otf') format('truetype');
+  font-display: swap;
 }

@@ -34,7 +34,7 @@ const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, 
                     'Authorization': `Bearer ${token}`
                 }
             })
-                .then(res => {
+                .then(_ => {
                     // Show notification
                     toast.success('Meal Deleted Successfully');
                     // Update the State
@@ -43,7 +43,6 @@ const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, 
                 })
                 .catch(err => {
                     toast.error(err.response?.data?.message || err.message || 'Something Went Wrong');
-                    console.log(err)
                 })
         }
     }
