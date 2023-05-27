@@ -60,6 +60,7 @@
       font-family: var(--font-montserrat);
       text-transform: uppercase;
       margin-bottom: 1rem;
+      text-shadow: 0 0 1px var(--color-main); /* Define the text-shadow with offset and color */
     }
 
     span{

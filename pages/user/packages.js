@@ -2,7 +2,8 @@ import {useEffect, useState} from "react";
 import classes from '@/styles/pages/user/packages.module.scss'
 import Head from "next/head";
 // IMPORTS
-import PackageCard from "@/components/pages/dashboard/Package_card/PackageCard_User";
+// import PackageCard from "@/components/pages/dashboard/Package_card/PackageCard_User";
+import PackageCard from "@/components/layout/packageCard/PackageCard";
 // HELPERS
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
@@ -44,7 +45,7 @@ const Packages = () => {
                     dispatch(onInputInSubscriptionChange({key: 'userId', value: res.data.decodedToken.userId}))
                     setAuthenticationStatus({
                         isAuthenticated: true,
-                        hasProfile: res.data.hasProfile
+                        hasProfile: res.data.hasProfile || false
                     })
                 })
                 .catch(err => console.log(err))
@@ -92,18 +93,24 @@ const Packages = () => {
 
                 <div className={classes.Bottom}>
                     {packages && packages.map((cur) => {
+                        console.log(cur)
                         return (
                             <PackageCard
                                 ID={cur._id}
                                 key={cur._id}
+                                showOnly={false}
+                                type={'user'}
                                 name={cur.bundleName}
+                                nameEn={cur.bundleNameEn}
+                                textOnCardEn={cur.timeOnCardEn}
+                                textOnCard={cur.timeOnCard}
                                 meals={cur.mealsNumber}
                                 price={cur.bundlePrice}
                                 snacks={cur.snacksNumber}
                                 fridays={cur.fridayOption}
                                 offers={cur.bundleOffer}
                                 time={cur.timeOnCard}
-                                language={cur.lang}
+                                mealsType={cur.mealsType}
                                 authenticationStatus={authenticationStatus}
                             />
                         )

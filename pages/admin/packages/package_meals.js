@@ -5,6 +5,7 @@ import Image from "next/image";
 import {useRouter} from "next/router";
 // IMPORTS
 import MealCheckbox from "@/components/pages/dashboard/Meal_checkbox/MealCheckbox";
+import MealCheckbox_ALL from "@/components/pages/dashboard/Meal_checkbox/MealCheckbox_ALL";
 // HELPERS
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import {toast} from "react-toastify";
@@ -129,7 +130,7 @@ const Users = () => {
                                 <th>MEAL NAME</th>
                                 <th>CATEGORIES</th>
                                 <th>LANGUAGE</th>
-                                <th>SELECT</th>
+                                <th style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>SELECT ALL <MealCheckbox_ALL meals={meals} /></th>
                             </tr>
                             </thead>
                             <tbody>

@@ -3,11 +3,16 @@ import Image from "next/image";
 
 // LANGUAGE
 import {useTranslation} from "react-i18next";
+import i18n from "@/i18n";
 
 
-const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, lang}) => {
+const MealCardAdmin = ({ID, image, name, nameEn, protein, calories, fats, carbohydrate}) => {
     // LANGUAGE
     const {t} = useTranslation('menu');
+
+    // TRANSLATIONS
+    const lang = i18n.language;
+
 
     return (
         <article className={classes.Card}>
@@ -15,7 +20,7 @@ const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, 
                 <Image src={image || '/images/no_image.webp'} alt={'Meal Image'} width={360} height={250}/>
             </div>
             <div className={classes.Content_Container}>
-                <h2>{name}</h2>
+                <h2>{lang.includes('en') ? nameEn : name}</h2>
                 <div className={classes.Info_Container}>
                     <div className={classes.Info_Item}>
                         <h3>{t("calories")}</h3>

@@ -12,7 +12,7 @@ import {onInputChange} from '@/redux/slices/user/menu';
 // TRANSLATION
 import {useTranslation} from "react-i18next";
 
-const Packages = () => {
+const Menu = () => {
     // LANGUAGE
     const {t} = useTranslation('menu')
 
@@ -68,6 +68,7 @@ const Packages = () => {
                                 key={cur._id}
                                 ID={cur._id}
                                 name={cur.mealTitle}
+                                nameEn={cur.mealTitleEn}
                                 calories={cur.calories}
                                 carbohydrate={cur.carbohydrates}
                                 fats={cur.fats}
@@ -82,4 +83,4 @@ const Packages = () => {
         </>
     )
 }
-export default Packages
+export default Menu

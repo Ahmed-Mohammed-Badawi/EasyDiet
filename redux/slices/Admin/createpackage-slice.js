@@ -3,14 +3,15 @@ import {createSlice} from "@reduxjs/toolkit";
 //Initial Value
 const initialValue = {
     name: '',
-    timeOnCard: '',
+    nameEn: '',
+    textOnCard: '',
+    textOnCardEn: '',
     realTime: '',
     packagePrice: '',
     numberOfMeals: '',
     numberOfSnacks: '',
     offerDays: '',
     fridayIncluded: false,
-    language: '',
     packageMeals: [],
     breakfast: false,
     lunch: false,
@@ -47,16 +48,25 @@ const createPackageSlice = createSlice({
                 state.packageMeals = packageMealsCopy
             }
         },
+        onSelectAll: (state, action) => {
+            // GET THE MEALS IDS
+            state.packageMeals = action.payload.mealIds;
+        },
+        onUnSelectAll: (state, action) => {
+            // Update the state
+            state.packageMeals = [];
+        },
         clearAll: (state) => {
             state.name = '';
-            state.timeOnCard = '';
+            state.nameEn = '';
+            state.textOnCard = '';
+            state.textOnCardEn = '';
             state.realTime = '';
             state.packagePrice = '';
             state.numberOfMeals = '';
             state.numberOfSnacks = '';
             state.offerDays = '';
             state.fridayIncluded = false;
-            state.language = '';
             state.packageMeals = [];
             state.breakfast = false;
             state.lunch = false;
@@ -66,5 +76,5 @@ const createPackageSlice = createSlice({
 })
 
 
-export const {onInputChange, clearAll, onMealChecked} = createPackageSlice.actions;
+export const {onInputChange, clearAll, onMealChecked, onSelectAll, onUnSelectAll} = createPackageSlice.actions;
 export default createPackageSlice;

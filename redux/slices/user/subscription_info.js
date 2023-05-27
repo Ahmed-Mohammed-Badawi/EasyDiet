@@ -6,7 +6,6 @@ const initialValue = {
     package: {
         id: '',
         friday: false,
-        language: ''
     },
     selectedDay: null,
     selectedMonth: null,

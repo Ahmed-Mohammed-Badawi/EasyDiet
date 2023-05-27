@@ -5,7 +5,6 @@ import {useRouter} from "next/router";
 import Head from "next/head";
 // IMPORT
 import CustomSelectMealType from "@/components/pages/dashboard/custom-select-mealType";
-import CustomSelectLanguage from "@/components/pages/dashboard/custom-select-language";
 import Spinner from "@/components/layout/spinner/Spinner";
 // REDUX
 import {useDispatch, useSelector} from "react-redux";
@@ -33,6 +32,7 @@ const CreatePackage = () => {
     const dispatch = useDispatch();
     const {
         name,
+        nameEn,
         category,
         carbohydrate,
         protein,
@@ -41,7 +41,6 @@ const CreatePackage = () => {
         repeatPeriod,
         repeatNumber,
         blocked,
-        language
     } = useSelector(state => state.create_meal);
 
     // HELPERS
@@ -70,7 +69,7 @@ const CreatePackage = () => {
         const token = extractTokenFromCookie(document.cookie)
 
         //Check the inputs
-        if (!selectedImage || !name || !category || !carbohydrate || !protein || !calories || !fat || !repeatPeriod || !repeatNumber || !language) {
+        if (!selectedImage || !name || !nameEn || !category || !carbohydrate || !protein || !calories || !fat || !repeatPeriod || !repeatNumber) {
             toast.error(`Please fill All inputs`);
             return;
         }
@@ -79,6 +78,7 @@ const CreatePackage = () => {
         // Create the Data as formData
         const createMeal_formData = new FormData();
         createMeal_formData.append("mealTitle", name);
+        createMeal_formData.append("mealTitleEn", nameEn);
         for (let i = 0; i < category.length; i++) {
             createMeal_formData.append('mealTypes[]', category[i]);
         }
@@ -90,7 +90,7 @@ const CreatePackage = () => {
         createMeal_formData.append("selectionPeriod", repeatPeriod);
         createMeal_formData.append("files", selectedImage);
         createMeal_formData.append("mealBlocked", blocked);
-        createMeal_formData.append("lang", language);
+        // createMeal_formData.append("lang", language);
 
         // Send Create Request to the server
         await axios.post(`https://api.easydietkw.com/api/v1/create/meal`, createMeal_formData, {
@@ -125,8 +125,10 @@ const CreatePackage = () => {
             {/*SEO OPTIMIZATION*/}
             <Head>
                 <title>EasyDiet | Create Meal</title>
-                <meta name="description" content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
-                <meta name="keywords" content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
+                <meta name="description"
+                      content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
+                <meta name="keywords"
+                      content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
                 <meta name="author" content="EasyDiet"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 <meta name="robots" content="index, follow"/>
@@ -135,11 +137,12 @@ const CreatePackage = () => {
                 <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://easydietkw.com/" />
-                <meta property="og:image" content="/images/Auth/logo.svg" />
-                <meta property="og:site_name" content="EasyDiet" />
-                <meta property="og:description" content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet." />
+                <meta property="og:type" content="website"/>
+                <meta property="og:url" content="https://easydietkw.com/"/>
+                <meta property="og:image" content="/images/Auth/logo.svg"/>
+                <meta property="og:site_name" content="EasyDiet"/>
+                <meta property="og:description"
+                      content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet."/>
             </Head>
             <main className={classes.Main}>
                 <div className={classes.FormContainer}>
@@ -165,7 +168,7 @@ const CreatePackage = () => {
                                     type={'text'}
                                     name={'meal_name'}
                                     id={'meal_name'}
-                                    placeholder={'EX: PIZZA'}
+                                    placeholder={'EX: بيتزا'}
                                     value={name}
                                     onChange={(event) => {
                                         dispatch(onInputChange({
@@ -175,6 +178,24 @@ const CreatePackage = () => {
                                     }}
                                 />
                             </div>
+                            <div className={classes.InputGroup}>
+                                <label htmlFor={'name_en'}>{t("mealNameEn")}</label>
+                                <input
+                                    type={'text'}
+                                    name={'name_en'}
+                                    id={'name_en'}
+                                    placeholder={'Pizza'}
+                                    value={nameEn}
+                                    onChange={(event) => {
+                                        dispatch(onInputChange({
+                                            key: 'nameEn',
+                                            value: event.target.value
+                                        }))
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div className={classes.InputsContainer}>
                             <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
                                 <label htmlFor={'meal_category'}>{t("mealCategory")}</label>
                                 <CustomSelectMealType
@@ -195,8 +216,6 @@ const CreatePackage = () => {
                                     }}
                                 />
                             </div>
-                        </div>
-                        <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'meal_carbohydrate'}>{t("carbohydrate")}</label>
                                 <input
@@ -214,6 +233,9 @@ const CreatePackage = () => {
                                     }}
                                 />
                             </div>
+
+                        </div>
+                        <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'meal_fat'}>{t("fat")}</label>
                                 <input
@@ -231,8 +253,6 @@ const CreatePackage = () => {
                                     }}
                                 />
                             </div>
-                        </div>
-                        <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'meal_calories'}>{t("calories")}</label>
                                 <input
@@ -250,6 +270,9 @@ const CreatePackage = () => {
                                     }}
                                 />
                             </div>
+
+                        </div>
+                        <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'meal_protein'}>{t("protein")}</label>
                                 <input
@@ -267,8 +290,6 @@ const CreatePackage = () => {
                                     }}
                                 />
                             </div>
-                        </div>
-                        <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'recurrence_period'}>{t("reputation")}</label>
                                 <input
@@ -286,23 +307,7 @@ const CreatePackage = () => {
                                     }}
                                 />
                             </div>
-                            <div className={classes.InputGroup}>
-                                <label htmlFor={'number_of_repetitions'}>{t("nOfReputation")}</label>
-                                <input
-                                    type={'number'}
-                                    min={'0'}
-                                    name={'number_of_repetitions'}
-                                    id={'number_of_repetitions'}
-                                    placeholder={'EX: 3'}
-                                    value={repeatNumber}
-                                    onChange={(event) => {
-                                        dispatch(onInputChange({
-                                            key: 'repeatNumber',
-                                            value: event.target.value
-                                        }))
-                                    }}
-                                />
-                            </div>
+
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
@@ -326,15 +331,19 @@ const CreatePackage = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
-                                <label htmlFor={'package_real_time'}>{t("language")}</label>
-                                <CustomSelectLanguage
-                                    defaultValue={language}
-                                    changed={(values) => {
-                                        // Set the State in Redux
+                            <div className={classes.InputGroup}>
+                                <label htmlFor={'number_of_repetitions'}>{t("nOfReputation")}</label>
+                                <input
+                                    type={'number'}
+                                    min={'0'}
+                                    name={'number_of_repetitions'}
+                                    id={'number_of_repetitions'}
+                                    placeholder={'EX: 3'}
+                                    value={repeatNumber}
+                                    onChange={(event) => {
                                         dispatch(onInputChange({
-                                            key: 'language',
-                                            value: values.value
+                                            key: 'repeatNumber',
+                                            value: event.target.value
                                         }))
                                     }}
                                 />
@@ -352,7 +361,7 @@ const CreatePackage = () => {
         </>
     )
 }
-export default CreatePackage
+export default CreatePackage;
 
 
 export const getServerSideProps = async (ctx) => {

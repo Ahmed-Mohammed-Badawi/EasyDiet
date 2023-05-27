@@ -3,6 +3,7 @@ import {createSlice} from "@reduxjs/toolkit";
 //Initial Value
 const initialValue = {
     name: '',
+    nameEn: '',
     category: [],
     carbohydrate: '',
     protein: '',
@@ -11,7 +12,6 @@ const initialValue = {
     repeatPeriod: '',
     repeatNumber: '',
     blocked: false,
-    language: ''
 };
 
 const createMealSlice = createSlice({
@@ -23,6 +23,7 @@ const createMealSlice = createSlice({
         },
         clearAll: (state) => {
             state.name = '';
+            state.nameEn = '';
             state.category = [];
             state.carbohydrate = '';
             state.protein = '';
@@ -31,7 +32,6 @@ const createMealSlice = createSlice({
             state.repeatPeriod = '';
             state.repeatNumber = '';
             state.blocked = false;
-            state.language = '';
         }
     },
 })

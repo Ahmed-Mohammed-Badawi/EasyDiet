@@ -1,7 +1,8 @@
 {
   "title": "CREATE MEAL",
   "upload": "UPLOAD IMAGE",
-  "mealName": "MEAL NAME",
+  "mealName": "MEAL NAME (ARABIC)",
+  "mealNameEn": "MEAL NAME (ENGLISH)",
   "mealCategory": "MEAL CATEGORY",
   "carbohydrate": "CARBOHYDRATE (GRAMS)",
   "fat": "FAT (GRAMS)",

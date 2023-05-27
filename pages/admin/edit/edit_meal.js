@@ -37,6 +37,7 @@ const EditMeal = ({meal}) => {
     const {
         mealId,
         name,
+        nameEn,
         category,
         carbohydrate,
         protein,
@@ -45,7 +46,6 @@ const EditMeal = ({meal}) => {
         repeatPeriod,
         repeatNumber,
         blocked,
-        language
     } = useSelector(state => state.edit_meal);
 
     // HANDLE SET DEFAULT DATA
@@ -54,6 +54,7 @@ const EditMeal = ({meal}) => {
             dispatch(setAll({
                 mealId: meal._id,
                 name: meal.mealTitle,
+                nameEn: meal.mealTitleEn,
                 category: [meal.mealType],
                 carbohydrate: meal.carbohydrates,
                 protein: meal.protine,
@@ -62,7 +63,6 @@ const EditMeal = ({meal}) => {
                 repeatPeriod: meal.selectionRule.period,
                 repeatNumber: meal.selectionRule.redundancy,
                 blocked: meal.mealBlocked,
-                language: meal.lang
             }))
         }
     }, [dispatch, meal])
@@ -90,8 +90,10 @@ const EditMeal = ({meal}) => {
         //GET THE TOKEN
         const token = extractTokenFromCookie(document.cookie)
 
+
         //Check the inputs
-        if (!name || !category || !carbohydrate || !protein || !calories || !fat || !repeatPeriod || !repeatNumber || !language) {
+        if (!name || !nameEn || !category || !carbohydrate || !protein || !calories || !fat || repeatPeriod === null || repeatNumber === null) {
+            console.log(name, nameEn, category, carbohydrate, protein, calories, fat, repeatPeriod, repeatNumber)
             toast.error(`Please fill All inputs`);
             return;
         }
@@ -101,6 +103,7 @@ const EditMeal = ({meal}) => {
         const editMeal_formData = new FormData();
         editMeal_formData.append("mealId", mealId);
         editMeal_formData.append("mealTitle", name);
+        editMeal_formData.append("mealTitleEn", nameEn);
         editMeal_formData.append("mealType", category);
         editMeal_formData.append("protine", protein);
         editMeal_formData.append("carbohydrates", carbohydrate);
@@ -112,7 +115,6 @@ const EditMeal = ({meal}) => {
             editMeal_formData.append("files", selectedImage);
         }
         editMeal_formData.append("mealBlocked", blocked);
-        editMeal_formData.append("lang", language);
 
         // Send Create Request to the server
         await axios.put(`https://api.easydietkw.com/api/v1/edit/meal`, editMeal_formData, {
@@ -148,8 +150,10 @@ const EditMeal = ({meal}) => {
             {/*SEO OPTIMIZATION*/}
             <Head>
                 <title>EasyDiet | Edit Meal</title>
-                <meta name="description" content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
-                <meta name="keywords" content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
+                <meta name="description"
+                      content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
+                <meta name="keywords"
+                      content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
                 <meta name="author" content="EasyDiet"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 <meta name="robots" content="index, follow"/>
@@ -158,11 +162,12 @@ const EditMeal = ({meal}) => {
                 <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://easydietkw.com/" />
-                <meta property="og:image" content="/images/Auth/logo.svg" />
-                <meta property="og:site_name" content="EasyDiet" />
-                <meta property="og:description" content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet." />
+                <meta property="og:type" content="website"/>
+                <meta property="og:url" content="https://easydietkw.com/"/>
+                <meta property="og:image" content="/images/Auth/logo.svg"/>
+                <meta property="og:site_name" content="EasyDiet"/>
+                <meta property="og:description"
+                      content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet."/>
             </Head>
             <main className={classes.Main}>
                 <div className={classes.FormContainer}>
@@ -189,7 +194,7 @@ const EditMeal = ({meal}) => {
                                     type={'text'}
                                     name={'package_name'}
                                     id={'package_name'}
-                                    placeholder={'EX: FIT PACKAGE'}
+                                    placeholder={'EX: بيتزا'}
                                     value={name}
                                     onChange={(event) => {
                                         dispatch(onInputChange({
@@ -199,6 +204,24 @@ const EditMeal = ({meal}) => {
                                     }}
                                 />
                             </div>
+                            <div className={classes.InputGroup}>
+                                <label htmlFor={'name_en'}>{t("mealNameEn")}</label>
+                                <input
+                                    type={'text'}
+                                    name={'name_en'}
+                                    id={'name_en'}
+                                    placeholder={'Pizza'}
+                                    value={nameEn}
+                                    onChange={(event) => {
+                                        dispatch(onInputChange({
+                                            key: 'nameEn',
+                                            value: event.target.value
+                                        }))
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div className={classes.InputsContainer}>
                             <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
                                 <label htmlFor={'meal_category'}>{t("mealCategory")}</label>
                                 <CustomSelectMealType
@@ -212,8 +235,7 @@ const EditMeal = ({meal}) => {
                                     }}
                                 />
                             </div>
-                        </div>
-                        <div className={classes.InputsContainer}>
+
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'meal_carbohydrate'}>{t("carbohydrate")}</label>
                                 <input
@@ -231,6 +253,8 @@ const EditMeal = ({meal}) => {
                                     }}
                                 />
                             </div>
+                        </div>
+                        <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'meal_fat'}>{t("fat")}</label>
                                 <input
@@ -248,8 +272,6 @@ const EditMeal = ({meal}) => {
                                     }}
                                 />
                             </div>
-                        </div>
-                        <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'meal_calories'}>{t("calories")}</label>
                                 <input
@@ -267,6 +289,8 @@ const EditMeal = ({meal}) => {
                                     }}
                                 />
                             </div>
+                        </div>
+                        <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'meal_protein'}>{t("protein")}</label>
                                 <input
@@ -284,8 +308,6 @@ const EditMeal = ({meal}) => {
                                     }}
                                 />
                             </div>
-                        </div>
-                        <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'recurrence_period'}>{t("reputation")}</label>
                                 <input
@@ -298,23 +320,6 @@ const EditMeal = ({meal}) => {
                                     onChange={(event) => {
                                         dispatch(onInputChange({
                                             key: 'repeatPeriod',
-                                            value: event.target.value
-                                        }))
-                                    }}
-                                />
-                            </div>
-                            <div className={classes.InputGroup}>
-                                <label htmlFor={'number_of_repetitions'}>{t("nOfReputation")}</label>
-                                <input
-                                    type={'number'}
-                                    name={'number_of_repetitions'}
-                                    min={'0'}
-                                    id={'number_of_repetitions'}
-                                    placeholder={'EX: 3'}
-                                    value={repeatNumber}
-                                    onChange={(event) => {
-                                        dispatch(onInputChange({
-                                            key: 'repeatNumber',
                                             value: event.target.value
                                         }))
                                     }}
@@ -343,15 +348,19 @@ const EditMeal = ({meal}) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
-                                <label htmlFor={'package_real_time'}>{t("language")}</label>
-                                <CustomSelectLanguage
-                                    defaultValue={language}
-                                    changed={(values) => {
-                                        // Set the State in Redux
+                            <div className={classes.InputGroup}>
+                                <label htmlFor={'number_of_repetitions'}>{t("nOfReputation")}</label>
+                                <input
+                                    type={'number'}
+                                    name={'number_of_repetitions'}
+                                    min={'0'}
+                                    id={'number_of_repetitions'}
+                                    placeholder={'EX: 3'}
+                                    value={repeatNumber}
+                                    onChange={(event) => {
                                         dispatch(onInputChange({
-                                            key: 'language',
-                                            value: values.value
+                                            key: 'repeatNumber',
+                                            value: event.target.value
                                         }))
                                     }}
                                 />

@@ -33,14 +33,15 @@ const EditPackage = ({bundle}) => {
     const {
         bundleId,
         name,
-        timeOnCard,
+        nameEn,
+        textOnCard,
+        textOnCardEn,
         realTime,
         packagePrice,
         numberOfMeals,
         numberOfSnacks,
         offerDays,
         fridayIncluded,
-        language,
         packageMeals,
         breakfast,
         lunch,
@@ -61,14 +62,14 @@ const EditPackage = ({bundle}) => {
             dispatch(setAll({
                 bundleId: bundle._id,
                 name: bundle.bundleName,
-                timeOnCard: bundle.timeOnCard,
+                nameEn: bundle.bundleNameEn,
+                textOnCard: bundle.bundleTextOnCard,
                 realTime: bundle.bundlePeriod,
                 packagePrice: bundle.bundlePrice,
                 numberOfMeals: bundle.mealsNumber,
                 numberOfSnacks: bundle.snacksNumber,
                 offerDays: bundle.bundleOffer,
                 fridayIncluded: bundle.fridayOption,
-                language: bundle.lang,
                 packageMeals: ArrayOfMealsIds,
                 breakfast: bundle.mealsType.includes('افطار'),
                 lunch: bundle.mealsType.includes('غداء'),
@@ -85,7 +86,7 @@ const EditPackage = ({bundle}) => {
         const token = extractTokenFromCookie(document.cookie);
 
         //Check the inputs
-        if (!name || !timeOnCard || !realTime || !packagePrice || !numberOfMeals || !numberOfSnacks || !language || packageMeals.length <= 0) {
+        if (!name || !realTime || !packagePrice || !numberOfMeals || !numberOfSnacks || packageMeals.length <= 0) {
             toast.error(`Please fill All inputs`);
             return;
         }
@@ -95,6 +96,7 @@ const EditPackage = ({bundle}) => {
         const editMeal_Obj = {
             bundleId: bundleId,
             bundleName: name,
+            bundleNameEn: nameEn,
             mealsNumber: numberOfMeals,
             breakfast: breakfast ? 'on' : 'off',
             lunch: lunch ? 'on' : 'off',
@@ -105,8 +107,8 @@ const EditPackage = ({bundle}) => {
             fridayOption: fridayIncluded,
             bundlePrice: packagePrice,
             mealsIds: packageMeals,
-            lang: language,
-            timeOnCard: timeOnCard
+            timeOnCard: textOnCard,
+            timeOnCardEn: textOnCardEn
         }
 
         // Send Create Request to the server
@@ -139,8 +141,10 @@ const EditPackage = ({bundle}) => {
             {/*SEO OPTIMIZATION*/}
             <Head>
                 <title>EasyDiet | Edit Package</title>
-                <meta name="description" content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
-                <meta name="keywords" content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
+                <meta name="description"
+                      content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
+                <meta name="keywords"
+                      content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
                 <meta name="author" content="EasyDiet"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 <meta name="robots" content="index, follow"/>
@@ -149,11 +153,12 @@ const EditPackage = ({bundle}) => {
                 <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://easydietkw.com/" />
-                <meta property="og:image" content="/images/Auth/logo.svg" />
-                <meta property="og:site_name" content="EasyDiet" />
-                <meta property="og:description" content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet." />
+                <meta property="og:type" content="website"/>
+                <meta property="og:url" content="https://easydietkw.com/"/>
+                <meta property="og:image" content="/images/Auth/logo.svg"/>
+                <meta property="og:site_name" content="EasyDiet"/>
+                <meta property="og:description"
+                      content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet."/>
             </Head>
             <main className={classes.Main}>
                 <div className={classes.FormContainer}>
@@ -178,16 +183,16 @@ const EditPackage = ({bundle}) => {
                                 />
                             </div>
                             <div className={classes.InputGroup}>
-                                <label htmlFor={'package_time_onCard'}>{t("timeCard")}</label>
+                                <label htmlFor={'name_en'}>{t("nameEn")}</label>
                                 <input
                                     type={'text'}
-                                    name={'package_time_onCard'}
-                                    id={'package_time_onCard'}
-                                    placeholder={'EX: 2 Weeks'}
-                                    value={timeOnCard}
+                                    name={'name_en'}
+                                    id={'name_en'}
+                                    placeholder={'Fit Package'}
+                                    value={nameEn}
                                     onChange={(event) => {
                                         dispatch(onInputChange({
-                                            key: 'timeOnCard',
+                                            key: 'nameEn',
                                             value: event.target.value
                                         }))
                                     }}
@@ -263,19 +268,40 @@ const EditPackage = ({bundle}) => {
                             </div>
                         </div>
                         <div className={classes.InputsContainer}>
-                            <div className={[classes.InputGroup, classes.MultiSelect].join(' ')}>
-                                <label htmlFor={'package_real_time'}>{t("language")}</label>
-                                <CustomSelectLanguage
-                                    defaultValue={language}
-                                    changed={(values) => {
-                                        // Set the State in Redux
+                            <div className={classes.InputGroup}>
+                                <label htmlFor={'text_on_card'}>{t("textOnCard")}</label>
+                                <input
+                                    type={'text'}
+                                    name={'text_on_card'}
+                                    id={'text_on_card'}
+                                    placeholder={'100 كارب 100 بروتين'}
+                                    value={textOnCard}
+                                    onChange={(event) => {
                                         dispatch(onInputChange({
-                                            key: 'language',
-                                            value: values.value
+                                            key: 'textOnCard',
+                                            value: event.target.value
                                         }))
                                     }}
                                 />
                             </div>
+                            <div className={classes.InputGroup}>
+                                <label htmlFor={'text_on_cardEN'}>{t("textOnCardEn")}</label>
+                                <input
+                                    type={'text'}
+                                    name={'text_on_cardEN'}
+                                    id={'text_on_cardEN'}
+                                    placeholder={'100 Carb - 100 Protein - 100 Fat'}
+                                    value={textOnCardEn}
+                                    onChange={(event) => {
+                                        dispatch(onInputChange({
+                                            key: 'textOnCardEn',
+                                            value: event.target.value
+                                        }))
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'offers_days'}>{t("offer")}</label>
                                 <input
@@ -292,28 +318,6 @@ const EditPackage = ({bundle}) => {
                                         }))
                                     }}
                                 />
-                            </div>
-                        </div>
-                        <div className={classes.InputsContainer}>
-                            <div className={classes.InputGroup}>
-                                <div className={classes.togglerInput}>
-                                    <label htmlFor="package_friday_included">{t("fridays")}</label>
-                                    <div className={classes.toggler}>
-                                        <input
-                                            type="checkbox"
-                                            id="package_friday_included"
-                                            name="package_friday_included"
-                                            checked={fridayIncluded}
-                                            onChange={(event) => {
-                                                dispatch(onInputChange({
-                                                    key: 'fridayIncluded',
-                                                    value: event.target.checked
-                                                }))
-                                            }}
-                                        />
-                                        <div className={classes.slider}></div>
-                                    </div>
-                                </div>
                             </div>
                             <div className={classes.InputGroup}>
                                 <div className={classes.checkboxRow}>
@@ -356,6 +360,28 @@ const EditPackage = ({bundle}) => {
                                 </div>
                             </div>
 
+                        </div>
+                        <div className={classes.InputsContainer}>
+                            <div className={classes.InputGroup}>
+                                <div className={classes.togglerInput}>
+                                    <label htmlFor="package_friday_included">{t("fridays")}</label>
+                                    <div className={classes.toggler}>
+                                        <input
+                                            type="checkbox"
+                                            id="package_friday_included"
+                                            name="package_friday_included"
+                                            checked={fridayIncluded}
+                                            onChange={(event) => {
+                                                dispatch(onInputChange({
+                                                    key: 'fridayIncluded',
+                                                    value: event.target.checked
+                                                }))
+                                            }}
+                                        />
+                                        <div className={classes.slider}></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div className={classes.NavigationContainer}>
                             <button className={classes.SelectMeals} type={'button'}
@@ -405,12 +431,12 @@ export const getServerSideProps = wrapper.getServerSideProps(_ => async ({req, q
 
 
     // GET THE ID OF THE MEAL FROM THE URL
-    const {ID, lang} = query;
+    const {ID} = query;
     let bundle;
 
-    if (ID && lang) {
+    if (ID) {
         // GET THE MEAL FROM THE SERVER
-        await axios.get(`https://api.easydietkw.com/api/v1/get/bundle?bundleId=${ID}&lang=${lang}`, {
+        await axios.get(`https://api.easydietkw.com/api/v1/get/bundle?bundleId=${ID}`, {
             headers: {
                 'Authorization': `Bearer ${token[1]}`
             }
@@ -420,7 +446,7 @@ export const getServerSideProps = wrapper.getServerSideProps(_ => async ({req, q
             })
             .catch(err => {
                 // SET THE STATE
-                console.log(err)
+                console.log(err.message)
             })
     }
 

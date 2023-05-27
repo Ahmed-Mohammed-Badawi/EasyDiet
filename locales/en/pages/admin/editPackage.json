@@ -1,8 +1,10 @@
 {
   "title": "EDITE PACKAGE",
   "underTitle": "You will edit: ",
-  "name": "PACKAGE NAME",
-  "timeCard": "PACKAGE TIME ON CARD",
+  "name": "PACKAGE NAME (ARABIC)",
+  "nameEn": "PACKAGE NAME (ENGLISH)",
+  "textOnCard": "TEXT ON CARD (ARABIC)",
+  "textOnCardEn": "TEXT ON CARD (ENGLISH)",
   "timeReal": "PACKAGE TIME (REAL)",
   "price": "PACKAGE PRICE (NUMBER)",
   "numberOfMeals": "NUMBER OF MEALS (NUMBER)",

@@ -1,18 +1,18 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {HYDRATE} from "next-redux-wrapper";
 
 //Initial Value
 const initialValue = {
     bundleId: '',
     name: '',
-    timeOnCard: '',
+    nameEn: '',
+    textOnCard: '',
+    textOnCardEn: '',
     realTime: '',
     packagePrice: '',
     numberOfMeals: '',
     numberOfSnacks: '',
     offerDays: '',
     fridayIncluded: false,
-    language: '',
     packageMeals: [],
     breakfast: false,
     lunch: false,
@@ -49,17 +49,37 @@ const editPackageSlice = createSlice({
                 state.packageMeals = packageMealsCopy
             }
         },
+        onSelectAll: (state, action) => {
+            // GET THE MEALS IDS
+            state.packageMeals = action.payload.mealIds;
+            // GET A COPY OF THE MEALS IDS
+            const packageMealsCopy = [...state.packageMeals];
+            // MERGE THE MEALS IDS WITH THE MEALS IDS OF THE PACKAGE
+            action.payload.mealIds.forEach((cur) => {
+                if (packageMealsCopy.indexOf(cur) === -1) {
+                    packageMealsCopy.push(cur);
+                }
+            });
+
+            // UPDATE THE STATE
+            state.packageMeals = packageMealsCopy;
+        },
+        onUnSelectAll: (state, action) => {
+            // Update the state
+            state.packageMeals = [];
+        },
         setAll: (state, action) => {
             state.bundleId = action.payload.bundleId;
             state.name = action.payload.name;
-            state.timeOnCard = action.payload.timeOnCard;
+            state.nameEn = action.payload.nameEn;
+            state.textOnCard = action.payload.textOnCard;
+            state.textOnCardEn = action.payload.textOnCardEn;
             state.realTime = action.payload.realTime;
             state.packagePrice = action.payload.packagePrice;
             state.numberOfMeals = action.payload.numberOfMeals;
             state.numberOfSnacks = action.payload.numberOfSnacks;
             state.offerDays = action.payload.offerDays;
             state.fridayIncluded = action.payload.fridayIncluded;
-            state.language = action.payload.language;
             state.packageMeals = action.payload.packageMeals;
             state.breakfast = action.payload.breakfast;
             state.lunch = action.payload.lunch;
@@ -67,14 +87,15 @@ const editPackageSlice = createSlice({
         },
         clearAll: (state) => {
             state.name = '';
-            state.timeOnCard = '';
+            state.nameEn = '';
+            state.textOnCard = '';
+            state.textOnCardEn = '';
             state.realTime = '';
             state.packagePrice = '';
             state.numberOfMeals = '';
             state.numberOfSnacks = '';
             state.offerDays = '';
             state.fridayIncluded = false;
-            state.language = '';
             state.packageMeals = [];
             state.breakfast = false;
             state.lunch = false;
@@ -84,5 +105,5 @@ const editPackageSlice = createSlice({
 })
 
 
-export const {onInputChange, clearAll, onMealChecked, setAll} = editPackageSlice.actions;
+export const {onInputChange, clearAll, onMealChecked, setAll, onSelectAll, onUnSelectAll} = editPackageSlice.actions;
 export default editPackageSlice;

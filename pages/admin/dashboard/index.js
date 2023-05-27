@@ -6,11 +6,12 @@ import {useRouter} from "next/router";
 import {useTranslation} from "react-i18next";
 // IMPORTS
 import ProjectsChart from "@/components/pages/dashboard/ProjectsChart";
-import PackageAdminCard from "@/components/pages/dashboard/Package_card/PackageCard";
 // HELPERS
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
 import {toast} from "react-toastify";
+
+import PackageCard from "@/components/layout/packageCard/PackageCard";
 
 
 export default function Dashboard() {
@@ -76,8 +77,10 @@ export default function Dashboard() {
             {/*SEO OPTIMIZATION*/}
             <Head>
                 <title>EasyDiet | Dashboard</title>
-                <meta name="description" content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
-                <meta name="keywords" content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
+                <meta name="description"
+                      content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
+                <meta name="keywords"
+                      content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
                 <meta name="author" content="EasyDiet"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 <meta name="robots" content="index, follow"/>
@@ -86,11 +89,12 @@ export default function Dashboard() {
                 <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://easydietkw.com/" />
-                <meta property="og:image" content="/images/Auth/logo.svg" />
-                <meta property="og:site_name" content="EasyDiet" />
-                <meta property="og:description" content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet." />
+                <meta property="og:type" content="website"/>
+                <meta property="og:url" content="https://easydietkw.com/"/>
+                <meta property="og:image" content="/images/Auth/logo.svg"/>
+                <meta property="og:site_name" content="EasyDiet"/>
+                <meta property="og:description"
+                      content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet."/>
             </Head>
             <div className={classes.Content}>
                 <section className={classes.Top}>
@@ -140,7 +144,10 @@ export default function Dashboard() {
                     <div className={classes.Cards_Container} onWheel={handleScroll} ref={cardContainerRef}>
                         {topSelling && topSelling.map((cur) => {
                             return (
-                                <PackageAdminCard
+                                <PackageCard
+                                    showOnly={true}
+                                    type={'admin'}
+                                    ID={cur._id}
                                     key={cur._id}
                                     name={cur.bundleName}
                                     meals={cur.mealsNumber}
@@ -149,10 +156,11 @@ export default function Dashboard() {
                                     fridays={cur.fridayOption}
                                     offers={cur.bundleOffer}
                                     time={cur.timeOnCard}
+                                    mealsType={cur.mealsType}
+                                    authenticationStatus={{hasProfile: false, isAuthenticated: true}}
                                 />
                             )
-                        })
-                        }
+                        })}
                     </div>
                 </section>
             </div>

@@ -173,28 +173,28 @@ const Choose_Day_Meals = () => {
                         <div className={classes.Top_Container}>
                             <div className={classes.Navigation} data-word={t("filter")}>
                                 <ul>
-                                    <li>
+                                    <li className={mealType === 'افطار' ? classes.Active : ''}>
                                         <span onClick={() => setMealType('افطار')}>{t("breakfast")}</span>
                                         {mealType === 'افطار' && <span className={classes.Check_Icon}>
                                             <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
                                                    height={18}/>
                                         </span>}
                                     </li>
-                                    <li>
+                                    <li className={mealType === 'غداء' ? classes.Active : ''}>
                                         <span onClick={() => setMealType('غداء')}>{t("lunch")}</span>
                                         {mealType === 'غداء' && <span className={classes.Check_Icon}>
                                             <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
                                                    height={18}/>
                                         </span>}
                                     </li>
-                                    <li>
+                                    <li className={mealType === 'عشاء' ? classes.Active : ''}>
                                         <span onClick={() => setMealType('عشاء')}>{t("dinner")}</span>
                                         {mealType === 'عشاء' && <span className={classes.Check_Icon}>
                                             <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
                                                    height={18}/>
                                         </span>}
                                     </li>
-                                    <li>
+                                    <li className={mealType === 'سناك' ? classes.Active : ''}>
                                         <span onClick={() => setMealType('سناك')}>{t("snacks")}</span>
                                         {mealType === 'سناك' && <span className={classes.Check_Icon}>
                                             <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
@@ -202,7 +202,7 @@ const Choose_Day_Meals = () => {
                                         </span>}
                                     </li>
                                 </ul>
-                                <span title={'All Meals'} onClick={() => setMealType('الكل')}>
+                                <span title={'All Meals'} onClick={() => setMealType('الكل')} className={mealType === 'الكل' ? classes.Active : ''}>
                                     {t("all")}
                                     {mealType === 'الكل' &&
                                         <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}

@@ -4,7 +4,7 @@ import Head from "next/head";
 import Image from "next/image";
 import {useRouter} from "next/router";
 // IMPORTS
-import PackageCard_Edit from "@/components/pages/dashboard/Package_card/PackageCard_Edit";
+import PackageCard from "@/components/layout/packageCard/PackageCard";
 // HELPERS
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 import axios from "axios";
@@ -78,17 +78,23 @@ const Packages = () => {
                 <div className={classes.Bottom}>
                     {packages && packages.map((cur) => {
                         return (
-                            <PackageCard_Edit
+                            <PackageCard
                                 ID={cur._id}
                                 key={cur._id}
+                                showOnly={false}
+                                type={'admin'}
                                 name={cur.bundleName}
+                                nameEn={cur.bundleNameEn}
+                                textOnCardEn={cur.timeOnCardEn}
+                                textOnCard={cur.timeOnCard}
                                 meals={cur.mealsNumber}
                                 price={cur.bundlePrice}
                                 snacks={cur.snacksNumber}
                                 fridays={cur.fridayOption}
                                 offers={cur.bundleOffer}
                                 time={cur.timeOnCard}
-                                language={cur.lang}
+                                mealsType={cur.mealsType}
+                                authenticationStatus={{hasProfile: false, isAuthenticated: true}}
                             />
                         )
                     })}

@@ -5,6 +5,7 @@ import {HYDRATE} from "next-redux-wrapper";
 const initialValue = {
     mealId: '',
     name: '',
+    nameEn: '',
     category: [],
     carbohydrate: '',
     protein: '',
@@ -13,7 +14,6 @@ const initialValue = {
     repeatPeriod: '',
     repeatNumber: '',
     blocked: false,
-    language: ''
 };
 
 const editMealSlice = createSlice({
@@ -26,6 +26,7 @@ const editMealSlice = createSlice({
         setAll: (state, action) => {
             state.mealId = action.payload.mealId;
             state.name = action.payload.name;
+            state.nameEn = action.payload.nameEn;
             state.category = action.payload.category;
             state.carbohydrate = action.payload.carbohydrate;
             state.protein = action.payload.protein;
@@ -34,11 +35,11 @@ const editMealSlice = createSlice({
             state.repeatPeriod = action.payload.repeatPeriod;
             state.repeatNumber = action.payload.repeatNumber;
             state.blocked = action.payload.blocked;
-            state.language = action.payload.language;
         },
         clearAll: (state) => {
             state.mealId = '';
             state.name = '';
+            state.nameEn = '';
             state.category = [];
             state.carbohydrate = '';
             state.protein = '';
@@ -47,7 +48,6 @@ const editMealSlice = createSlice({
             state.repeatPeriod = '';
             state.repeatNumber = '';
             state.blocked = false;
-            state.language = '';
         }
     },
     extraReducers: {
