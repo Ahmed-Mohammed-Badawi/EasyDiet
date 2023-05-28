@@ -8,7 +8,7 @@ import {useTranslation} from "react-i18next";
 import {toast} from "react-toastify";
 
 
-const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, lang, availableMeals, availableSnacks}) => {
+const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, availableMeals, availableSnacks}) => {
 
     //REDUX
     const dispatch = useDispatch();
@@ -41,7 +41,7 @@ const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, 
             }))
         } else {
             // VALIDATION TO CHECK IF THE USER SELECTED THE MAXIMUM MEALS
-            if ((+availableMeals + +availableSnacks) === selectedMeals.length) {
+            if ((+availableMeals + +availableSnacks) === selectedMeals.length && selectedMeals.length > 0) {
                 toast.error(`You can't select more than ${availableMeals} meals and ${availableSnacks} snacks`);
                 return;
             }

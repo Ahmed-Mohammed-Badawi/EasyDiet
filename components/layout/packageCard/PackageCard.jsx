@@ -4,7 +4,8 @@ import {useRouter} from "next/router";
 import {toast} from "react-toastify";
 //REDUX
 import {onInputChange} from '@/redux/slices/user/subscription_info';
-import {useDispatch} from "react-redux";
+import {onInputChange as onPackagesChange} from '@/redux/slices/Admin/packages-slice';
+import {useDispatch, useSelector} from "react-redux";
 // TRANSITIONS
 import i18n from "@/i18n";
 import {useTranslation} from "react-i18next";
@@ -22,9 +23,9 @@ function PackageCard({
                          textOnCard,
                          textOnCardEn,
                          price,
-                         breakfast,
-                         lunch,
-                         dinner,
+                         // breakfast,
+                         // lunch,
+                         // dinner,
                          snacks,
                          authenticationStatus: {hasProfile, isAuthenticated}
                      }) {
@@ -34,6 +35,7 @@ function PackageCard({
 
     // REDUX
     const dispatch = useDispatch();
+    const {packages} = useSelector(state => state.packages);
 
     // TRANSLATIONS
     const lang = i18n.language;
@@ -101,9 +103,10 @@ function PackageCard({
                     toast.success('Package Deleted Successfully');
                     // Update the State
                     const updatedItems = packages.filter(item => item._id !== ID);
-                    dispatch(onInputChange({key: 'packages', value: updatedItems}))
+                    dispatch(onPackagesChange({key: 'packages', value: updatedItems}))
                 })
                 .catch(err => {
+                    console.log(err);
                     toast.error(err.response?.data?.message || err?.message || 'Something went wrong');
                 })
         }

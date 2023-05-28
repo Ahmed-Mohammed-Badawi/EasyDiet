@@ -23,9 +23,14 @@ import profileSlice from "@/redux/slices/user/profile_slice";
 import nutrition_specialistSlice from "@/redux/slices/user/nutritionspecialist_slice";
 // AUTH
 import resetPasswordSlice from "@/redux/slices/Auth/resetPasswordSlice";
+// GLOBAL
+import homeSlice from "@/redux/slices/user/home-slice";
 
 export const store = configureStore({
     reducer: {
+        // GLOBAL
+        [homeSlice.name]: homeSlice.reducer,
+        // ADMIN
         [layoutSlice.name]: layoutSlice.reducer,
         [packagesSlice.name]: packagesSlice.reducer,
         [mealsSlice.name]: mealsSlice.reducer,
@@ -47,7 +52,7 @@ export const store = configureStore({
         [profileSlice.name]: profileSlice.reducer,
         [nutrition_specialistSlice.name]: nutrition_specialistSlice.reducer,
         // AUTH
-        [resetPasswordSlice.name]: resetPasswordSlice.reducer
+        [resetPasswordSlice.name]: resetPasswordSlice.reducer,
     },
 })
 

@@ -4,6 +4,9 @@
     overflow-y: auto;
     overflow-x: hidden;
 
+    @media screen and (max-width: 468px){
+        padding: 0;
+    }
 
     /* Set the width and color of the scrollbar */
     &::-webkit-scrollbar {
@@ -84,6 +87,9 @@
         overflow-y: auto;
         overflow-x: hidden;
 
+        @media screen and (max-width: 468px){
+            padding: 0;
+        }
 
         /* Set the width and color of the scrollbar */
         &::-webkit-scrollbar {

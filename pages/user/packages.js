@@ -93,7 +93,6 @@ const Packages = () => {
 
                 <div className={classes.Bottom}>
                     {packages && packages.map((cur) => {
-                        console.log(cur)
                         return (
                             <PackageCard
                                 ID={cur._id}

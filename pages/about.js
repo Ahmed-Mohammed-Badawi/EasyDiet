@@ -1,9 +1,9 @@
 import Image from "next/image";
 import classes from '@/styles/pages/global/about.module.scss';
+import Head from "next/head";
 import {useRouter} from "next/router";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
-import Head from "next/head";
 
 
 const About = () => {
@@ -55,14 +55,20 @@ const About = () => {
                                 <button>
                                     <Image src={'/images/Global/Facebook_Icon.svg'} alt={'facebook account'} width={25} height={25} />
                                 </button>
-                                <button>
-                                    <Image src={'/images/Global/Whatsapp_Icon.svg'} alt={'facebook account'} width={25} height={25} />
+                                <button onClick={() => {
+                                    window.open('http://wa.me/96566446776', '_blank')
+                                }}>
+                                    <Image src={'/images/Global/Whatsapp_Icon.svg'} alt={'Whatsapp account'} width={25} height={25} />
                                 </button>
-                                <button>
-                                    <Image src={'/images/Global/Twitter_Icon.svg'} alt={'facebook account'} width={25} height={25} />
+                                <button onClick={() => {
+                                    window.open('https://twitter.com/easydietkw', '_blank')
+                                }}>
+                                    <Image src={'/images/Global/Twitter_Icon.svg'} alt={'twitter account'} width={25} height={25} />
                                 </button>
-                                <button>
-                                    <Image src={'/images/Global/Instagram_Icon.svg'} alt={'facebook account'} width={25} height={25} />
+                                <button onClick={() => {
+                                    window.open('https://instagram.com/easy.diet_kw', '_blank')
+                                }}>
+                                    <Image src={'/images/Global/Instagram_Icon.svg'} alt={'instagram account'} width={25} height={25} />
                                 </button>
                             </div>
                         </div>

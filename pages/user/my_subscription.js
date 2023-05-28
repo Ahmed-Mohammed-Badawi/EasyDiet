@@ -12,6 +12,7 @@ import DayItem from "@/components/pages/user/DayItem";
 import MySubscription from "@/components/pages/user/MySubscription/MySubscription";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
+import i18n from "@/i18n";
 
 const My_Subscription = () => {
     //REDUX
@@ -23,6 +24,7 @@ const My_Subscription = () => {
     //STATES
     const [packageInfo, setPackageInfo] = useState({
         bundleName: '',
+        bundleNameEn: '',
         bundleDays: '',
         startDate: '',
         endDate: '',
@@ -44,6 +46,7 @@ const My_Subscription = () => {
                 .then(res => {
                     setPackageInfo({
                         bundleName: res.data.bundleName,
+                        bundleNameEn: res.data.bundleNameEn,
                         bundleDays: res.data.bundleDays,
                         startDate: new Date(res.data.startDate).toLocaleDateString('en-US', {
                             day: "numeric",
@@ -112,7 +115,7 @@ const My_Subscription = () => {
                                     <div className={classes.Top_Container}>
                                         <div className={classes.Top_Item}>
                                             <h3>{t("name")}</h3>
-                                            <span>{packageInfo.bundleName}</span>
+                                            <span>{i18n.language.includes('en') ? packageInfo.bundleNameEn : packageInfo.bundleName}</span>
                                         </div>
                                         <div className={classes.Top_Item}>
                                             <h3>{t("time")}</h3>

@@ -1,3 +1,4 @@
+import React, {useEffect} from 'react'
 import Head from 'next/head'
 import {useRouter} from "next/router";
 import Image from "next/image";
@@ -5,8 +6,17 @@ import Image from "next/image";
 import {useTranslation} from "react-i18next";
 import i18n from "@/i18n";
 
+// HELPERS
+import {extractTokenFromCookie} from "@/helpers/extractToken";
+import axios from "axios";
+
+// REDUX
+import {useDispatch, useSelector} from "react-redux";
+import {setAll} from "@/redux/slices/user/home-slice";
+
 //STYLE
 import classes from '@/styles/pages/global/home.module.scss'
+import Link from "next/link";
 
 export default function Home({isAuthenticated, userData}) {
     // ROUTER
@@ -14,6 +24,19 @@ export default function Home({isAuthenticated, userData}) {
     // LANGUAGE
     const {t} = useTranslation('home');
 
+    // REDUX
+    const dispatch = useDispatch();
+    const {
+        subscriptionId,
+        has_subscription,
+        subscriptionEndDate,
+        subscriptionStartDate,
+        clientName,
+        clientNameEn,
+        bundleId,
+        bundleName,
+        bundleNameEn
+    } = useSelector(state => state.home);
 
     // Helpers Functions
     const toggleLanguage = () => {
@@ -41,6 +64,37 @@ export default function Home({isAuthenticated, userData}) {
         }
     }
 
+    // EFFECT TO GET THE USER DATA IF THE USER IS AUTHENTICATED AND THE USER DATA ROLE IS CLIENT
+    useEffect(() => {
+        //GET THE TOKEN
+        const token = extractTokenFromCookie(document.cookie);
+
+        if (isAuthenticated && userData?.decodedToken?.role === "client") {
+            axios.get(`https://api.easydietkw.com/api/v1/client/profile?clientId=${userData?.decodedToken?.userId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then(res => {
+                    console.log(res.data);
+
+                    dispatch(setAll({
+                        subscriptionId: res.data.client?.subscriptionId,
+                        has_subscription: res.data.client?.subscriped,
+                        subscriptionEndDate: res.data.client?.subscripedBundle?.endingDate,
+                        subscriptionStartDate: res.data.client?.subscripedBundle?.startingDate,
+                        clientName: res.data.client?.clientName,
+                        clientNameEn: res.data.client?.clientNameEn || res.data.client?.clientName,
+                        bundleId: res.data.client?.subscripedBundle?.bundleId?._id,
+                        bundleName: res.data.client?.subscripedBundle?.bundleId?.bundleName,
+                        bundleNameEn: res.data.client?.subscripedBundle?.bundleId?.bundleNameEn,
+                    }))
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+    }, [dispatch, isAuthenticated, userData?.decodedToken?.role, userData?.decodedToken?.userId]);
 
 
     return (
@@ -73,19 +127,59 @@ export default function Home({isAuthenticated, userData}) {
                         <div className={classes?.Logo} onClick={() => router.push('/')}>
                             <Image src={'/images/Auth/logo.svg'} alt={'logo'} width={70} height={50}/>
                         </div>
-                        <div className={classes?.Content}>
-                            <h1 className={classes?.Header}>{t('title')}</h1>
-                            <p className={classes?.Paragraph}>
-                                {t('paragraph')}
-                            </p>
-                            <button className={classes?.Button} onClick={() => router.push('/user/packages')}>
-                                {t('button')}
-                            </button>
-                            <button className={[classes?.Button, classes.MenuButton].join(' ')}
-                                    onClick={() => router.push('/user/menu')}>
-                                {t('menuButton')}
-                            </button>
-                        </div>
+                        {(!isAuthenticated || userData?.decodedToken?.role !== "client") && (
+                            <div className={classes?.Content}>
+                                <h1 className={classes?.Header}>{t('title')}</h1>
+                                <p className={classes?.Paragraph}>
+                                    {t('paragraph')}
+                                </p>
+                                <button className={[classes?.Button, classes.AtMini].join(' ')} onClick={() => router.push('/user/packages')}>
+                                    {t('button')}
+                                </button>
+                                <button className={[classes?.Button, classes.MenuButton].join(' ')}
+                                        onClick={() => router.push('/user/menu')}>
+                                    {t('menuButton')}
+                                </button>
+                            </div>)}
+                        {/*  ADD ANOTHER CODE IF THERE IS A LOGIN AND THE USER IS A CLIENT  */}
+                        {(isAuthenticated && userData?.decodedToken?.role === "client" && has_subscription) && (
+                            <div className={[classes?.Content, classes?.Exist].join(' ')}>
+                                <h1 className={classes?.Header}>{t("welcome")} &#34;{i18n.language.includes('en') ? (clientNameEn || clientName) : clientName}&#34;</h1>
+                                <p className={classes?.Paragraph}>
+                                    {t("message1")} <span
+                                    className={'Colored'}>&#34;{i18n.language.includes('en') ? (bundleNameEn || bundleName) : bundleName}&#34;</span> {t("message2")}
+                                    <span className={'Colored'}>&#34;{new Date(subscriptionStartDate).toLocaleDateString({
+                                        day: 'numeric',
+                                        month: 'long',
+                                        year: 'numeric'
+                                    })}&#34;</span>
+                                    {t("message3")}
+                                    <span className={'Colored'}>
+                                        &#34;{new Date(subscriptionEndDate).toLocaleDateString({
+                                            day: 'numeric',
+                                            month: 'long',
+                                            year: 'numeric'
+                                        })}&#34;
+                                    </span>,
+                                    {t("message4")}
+                                </p>
+                                <button className={classes?.Button} onClick={() => router.push('/user/my_subscription')}>
+                                    {t("buttonUser")}
+                                </button>
+                            </div>
+                        )}
+                        {/*  ADD ANOTHER CODE IF THERE IS A LOGIN AND THE USER IS A CLIENT  */}
+                        {(isAuthenticated && userData?.decodedToken?.role === "client" && !has_subscription) && (
+                            <div className={[classes?.Content, classes?.Exist].join(' ')}>
+                                <h1 className={classes?.Header}>{t("welcome")} &#34;{i18n.language.includes('en') ? (clientNameEn || clientName) : clientName}&#34;</h1>
+                                <p className={classes?.Paragraph}>
+                                    {t("youAreNotSubscribed")} <Link href={'/user/License'} target={'_blank'} className={"Colored"}>{t("terms")}</Link>
+                                </p>
+                                <button className={classes?.Button} onClick={() => router.push('/user/packages')}>
+                                    {t("button")}
+                                </button>
+                            </div>
+                        )}
                     </div>
                     <div className={classes?.Left}>
                         <div className={classes?.Language}>

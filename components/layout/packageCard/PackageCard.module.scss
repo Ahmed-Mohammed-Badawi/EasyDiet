@@ -108,6 +108,7 @@
 
             &_user {
                 border: none;
+                border-radius: 1rem;
                 outline: none;
                 cursor: pointer;
                 display: flex;
@@ -135,6 +136,7 @@
 
             &_admin {
                 border: none;
+                border-radius: 1rem;
                 outline: none;
                 cursor: pointer;
                 display: flex;
@@ -279,6 +281,7 @@
 
                 &_user {
                     border: none;
+                    border-radius: 1rem;
                     outline: none;
                     cursor: pointer;
                     display: flex;
@@ -306,6 +309,7 @@
 
                 &_admin {
                     border: none;
+                    border-radius: 1rem;
                     outline: none;
                     cursor: pointer;
                     display: flex;

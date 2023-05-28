@@ -29,6 +29,7 @@ const Choose_Day_Meals = () => {
     const [mealType, setMealType] = useState('الكل');
     const [availableMeals, setAvailableMeals] = useState('');
     const [availableSnacks, setAvailableSnacks] = useState('');
+    const [dateIdFromURL, setDateIdFromURL] = useState('');
 
     //REDUX
     const dispatch = useDispatch();
@@ -41,6 +42,7 @@ const Choose_Day_Meals = () => {
 
         // GET THE DATE ID FROM THE URL
         const {dateId: dateIdQuery} = router.query;
+        setDateIdFromURL(dateIdQuery);
 
         if (dateIdQuery || dateId) {
             // LOGIC
@@ -84,6 +86,10 @@ const Choose_Day_Meals = () => {
         //STOP RELOADING
         event.preventDefault();
 
+        if(!dateId && !dateIdFromURL) {
+            return toast.error('Date Id is not defined')
+        }
+
         const ArrayOfMeals = selectedMeals.map(item => {
             return item.id
         })
@@ -92,8 +98,7 @@ const Choose_Day_Meals = () => {
         const token = extractTokenFromCookie(document.cookie);
         // LOGIC
         let requestBody = {
-            mealDate: date,
-            dateId: dateId,
+            dateId: dateId || dateIdFromURL,
             meals: ArrayOfMeals,
         }
 
@@ -173,28 +178,28 @@ const Choose_Day_Meals = () => {
                         <div className={classes.Top_Container}>
                             <div className={classes.Navigation} data-word={t("filter")}>
                                 <ul>
-                                    <li className={mealType === 'افطار' ? classes.Active : ''}>
+                                    <li className={mealType === 'افطار' ? classes.Active : ''} onClick={() => setMealType('افطار')}>
                                         <span onClick={() => setMealType('افطار')}>{t("breakfast")}</span>
                                         {mealType === 'افطار' && <span className={classes.Check_Icon}>
                                             <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
                                                    height={18}/>
                                         </span>}
                                     </li>
-                                    <li className={mealType === 'غداء' ? classes.Active : ''}>
+                                    <li className={mealType === 'غداء' ? classes.Active : ''} onClick={() => setMealType('غداء')}>
                                         <span onClick={() => setMealType('غداء')}>{t("lunch")}</span>
                                         {mealType === 'غداء' && <span className={classes.Check_Icon}>
                                             <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
                                                    height={18}/>
                                         </span>}
                                     </li>
-                                    <li className={mealType === 'عشاء' ? classes.Active : ''}>
+                                    <li className={mealType === 'عشاء' ? classes.Active : ''} onClick={() => setMealType('عشاء')}>
                                         <span onClick={() => setMealType('عشاء')}>{t("dinner")}</span>
                                         {mealType === 'عشاء' && <span className={classes.Check_Icon}>
                                             <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
                                                    height={18}/>
                                         </span>}
                                     </li>
-                                    <li className={mealType === 'سناك' ? classes.Active : ''}>
+                                    <li className={mealType === 'سناك' ? classes.Active : ''} onClick={() => setMealType('سناك')}>
                                         <span onClick={() => setMealType('سناك')}>{t("snacks")}</span>
                                         {mealType === 'سناك' && <span className={classes.Check_Icon}>
                                             <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
