@@ -1,11 +1,11 @@
 {
   "priceType": "دينار",
   "time": "للاشتراك",
-  "breakfast": "فطار",
+  "breakfast": "الفطور",
   "lunch": "غداء",
   "dinner": "عشاء",
   "snacks": "وجبات خفيفة أو حلوى",
   "buy": "شراء الان",
   "edit": "تعديل",
-    "delete": "حذف"
+  "delete": "حذف"
 }

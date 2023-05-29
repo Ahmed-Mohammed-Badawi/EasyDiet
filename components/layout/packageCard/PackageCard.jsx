@@ -23,10 +23,11 @@ function PackageCard({
                          textOnCard,
                          textOnCardEn,
                          price,
-                         // breakfast,
-                         // lunch,
-                         // dinner,
+                         breakfast,
+                         lunch,
+                         dinner,
                          snacks,
+                         meals,
                          authenticationStatus: {hasProfile, isAuthenticated}
                      }) {
 
@@ -130,8 +131,8 @@ function PackageCard({
                         <ul>
                             {mealsType.includes("افطار") && (<li>{t("breakfast")}</li>)}
                             {(mealsType.includes("غداء") || mealsType.includes("عشاء")) && (
-                                <li> {mealsType.includes("غداء") && t("lunch")}, {mealsType.includes("عشاء") && t("dinner")}</li>)}
-                            {Number(snacks) > 0 && (<li>{t("snacks")}</li>)}
+                                <li>{mealsType.includes("افطار") ? Number(meals) - 1 : Number(meals)} {mealsType.includes("غداء") && t("lunch")}{mealsType.includes("عشاء") && ' , ' + t("dinner")}</li>)}
+                            {Number(snacks) > 0 && (<li>{snacks} {t("snacks")}</li>)}
                         </ul>
                     </div>
                     {!showOnly && (<div className={classes.packageCard__body__button}>
