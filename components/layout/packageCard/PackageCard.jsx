@@ -23,9 +23,6 @@ function PackageCard({
                          textOnCard,
                          textOnCardEn,
                          price,
-                         breakfast,
-                         lunch,
-                         dinner,
                          snacks,
                          meals,
                          authenticationStatus: {hasProfile, isAuthenticated}
@@ -136,7 +133,7 @@ function PackageCard({
                         </ul>
                     </div>
                     {!showOnly && (<div className={classes.packageCard__body__button}>
-                        {(type === "user" && hasProfile) && (<button
+                        {(type === "user") && (<button
                             className={classes.packageCard__body__button_user}
                             onClick={() => {
                                 if (isAuthenticated && hasProfile) {
@@ -150,7 +147,7 @@ function PackageCard({
                                         toast.error('Please Fill your information first')
                                     })
                                 } else {
-                                    router.push(`/auth/login`)
+                                    router.push(`/auth/register`)
                                 }
                             }}
                         >
