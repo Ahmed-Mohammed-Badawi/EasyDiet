@@ -166,7 +166,7 @@ export default function Register({isAuthenticated}) {
 
             // REDIRECT TO THE LOGIN PAGE
             router.push('/auth/login')
-                .then(()=>{
+                .then(() => {
                     // Display success message
                     toast.success('User created successfully');
                 })
@@ -178,13 +178,32 @@ export default function Register({isAuthenticated}) {
         }
     }
 
+
+    // GOOGLE HANDLER
+    const googleHandler = () => {
+        axios.get('https://api.easydietkw.com/api/v1/auth/google')
+            .then(res => {
+                if (res.data?.authUrl) {
+                    window.location.href = res.data.authUrl
+                } else {
+                    toast.error('Something is wrong with the auth url')
+                }
+            })
+            .catch(err => {
+                toast.error(err.response?.data?.message || err.message)
+            })
+    }
+
+
     return (
         <>
             {/*SEO OPTIMIZATION*/}
             <Head>
                 <title>EasyDiet | Register</title>
-                <meta name="description" content="Register to EasyDiet and access our diverse menu of delicious, healthy meals that are perfect for people who are looking to maintain a healthy lifestyle. Our team of experienced chefs use fresh, locally-sourced ingredients to prepare each meal. Join our community of satisfied customers who have reported feeling more energized and healthier after consuming our meals. EasyDiet: Providing Healthy Meals for Over 5 Years "/>
-                <meta name="keywords" content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
+                <meta name="description"
+                      content="Register to EasyDiet and access our diverse menu of delicious, healthy meals that are perfect for people who are looking to maintain a healthy lifestyle. Our team of experienced chefs use fresh, locally-sourced ingredients to prepare each meal. Join our community of satisfied customers who have reported feeling more energized and healthier after consuming our meals. EasyDiet: Providing Healthy Meals for Over 5 Years "/>
+                <meta name="keywords"
+                      content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
                 <meta name="author" content="EasyDiet"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 <meta name="robots" content="index, follow"/>
@@ -193,11 +212,12 @@ export default function Register({isAuthenticated}) {
                 <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://easydietkw.com/" />
-                <meta property="og:image" content="/images/Auth/logo.svg" />
-                <meta property="og:site_name" content="EasyDiet" />
-                <meta property="og:description" content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet." />
+                <meta property="og:type" content="website"/>
+                <meta property="og:url" content="https://easydietkw.com/"/>
+                <meta property="og:image" content="/images/Auth/logo.svg"/>
+                <meta property="og:site_name" content="EasyDiet"/>
+                <meta property="og:description"
+                      content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet."/>
             </Head>
             <div className={classes?.Container}>
                 <div className={classes?.Main}>
@@ -312,7 +332,9 @@ export default function Register({isAuthenticated}) {
                                     <div className={classes.Input_Container}>
                                         <div className={classes.Input_Group}>
                                             <div className={classes.togglerInput}>
-                                                <label htmlFor="payment">{t("terms1")} <Link target={'_blank'} href={'/user/License'}>{t("termsLink")}</Link> {t("terms2")}</label>
+                                                <label htmlFor="payment">{t("terms1")} <Link target={'_blank'}
+                                                                                             href={'/user/License'}>{t("termsLink")}</Link> {t("terms2")}
+                                                </label>
                                                 <div className={classes.toggler}>
                                                     <input
                                                         type="checkbox"
@@ -338,6 +360,10 @@ export default function Register({isAuthenticated}) {
                                     </Link>
                                 </div>
                                 <div className={classes.Buttons_Container}>
+                                    <button type={'button'} className={classes.Google_button} onClick={googleHandler}>
+                                        <span><Image src={'/images/Auth/google-icon.svg'} alt={'Create User'} width={30}
+                                                     height={30}/></span>
+                                    </button>
                                     <button onClick={showPreviousPart} ref={PreviousPartRef}
                                             className={[classes.Next_button, classes.Un_Active].join(' ')}
                                             type={'button'}>
@@ -350,7 +376,8 @@ export default function Register({isAuthenticated}) {
                                     <button ref={CreateButtonRef}
                                             className={[classes.Create_button, classes.Un_Active].join(' ')}
                                             type={'submit'}>
-                                        <span>{loading ? <Spinner size={2} color={`#A71523`}/> : t('createButton')}</span>
+                                        <span>{loading ?
+                                            <Spinner size={2} color={`#A71523`}/> : t('createButton')}</span>
                                     </button>
                                 </div>
                             </div>
