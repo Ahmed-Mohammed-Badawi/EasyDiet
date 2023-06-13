@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import classes from "@/styles/pages/user/my_subscription.module.scss";
 import Head from "next/head";
+import {useRouter} from "next/router";
 // REDUX
 import {useDispatch} from "react-redux";
 // HELPERS
@@ -10,11 +11,16 @@ import {extractTokenFromCookie} from "@/helpers/extractToken";
 // COMPONENTS
 import DayItem from "@/components/pages/user/DayItem";
 import MySubscription from "@/components/pages/user/MySubscription/MySubscription";
+import GasLoader from "@/components/layout/GasLoader/gasLoader";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
 import i18n from "@/i18n";
+import Image from "next/image";
 
 const My_Subscription = () => {
+    // ROUTER
+    const router = useRouter();
+
     //REDUX
     const dispatch = useDispatch();
 
@@ -31,6 +37,10 @@ const My_Subscription = () => {
         remainingDays: ''
     });
     const [packageDays, setPackageDays] = useState([]);
+    const [realPackageDays, setRealPackageDays] = useState({
+        start: '',
+        end: ''
+    });
 
     // EFFECT TO GET THE PACKAGES WHEN PAGE LOAD
     useEffect(() => {
@@ -48,15 +58,14 @@ const My_Subscription = () => {
                         bundleName: res.data.bundleName,
                         bundleNameEn: res.data.bundleNameEn,
                         bundleDays: res.data.bundleDays,
-                        startDate: new Date(res.data.startDate).toLocaleDateString('en-US', {
-                            day: "numeric",
-                            month: 'long'
-                        }),
-                        endDate: new Date(res.data.endDate).toLocaleDateString('en-US', {
-                            day: "numeric",
-                            month: 'long'
-                        }),
+                        startDate: res.data.startDate,
+                        endDate: res.data.endDate,
                         remainingDays: res.data.remainingDays
+                    })
+
+                    setRealPackageDays({
+                        start: res.data.startDate,
+                        end: res.data.endDate
                     })
 
                     setPackageDays(res.data.planDays || [])
@@ -68,7 +77,12 @@ const My_Subscription = () => {
     }, [dispatch])
 
     function getDayName(date) {
-        const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        let daysOfWeek = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعه", "السبت"];
+
+        if(i18n.language.includes('en')){
+            daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        }
+
         const dayIndex = new Date(date).getDay();
         return daysOfWeek[dayIndex];
     }
@@ -81,6 +95,46 @@ const My_Subscription = () => {
         return targetDate.getTime() - now.getTime() >= twoDaysInMilliseconds;
     }
 
+    // CALCULATE THE DAYS
+    function countDays(start, end, includeFriday) {
+        const oneDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
+        const currentDate = new Date(); // Get the current date
+
+        // Convert the start and end dates to UTC to ensure consistent calculations
+        const startDate = new Date(start.toUTCString());
+        const endDate = new Date(end.toUTCString());
+
+        // Adjust the start date to the beginning of the day
+        startDate.setUTCHours(0, 0, 0, 0);
+
+        // Adjust the end date to the end of the day
+        endDate.setUTCHours(23, 59, 59, 999);
+
+        let count = 0;
+        let daysUntilNow = 0;
+
+        while (startDate <= endDate) {
+            if (!includeFriday && startDate.getUTCDay() === 5) {
+                // If it's Friday and we don't want to include it, skip to the next day
+                startDate.setTime(startDate.getTime() + oneDay);
+                continue;
+            }
+
+            count++;
+            if (startDate <= currentDate) {
+                daysUntilNow++;
+            }
+            startDate.setTime(startDate.getTime() + oneDay);
+        }
+
+        return {
+            count,
+            daysUntilNow
+        };
+    }
+
+    // CALCULATE THE REMAINING DAYS
+    const {count, daysUntilNow} = countDays(new Date(realPackageDays.start), new Date(realPackageDays.end), false);
 
     return (
         <>
@@ -111,27 +165,50 @@ const My_Subscription = () => {
                     {
                         packageInfo?.bundleName && packageDays.length > 0 ? (
                             <>
+
                                 <div className={classes.Top} data-title={t("title1")}>
+                                    {(realPackageDays?.start && realPackageDays?.end) && (
+                                        <div className={classes.LoaderContainer}>
+                                            <GasLoader availableDays={count - daysUntilNow} totalDays={count}/>
+                                        </div>)}
                                     <div className={classes.Top_Container}>
-                                        <div className={classes.Top_Item}>
-                                            <h3>{t("name")}</h3>
-                                            <span>{i18n.language.includes('en') ? packageInfo.bundleNameEn : packageInfo.bundleName}</span>
+                                        <div className={classes.PackageDetails}>
+                                            <div className={classes.ImagePart}>
+                                                <div className={classes.PackageImage}>
+                                                    <Image src={'/bulking.jpg'} alt={"no image"} width={100}
+                                                           height={100}/>
+                                                </div>
+                                                <div className={classes.PackageName}>
+                                                    <span className={classes.NameTitle}>{t("name")}</span>
+                                                    <h3 className={classes.NameContent}>{i18n.language.includes('en') ? packageInfo.bundleNameEn : packageInfo.bundleName}</h3>
+                                                </div>
+                                            </div>
+                                            <div className={classes.UserDetails} onClick={() => {
+                                                router.push('/user/my_status')
+                                            }}>
+                                                <Image src={'/fitness.jpg'} alt={'status'} width={100} height={100}/>
+                                                <p>{i18n.language.includes('en') ? 'STATUS CARD' : "كارت المتابعة"}</p>
+                                            </div>
                                         </div>
-                                        <div className={classes.Top_Item}>
-                                            <h3>{t("time")}</h3>
-                                            <span>{packageInfo.bundleDays} {t("days")}</span>
-                                        </div>
-                                        <div className={classes.Top_Item}>
-                                            <h3>{t("start")}</h3>
-                                            <span>{packageInfo.startDate}</span>
-                                        </div>
-                                        <div className={classes.Top_Item}>
-                                            <h3>{t("end")}</h3>
-                                            <span>{packageInfo.endDate}</span>
-                                        </div>
-                                        <div className={classes.Top_Item}>
-                                            <h3>{t("expires")}</h3>
-                                            <span>{packageInfo.remainingDays} {t("days")}</span>
+                                        <div className={classes.PackageTime}>
+                                            <div className={classes.Top_Item}>
+                                                <h3>{t("time")}</h3>
+                                                <span>{packageInfo.bundleDays} {t("days")}</span>
+                                            </div>
+                                            <div className={classes.Top_Item}>
+                                                <h3>{t("start")}</h3>
+                                                <span>{new Date(packageInfo.startDate).toLocaleDateString(i18n.language.includes('en') ? 'en-US' : "ar-EG", {
+                                                    day: "numeric",
+                                                    month: 'long'
+                                                })}</span>
+                                            </div>
+                                            <div className={classes.Top_Item}>
+                                                <h3>{t("end")}</h3>
+                                                <span>{new Date(packageInfo.endDate).toLocaleDateString(i18n.language.includes('en') ? 'en-US' : "ar-EG", {
+                                                    day: "numeric",
+                                                    month: 'long'
+                                                })}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -143,7 +220,8 @@ const My_Subscription = () => {
                                                          title={getDayName(item.date)}
                                                          Editable={isDateAfterTwoDays(item.date)}
                                                          isSelected={item.submitted}
-                                                         date={new Date(item.date).toLocaleDateString('en-US', {
+                                                         editText={i18n.language.includes('en') ? 'Edit' : "تعديل"}
+                                                         date={new Date(item.date).toLocaleDateString(i18n.language.includes('en') ? 'en-US' : "ar-EG", {
                                                              day: 'numeric',
                                                              month: 'long'
                                                          })}

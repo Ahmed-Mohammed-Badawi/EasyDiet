@@ -5,7 +5,7 @@ import {useRouter} from "next/router";
 import {useDispatch} from "react-redux";
 import {onInputChange} from '@/redux/slices/user/daymeals_slice';
 
-const DayItem = ({ID, title, date, isSelected, Editable, Daydate}) => {
+const DayItem = ({ID, title, date, isSelected, Editable, Daydate, editText}) => {
 
     //ROUTER
     const router = useRouter();
@@ -30,7 +30,7 @@ const DayItem = ({ID, title, date, isSelected, Editable, Daydate}) => {
                         dispatch(onInputChange({key: 'dateId', value: ID}));
                         router.push(`/user/choose_day_meals?dateId=${ID}`)
                     }} className={[classes.Icon_Container, classes.Edit].join(' ')}>
-                    <Image src={'/images/Edit_Icon.svg'} alt={'Edit icon'} width={18} height={18}/> Edit
+                    <Image src={'/images/Edit_Icon.svg'} alt={'Edit icon'} width={18} height={18}/> {editText}
                     </span>}
                 </div>
                 {Editable && <span className={classes.Icon_Container}>

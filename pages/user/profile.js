@@ -129,10 +129,10 @@ const Profile = (props) => {
                 <div className={classes.FormContainer}>
                     <div className={classes.Top}>
                         <h1>{t("title")}</h1>
-                        <button className={classes.Status} onClick={() => router.push('/user/my_status')}>
-                            <Image src={'/images/Global/Status_Icon.png'} alt={'user status'} width={25} height={25}/>
-                            <span>{t("statusButton")}</span>
-                        </button>
+                        {/*<button className={classes.Status} onClick={() => router.push('/user/my_status')}>*/}
+                        {/*    <Image src={'/images/Global/Status_Icon.png'} alt={'user status'} width={25} height={25}/>*/}
+                        {/*    <span>{t("statusButton")}</span>*/}
+                        {/*</button>*/}
                     </div>
                     <form onSubmit={submitHandler}>
                         <div className={classes.InputsContainer}>
