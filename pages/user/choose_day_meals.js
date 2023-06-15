@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import classes from "@/styles/pages/user/choose_day_meals.module.scss";
 import Head from "next/head";
 import Image from "next/image";
@@ -7,6 +7,9 @@ import {useRouter} from "next/router";
 import Overlay from "@/components/pages/dashboard/ChangeUser_Name/overlay";
 import MealCard_User from "@/components/pages/user/MealCard_Add";
 import SelectedMeals from "@/components/pages/user/SelectedMeals";
+import Stepper from "@/components/pages/user/Stepper/Stepper";
+import ScrollToTop from "@/components/layout/ScrollToTop/ScrollToTop";
+import Spinner from "@/components/layout/spinner/Spinner";
 // REDUX
 import {useDispatch, useSelector} from "react-redux";
 import {onInputChange, resetSelectedMeals} from '@/redux/slices/user/daymeals_slice';
@@ -16,6 +19,7 @@ import {toast} from "react-toastify";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
+import i18n from "@/i18n";
 
 const Choose_Day_Meals = () => {
     //ROUTER
@@ -26,10 +30,13 @@ const Choose_Day_Meals = () => {
 
     //STATES
     const [overlay, setOverlay] = useState(false);
-    const [mealType, setMealType] = useState('الكل');
+    const [mealType, setMealType] = useState('');
     const [availableMeals, setAvailableMeals] = useState('');
     const [availableSnacks, setAvailableSnacks] = useState('');
     const [dateIdFromURL, setDateIdFromURL] = useState('');
+    const [packageAvailableMeals, setPackageAvailableMeals] = useState(["افطار", "غداء", "عشاء", "سناك"]);
+    const scrollableRef = useRef(null);
+    const [loading, setLoading] = useState(false);
 
     //REDUX
     const dispatch = useDispatch();
@@ -45,6 +52,22 @@ const Choose_Day_Meals = () => {
         setDateIdFromURL(dateIdQuery);
 
         if (dateIdQuery || dateId) {
+
+            let theType;
+            if (packageAvailableMeals.includes("افطار") && !mealType) {
+                theType = "افطار"
+                setMealType("افطار")
+            } else if (packageAvailableMeals.includes("غداء") && !mealType) {
+                theType = "غداء"
+                setMealType("غداء")
+            } else if (packageAvailableMeals.includes("عشاء") && !mealType) {
+                theType = "عشاء"
+                setMealType("عشاء")
+            } else if (packageAvailableMeals.includes("سناك") && !mealType) {
+                theType = "سناك"
+                setMealType("سناك")
+            }
+
             // LOGIC
             try {
                 axios.get(`https://api.easydietkw.com/api/v1/filter/menu/meals`, {
@@ -52,11 +75,12 @@ const Choose_Day_Meals = () => {
                         Authorization: `Bearer ${token}`
                     },
                     params: {
-                        mealType: mealType,
+                        mealType: mealType || theType,
                         dateId: dateId || dateIdQuery
                     }
                 })
                     .then(res => {
+                        console.log(res.data)
                         dispatch(onInputChange({key: 'meals', value: res.data.filter}));
                         setAvailableMeals(res.data.numberOfMeals);
                         setAvailableSnacks(res.data.numberOfSnacks)
@@ -69,7 +93,7 @@ const Choose_Day_Meals = () => {
             }
         }
 
-    }, [dispatch, mealType, dateId, router])
+    }, [dispatch, packageAvailableMeals, dateId, router, mealType])
 
     // HIDE OVERLAY
     const hideOverlay = () => {
@@ -78,7 +102,23 @@ const Choose_Day_Meals = () => {
 
     //RESET MEALS HANDLER
     const resetMealsHandler = () => {
-        dispatch(onInputChange({key: 'selectedMeals', value: []}))
+        dispatch(onInputChange({key: 'selectedMeals', value: []}));
+        let theType;
+        if (packageAvailableMeals.includes("افطار") && !mealType) {
+            theType = "افطار"
+            setMealType("افطار")
+        } else if (packageAvailableMeals.includes("غداء") && !mealType) {
+            theType = "غداء"
+            setMealType("غداء")
+        } else if (packageAvailableMeals.includes("عشاء") && !mealType) {
+            theType = "عشاء"
+            setMealType("عشاء")
+        } else if (packageAvailableMeals.includes("سناك") && !mealType) {
+            theType = "سناك"
+            setMealType("سناك")
+        }
+
+        setMealType(theType);
     }
 
     //SUBMIT HANDLER
@@ -86,7 +126,96 @@ const Choose_Day_Meals = () => {
         //STOP RELOADING
         event.preventDefault();
 
-        if(!dateId && !dateIdFromURL) {
+        // SET LOADING TO TRUE
+        setLoading(true);
+
+        // Check if All is selected
+        /*
+        * if selectedMeals.length === 0 then the user didn't select any meal and send a message based on the meal type in ar and en
+        * and if the type is breakfast then the user can choose only one meal and if is the type is lunch and the package has a dinner then the user can choose minimum 1 meal and maximum the number of meals - 2
+        */
+
+        if (selectedMeals.length === 0 && mealType === 'افطار') {
+            setLoading(false)
+            return toast.error(i18n.language.includes('en') ? 'Please Select a breakfast meal' : 'الرجاء اختيار وجبة الفطور')
+        } else if (selectedMeals.length === 0 && mealType === 'غداء') {
+            setLoading(false)
+            return toast.error(i18n.language.includes('en') ? 'Please Select a lunch meat' : 'الرجاء اختيار وجبة الغداء')
+        } else if (selectedMeals.length === 0 && mealType === 'عشاء') {
+            setLoading(false)
+            return toast.error(i18n.language.includes('en') ? 'Please Select a dinner meal' : 'الرجاء اختيار وجبة العشاء')
+        } else if (selectedMeals.length === 0 && mealType === 'سناك') {
+            setLoading(false)
+            return toast.error(i18n.language.includes('en') ? 'Please Select a snack' : 'الرجاء اختيار سناك')
+        } else if (selectedMeals.length > 1 && mealType === 'افطار') {
+            setLoading(false)
+            return toast.error(i18n.language.includes('en') ? 'Please Select only one breakfast meal' : 'الرجاء اختيار وجبة واحدة فقط للفطور')
+        } else if (selectedMeals.length === 1 && mealType === 'افطار') {
+            if (packageAvailableMeals.includes("غداء")) {
+                setMealType('غداء')
+                // Scroll to top of the scrollable div smoothly
+                scrollableRef.current.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                setLoading(false)
+                return;
+            }
+        } else if (selectedMeals.length === 1 && mealType === 'غداء') {
+            setLoading(false)
+            return toast.error(i18n.language.includes('en') ? 'Please Select a lunch meat' : 'الرجاء اختيار وجبة الغداء')
+        } else if (selectedMeals.length === 1 && mealType === 'عشاء') {
+            setLoading(false)
+            return toast.error(i18n.language.includes('en') ? 'Please Select a dinner meal' : 'الرجاء اختيار وجبة العشاء')
+        } else if (selectedMeals.length === 1 && mealType === 'سناك') {
+            setLoading(false)
+            return toast.error(i18n.language.includes('en') ? 'Please Select a snack' : 'الرجاء اختيار سناك')
+        } else if (selectedMeals.length >= availableMeals && mealType === 'غداء' && packageAvailableMeals.includes('عشاء')) {
+            setLoading(false)
+            return toast.error(i18n.language.includes('en') ? 'The Lunch meals number is more than expected' : 'عدد وجبات الغداء اكثر من المتوقع')
+        } else if (selectedMeals.length > 1 && selectedMeals.length < availableMeals && mealType === 'غداء') {
+
+            if (packageAvailableMeals.includes('عشاء')) {
+                setMealType('عشاء')
+                // Scroll to top of the scrollable div smoothly
+                scrollableRef.current.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                setLoading(false)
+                return;
+            }
+        } else if (selectedMeals.length < availableMeals && mealType === 'عشاء') {
+            setLoading(false)
+            return toast.error(i18n.language.includes('en') ? `There is/are ${Number(availableMeals) - selectedMeals.length} Meal/s not selected yet` : `هناك ${Number(availableMeals) - selectedMeals.length} وجبة/ات لم يتم اختيارها بعد`)
+        } else if (selectedMeals.length > Number(availableMeals) && mealType === 'عشاء') {
+            setLoading(false)
+            return toast.error(i18n.language.includes('en') ? `The Dinner meals number is more than expected` : `عدد وجبات العشاء اكثر من المتوقع`)
+        } else if (selectedMeals.length === Number(availableMeals) && mealType === 'عشاء') {
+            if (packageAvailableMeals.includes('سناك')) {
+                setMealType('سناك')
+                // Scroll to top of the scrollable div smoothly
+                scrollableRef.current.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                setLoading(false)
+                return;
+            }
+        } else if (selectedMeals.length >= Number(availableMeals) && selectedMeals.length < (Number(availableMeals) + Number(availableSnacks)) && mealType === 'سناك') {
+            setLoading(false)
+            return toast.error(i18n.language.includes('en') ? `You Have to select ${availableSnacks} snack/s` : `يجب اختيار ${availableSnacks} سناك/سناكات`)
+        } else if (selectedMeals.length > (Number(availableMeals) + Number(availableSnacks)) && mealType === 'سناك') {
+            setLoading(false)
+            return toast.error(i18n.language.includes('en') ? `The Snacks meals number is more than expected` : `عدد وجبات السناك اكثر من المتوقع`)
+        } else if (selectedMeals.length !== (Number(availableMeals) + Number(availableSnacks))) {
+            setLoading(false)
+            return toast.error(i18n.language.includes('en') ? `The total selected meals number is not equal to the available meals number` : `العددالاجمالي للوجبات غير مطابق لعدد الوجبات التي تم اختيارها`)
+        }
+
+
+        if (!dateId && !dateIdFromURL) {
+            setLoading(false)
             return toast.error('Date Id is not defined')
         }
 
@@ -117,6 +246,7 @@ const Choose_Day_Meals = () => {
                     }
                 })
                     .then(_ => {
+                        setLoading(false)
                         router.push('/user/my_subscription').then(() => {
                             toast.success('The Meals of the Day Updated Successfully')
                             //Clear the Reducer
@@ -124,6 +254,7 @@ const Choose_Day_Meals = () => {
                         })
                     })
                     .catch(err => {
+                        setLoading(false)
                         toast.error(err.response?.data?.message || err.message)
                     })
             } else {
@@ -133,6 +264,7 @@ const Choose_Day_Meals = () => {
                     }
                 })
                     .then(_ => {
+                        setLoading(false)
                         router.push('/user/my_subscription').then(() => {
                             toast.success('The Meals of the Day Updated Successfully')
                             //Clear the Reducer
@@ -140,12 +272,17 @@ const Choose_Day_Meals = () => {
                         })
                     })
                     .catch(err => {
+                        setLoading(false)
                         toast.error(err.response?.data?.message || err.message)
                     })
             }
         } catch (err) {
             toast.error(err.response?.data?.message || err.message)
         }
+    }
+
+    const changeCurrentStep = (step) => {
+        setMealType(step);
     }
 
     return (
@@ -172,47 +309,21 @@ const Choose_Day_Meals = () => {
                 <meta property="og:description"
                       content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet."/>
             </Head>
-            <main className={classes.Main}>
+            <main className={classes.Main} ref={scrollableRef}>
                 <div className={classes.Container}>
                     <div className={classes.Top}>
                         <div className={classes.Top_Container}>
-                            <div className={classes.Navigation} data-word={t("filter")}>
-                                <ul>
-                                    <li className={mealType === 'افطار' ? classes.Active : ''} onClick={() => setMealType('افطار')}>
-                                        <span onClick={() => setMealType('افطار')}>{t("breakfast")}</span>
-                                        {mealType === 'افطار' && <span className={classes.Check_Icon}>
-                                            <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
-                                                   height={18}/>
-                                        </span>}
-                                    </li>
-                                    <li className={mealType === 'غداء' ? classes.Active : ''} onClick={() => setMealType('غداء')}>
-                                        <span onClick={() => setMealType('غداء')}>{t("lunch")}</span>
-                                        {mealType === 'غداء' && <span className={classes.Check_Icon}>
-                                            <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
-                                                   height={18}/>
-                                        </span>}
-                                    </li>
-                                    <li className={mealType === 'عشاء' ? classes.Active : ''} onClick={() => setMealType('عشاء')}>
-                                        <span onClick={() => setMealType('عشاء')}>{t("dinner")}</span>
-                                        {mealType === 'عشاء' && <span className={classes.Check_Icon}>
-                                            <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
-                                                   height={18}/>
-                                        </span>}
-                                    </li>
-                                    <li className={mealType === 'سناك' ? classes.Active : ''} onClick={() => setMealType('سناك')}>
-                                        <span onClick={() => setMealType('سناك')}>{t("snacks")}</span>
-                                        {mealType === 'سناك' && <span className={classes.Check_Icon}>
-                                            <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
-                                                   height={18}/>
-                                        </span>}
-                                    </li>
-                                </ul>
-                                <span title={'All Meals'} onClick={() => setMealType('الكل')} className={mealType === 'الكل' ? classes.Active : ''}>
-                                    {t("all")}
-                                    {mealType === 'الكل' &&
-                                        <Image src={'/images/Global/Check_Icon.svg'} alt={'check icon'} width={18}
-                                               height={18}/>}
-                                </span>
+                            <div
+                                className={classes.Navigation}
+                                data-word={t("filter")}
+                                data-day={new Date(date).toLocaleDateString(i18n.language.includes('en') ? 'en-US' : "ar-EG", {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric'
+                                })}
+                            >
+                                <Stepper currentStep={(step) => changeCurrentStep(step)} mealType={mealType}
+                                         meals={packageAvailableMeals} availableMeals={packageAvailableMeals}/>
                             </div>
                             <div className={classes.Buttons}>
                                 <button title={'Selected Meals'} onClick={() => {
@@ -230,19 +341,11 @@ const Choose_Day_Meals = () => {
                                     <span>{t("selected")}</span>
                                 </button>
                                 <button title={'Reset All Meals'} onClick={resetMealsHandler}>
-                                    <Image src={'/images/Global/ResetMeals_Icon.svg'} alt={'Selected Meals'} width={20}
+                                    <Image src={'/images/Global/ResetMeals_Icon.svg'} alt={'Selected Meals'}
+                                           width={20}
                                            height={20}/>
                                     <span>{t("reset")}</span>
                                 </button>
-                            </div>
-                            <div className={classes.AvailableMeals}
-                                 data-day={new Date(date).toLocaleDateString('en-US', {
-                                     day: 'numeric',
-                                     month: 'long',
-                                     year: 'numeric'
-                                 })}>
-                                <p>{t("availableMeals")} <span>{availableMeals}</span></p>
-                                <p>{t("availableSnacks")} <span>{availableSnacks}</span></p>
                             </div>
                         </div>
                     </div>
@@ -263,6 +366,7 @@ const Choose_Day_Meals = () => {
                                             lang={cur?.mealId?.lang}
                                             availableMeals={availableMeals}
                                             availableSnacks={availableSnacks}
+                                            mealType={cur?.mealId?.mealType}
                                         />
                                     )
                             })}
@@ -272,23 +376,15 @@ const Choose_Day_Meals = () => {
                             type={'submit'}
                             onClick={submitHandler}
                         >
-                            <span style={{marginLeft: '-5rem'}}>{t("button")}</span>
-                            <span className={classes.Next_Span}><Image src={'/images/Auth/next-icon.svg'}
-                                                                       alt={'Choose Day Meals'} width={20}
-                                                                       height={20}/></span>
-                        </button>
-                        <button
-                            className={[classes.Back_button].join(' ')}
-                            type={'button'} onClick={() => {
-                            resetMealsHandler()
-                            router.push('/user/my_subscription');
-                        }}>
-                            <span className={classes.Next_Span}><Image src={'/images/Auth/next-icon.svg'}
-                                                                       alt={'GO BACK'} width={20}
-                                                                       height={20}/></span>
+                            <span>{i18n.language.includes('en') ? (mealType !== packageAvailableMeals[packageAvailableMeals.length - 1] ? (loading ?
+                                <Spinner size={1} color={'#FFFFFF'}/> : "Next") : (loading ? <Spinner size={1}
+                                                                                                      color={'#FFFFFF'}/> : "Confirm")) : (mealType !== packageAvailableMeals[packageAvailableMeals.length - 1] ? (loading ?
+                                <Spinner size={1} color={'#FFFFFF'}/> : "التالي") : (loading ?
+                                <Spinner size={1} color={'#FFFFFF'}/> : "تأكيد"))}</span>
                         </button>
                     </div>
                 </div>
+                <ScrollToTop parentRef={scrollableRef}/>
             </main>
             <Overlay active={overlay} clicked={hideOverlay}>
                 <SelectedMeals text1={t("selectedMeals")} text2={t("noMeals")} isActive={overlay}

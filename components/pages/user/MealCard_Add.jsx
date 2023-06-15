@@ -8,7 +8,7 @@ import {useTranslation} from "react-i18next";
 import {toast} from "react-toastify";
 
 
-const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, availableMeals, availableSnacks}) => {
+const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, availableMeals, availableSnacks, mealType}) => {
 
     //REDUX
     const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const MealCardAdmin = ({ID, image, name, protein, calories, fats, carbohydrate, 
 
             dispatch(onInputChange({
                 key: 'selectedMeals',
-                value: [...mealsCopy, {image: image, name: name, id: ID, number: 1}]
+                value: [...mealsCopy, {image: image, name: name, id: ID, number: 1, mealType: mealType}]
             }))
         }
     }

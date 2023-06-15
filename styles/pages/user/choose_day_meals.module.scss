@@ -44,34 +44,33 @@
     align-items: center;
     background-color: var(--color-white-background);
     border: 1px solid var(--color-dashboard-border);
-    padding: 2rem;
+    padding: 0 2rem;
     flex-grow: 1;
 
     @media screen and (max-width: 920px) {
       flex-direction: column-reverse;
       align-items: initial;
       gap: 1rem;
+      padding: 4rem 2rem 2rem;
     }
 
 
-    &:before {
-      content: attr(data-word);
+    &:after {
+      content: attr(data-day);
       display: inline-block;
       position: absolute;
-      top: 0;
-      left: 0;
-      font-size: 1.2rem;
+      top: .5rem;
+      left: .5rem;
+      font-size: 1rem;
       letter-spacing: 1px;
       text-transform: uppercase;
-      padding: 0.5rem 1rem;
-      color: var(--color-white-text);
-      background-color: #39353B;
+      padding: 0.3rem 1rem;
+      color: #534e56;
       text-align: center;
-      transform: translate(-50%, -50%) rotate(-45deg);
 
-      @media screen and (max-width: 650px) {
-        top: 1.5rem;
-        left: 1.5rem;
+      @media screen and (min-width: 921px) {
+        left: initial;
+        right: .5rem;
       }
     }
 
@@ -174,49 +173,6 @@
     }
   }
 
-  .AvailableMeals {
-    position: relative;
-    width: 100%;
-    flex-grow: 1;
-    padding: 2rem;
-    background-color: var(--color-white-background);
-    border: 1px solid var(--color-dashboard-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-
-    p {
-      width: calc(50% - .5rem);
-      color: var(--color-gray-444);
-      font-size: 1.4rem;
-
-      span {
-        font-size: 1.6rem;
-        font-weight: 500;
-        font-family: var(--font-montserrat);
-        color: var(--color-black-text);
-      }
-    }
-
-    &:after {
-      content: attr(data-day);
-      display: inline-block;
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      font-size: 1rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 0.3rem 1rem;
-      color: var(--color-white-text);
-      background-color: #534e56;
-      text-align: center;
-      transform: translate(-50%, 50%);
-
-    }
-  }
-
   .Bottom {
     position: relative;
 
@@ -230,9 +186,9 @@
       border: 1px solid var(--color-dashboard-border);
       padding: 4rem;
       margin-top: 3rem;
-      max-height: 60rem;
-      overflow-y: auto;
-      overflow-x: hidden;
+      //max-height: 60rem;
+      //overflow-y: auto;
+      //overflow-x: hidden;
 
 
       @media screen and (max-width: 650px) {
@@ -243,38 +199,20 @@
 
     .Create_button,
     .Back_button {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      transform: translate(10%, 50%);
+      position: fixed;
+      bottom: 1rem;
+      left: 1rem;
+      width: 6rem;
       height: 6rem;
-      padding: 1rem .5rem 1rem 2rem;
-      width: 14rem;
+      padding: 1rem;
       display: flex;
       justify-content: center;
       align-items: center;
       border-radius: 10rem;
-      background-color: var(--color-white-background);
+      background-color: #2ba461;
       border: 1px solid var(--color-input-border);
       cursor: pointer;
       font-family: var(--font-roboto);
-
-      span.Next_Span {
-        position: absolute;
-        top: .5rem;
-        right: 0.5rem;
-        padding: 1rem;
-        border-radius: 50%;
-        width: 5rem;
-        height: 5rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-left: auto;
-        background-color: rgba(1, 246, 137, 0.1);
-        border: 1px solid var(--color-dashboard-border);
-        transition: transform .2s ease-in-out;
-      }
 
       &:active {
         span.Next_Span {
@@ -368,35 +306,35 @@
       align-items: center;
       background-color: var(--color-white-background);
       border: 1px solid var(--color-dashboard-border);
-      padding: 2rem;
+      padding: 0 2rem;
       flex-grow: 1;
 
       @media screen and (max-width: 920px) {
         flex-direction: column-reverse;
         align-items: initial;
         gap: 1rem;
+
+        padding: 4rem 2rem 2rem;
       }
 
 
-      &:before {
-        content: attr(data-word);
+      &:after {
+        content: attr(data-day);
         display: inline-block;
         position: absolute;
-        top: 0;
-        right: 0;
+        top: .5rem;
         left: initial;
-        font-size: 1.2rem;
+        right: .5rem;
+        font-size: 1rem;
         letter-spacing: 1px;
         text-transform: uppercase;
-        padding: 0.5rem 1rem;
-        color: var(--color-white-text);
-        background-color: #39353B;
+        padding: 0.3rem 1rem;
+        color: #534e56;
         text-align: center;
-        transform: translate(50%, -50%) rotate(45deg);
 
-        @media screen and (max-width: 650px) {
-          top: 1.5rem;
-          right: 1.5rem;
+        @media screen and (min-width: 921px) {
+          left: .5rem;
+          right: initial;
         }
       }
 
@@ -450,6 +388,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-grow: 1;
         flex-direction: column;
         font-family: var(--font-almarai);
         gap: .5rem;
@@ -471,50 +410,6 @@
       }
     }
 
-    .AvailableMeals {
-      position: relative;
-      width: 100%;
-      flex-grow: 1;
-      padding: 2rem;
-      background-color: var(--color-white-background);
-      border: 1px solid var(--color-dashboard-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-
-      p {
-        width: calc(50% - .5rem);
-        color: var(--color-gray-444);
-        font-size: 1.4rem;
-
-        span {
-          font-size: 1.6rem;
-          font-weight: 500;
-          font-family: var(--font-montserrat);
-          color: var(--color-black-text);
-        }
-      }
-
-      &:after {
-        content: attr(data-day);
-        display: inline-block;
-        position: absolute;
-        bottom: 0;
-        right: 50%;
-        left: initial;
-        font-size: 1rem;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        padding: 0.3rem 1rem;
-        color: var(--color-white-text);
-        background-color: #534e56;
-        text-align: center;
-        transform: translate(50%, 50%);
-
-      }
-    }
-
     .Bottom {
       position: relative;
 
@@ -528,9 +423,9 @@
         border: 1px solid var(--color-dashboard-border);
         padding: 4rem;
         margin-top: 3rem;
-        max-height: 60rem;
-        overflow-y: auto;
-        overflow-x: hidden;
+        //max-height: 60rem;
+        //overflow-y: auto;
+        //overflow-x: hidden;
 
 
         @media screen and (max-width: 650px) {
@@ -541,35 +436,20 @@
 
       .Create_button,
       .Back_button {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        transform: translate(-10%, 50%);
-        height: 6rem;
-        padding: 1rem 2rem 1rem .5rem;
-        width: 14rem;
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        left: initial;
+        padding: 1rem;
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 10rem;
-        background-color: var(--color-white-background);
+        color: var(--color-white-text);
+        background-color: #15dc6f;
         border: 1px solid var(--color-input-border);
         cursor: pointer;
         font-family: var(--font-almarai);
-
-        span.Next_Span {
-        }
-
-        //&:active {
-        //  span.Next_Span {
-        //    box-shadow: inset 0 0 .3rem rgba(0, 0, 0, 0.16);
-        //    transform: scale(.95) translate(-50%);
-        //
-        //    @media screen and (max-width: 650px){
-        //      transform: scale(.95);
-        //    }
-        //  }
-        //}
 
         &.Un_Active {
           display: none;

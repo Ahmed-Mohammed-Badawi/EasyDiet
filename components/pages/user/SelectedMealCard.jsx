@@ -37,9 +37,9 @@ const SelectedMeal = ({ID, image, name, number}) => {
                     <div className={classes.Image}>
                         <Image src={image || '/images/no_image.webp'} alt={'Meal Image'} width={360} height={250}/>
                     </div>
-                    <button onClick={deleteHandler}>
-                        <Image src={'/images/Delete_Icon.svg'} alt={'delete'} width={20} height={20}/>
-                    </button>
+                    {/*<button onClick={deleteHandler}>*/}
+                    {/*    <Image src={'/images/Delete_Icon.svg'} alt={'delete'} width={20} height={20}/>*/}
+                    {/*</button>*/}
                 </div>
                 <div className={classes.Bottom}>
                     <h3>{name}</h3>

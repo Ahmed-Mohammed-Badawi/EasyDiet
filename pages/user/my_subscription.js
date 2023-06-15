@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
 import classes from "@/styles/pages/user/my_subscription.module.scss";
 import Head from "next/head";
 import {useRouter} from "next/router";
@@ -12,6 +12,7 @@ import {extractTokenFromCookie} from "@/helpers/extractToken";
 import DayItem from "@/components/pages/user/DayItem";
 import MySubscription from "@/components/pages/user/MySubscription/MySubscription";
 import GasLoader from "@/components/layout/GasLoader/gasLoader";
+import ScrollToTop from "@/components/layout/ScrollToTop/ScrollToTop";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
 import i18n from "@/i18n";
@@ -42,6 +43,9 @@ const My_Subscription = () => {
         end: ''
     });
 
+    // REFS
+    const scrollableRef = useRef(null);
+
     // EFFECT TO GET THE PACKAGES WHEN PAGE LOAD
     useEffect(() => {
         //GET THE TOKEN
@@ -54,6 +58,7 @@ const My_Subscription = () => {
                 }
             })
                 .then(res => {
+                    console.log(res.data)
                     setPackageInfo({
                         bundleName: res.data.bundleName,
                         bundleNameEn: res.data.bundleNameEn,
@@ -160,7 +165,7 @@ const My_Subscription = () => {
                 <meta property="og:description"
                       content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet."/>
             </Head>
-            <main className={classes.Main}>
+            <main className={classes.Main} ref={scrollableRef}>
                 <div className={classes.Container}>
                     {
                         packageInfo?.bundleName && packageDays.length > 0 ? (
@@ -233,6 +238,7 @@ const My_Subscription = () => {
                             </>
                         ) : <MySubscription/>}
                 </div>
+                <ScrollToTop parentRef={scrollableRef} />
             </main>
         </>
 
