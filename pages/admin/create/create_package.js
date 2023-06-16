@@ -16,6 +16,7 @@ import {onInputChange, clearAll} from "@/redux/slices/Admin/createpackage-slice"
 import {useDispatch, useSelector} from "react-redux";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
+import i18n from "@/i18n";
 
 const CreatePackage = () => {
     // ROUTER
@@ -25,6 +26,8 @@ const CreatePackage = () => {
     const {t} = useTranslation('createPackage');
 
     // STATES
+    const [selectedImage, setSelectedImage] = useState('');
+    const [preview, setPreview] = useState('');
     const [loading, setLoading] = useState(false);
 
     // REDUX
@@ -59,6 +62,12 @@ const CreatePackage = () => {
             toast.error(`Please fill All inputs`);
             return;
         }
+
+        if(!selectedImage){
+            toast.error(i18n.language.includes('en') ? `Please Select an Image` : `من فضلك اختر صورة`);
+            return;
+        }
+
         // Set the loading state for the spinner
         setLoading(true);
 
@@ -74,13 +83,27 @@ const CreatePackage = () => {
             bundleOffer: offerDays,
             fridayOption: fridayIncluded,
             bundlePrice: packagePrice,
-            mealsIds: packageMeals,
+            // mealsIds: packageMeals,
             timeOnCard: textOnCard,
             timeOnCardEn: textOnCardEn
         }
 
+
+        const formData = new FormData();
+
+        // Append the image
+        formData.append("files", selectedImage);
+
+        for (let i = 0; i < packageMeals.length; i++) {
+            formData.append('mealsIds[]', packageMeals[i]);
+        }
+
+        Object.entries(createMeal_Obj).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
+
         // Send Create Request to the server
-        await axios.post(`https://api.easydietkw.com/api/v1/create/bundle`, createMeal_Obj, {
+        await axios.post(`https://api.easydietkw.com/api/v1/create/bundle`, formData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -103,6 +126,23 @@ const CreatePackage = () => {
                 toast.error(err?.response?.data?.message || err?.message);
             })
     }
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+
+        if (file) {
+            // Set the Image State
+            setSelectedImage(file);
+            localStorage.setItem('selectedPackageImage', file);
+
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setPreview(null);
+        }
+    };
 
     return (
         <>
@@ -132,6 +172,19 @@ const CreatePackage = () => {
                 <div className={classes.FormContainer}>
                     <h1>{t("title")}</h1>
                     <form onSubmit={submitHandler}>
+                        <div className={classes.Image_Uploader}>
+                            <label htmlFor={'meal_image'}>
+                                <div className={classes.Static}>
+                                    <Image src={'/images/Upload_Icon.svg'} alt={'Upload Icon'} width={30} height={30}/>
+                                    <span>{t("upload")}</span>
+                                </div>
+                                <div className={classes.ImagePreviewer}>
+                                    {preview && <Image src={preview} alt="Preview" width={80} height={50}/>}
+                                </div>
+                            </label>
+                            <input id={'meal_image'} onChange={handleImageChange} type={'file'} name={'Meal_Image'}
+                                   accept="image/*"/>
+                        </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'package_name'}>{t("name")}</label>

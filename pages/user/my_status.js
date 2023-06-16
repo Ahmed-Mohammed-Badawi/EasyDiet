@@ -71,7 +71,7 @@ const My_Status = () => {
                         <div className={classes.Left}>
                             <h1>{t("title")}</h1>
                         </div>
-                        <div className={classes.Right} onClick={() => router.push('/user/profile')}>
+                        <div className={classes.Right} onClick={() => router.push('/user/my_subscription')}>
                             <button className={classes.Close}>
                                 <Image src={'/images/Auth/next-icon.svg'} alt={'go back'} width={25} height={25}/>
                             </button>

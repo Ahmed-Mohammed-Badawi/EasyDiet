@@ -147,6 +147,7 @@ function PackageCard({
                                         toast.error('Please Fill your information first')
                                     })
                                 } else {
+                                    localStorage.setItem('selectedPackageId', JSON.stringify(ID))
                                     router.push(`/auth/register`)
                                 }
                             }}

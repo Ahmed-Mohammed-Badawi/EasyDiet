@@ -41,17 +41,20 @@ const LoadingPage = () => {
                         router.push('/user/my_subscription')
                             .then(() => {
                                 toast.success(res.data?.message || "Payment done successfully")
+                                localStorage.removeItem('selectedPackageId')
                             })
                     } else {
                         router.push('/user/my_subscription')
                             .then(() => {
                                 toast.error(res.data?.message)
+                                localStorage.removeItem('selectedPackageId')
                             })
                     }
                 })
                 .catch(err => {
                     router.push('/user/my_subscription').then(() => {
                         toast.error(err.response?.data?.message || err.message || "Something went wrong please call the support")
+                        localStorage.removeItem('selectedPackageId')
                     })
                 })
         }

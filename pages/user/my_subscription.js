@@ -58,14 +58,14 @@ const My_Subscription = () => {
                 }
             })
                 .then(res => {
-                    console.log(res.data)
                     setPackageInfo({
                         bundleName: res.data.bundleName,
                         bundleNameEn: res.data.bundleNameEn,
                         bundleDays: res.data.bundleDays,
                         startDate: res.data.startDate,
                         endDate: res.data.endDate,
-                        remainingDays: res.data.remainingDays
+                        remainingDays: res.data.remainingDays,
+                        bundleImage: res.data.bundleImage
                     })
 
                     setRealPackageDays({
@@ -174,13 +174,13 @@ const My_Subscription = () => {
                                 <div className={classes.Top} data-title={t("title1")}>
                                     {(realPackageDays?.start && realPackageDays?.end) && (
                                         <div className={classes.LoaderContainer}>
-                                            <GasLoader availableDays={count - daysUntilNow} totalDays={count}/>
+                                            <GasLoader availableDays={count - daysUntilNow} totalDays={packageDays.length}/>
                                         </div>)}
                                     <div className={classes.Top_Container}>
                                         <div className={classes.PackageDetails}>
                                             <div className={classes.ImagePart}>
                                                 <div className={classes.PackageImage}>
-                                                    <Image src={'/bulking.jpg'} alt={"no image"} width={100}
+                                                    <Image src={packageInfo?.bundleImage || '/images/no_image.webp'} alt={"no image"} width={100}
                                                            height={100}/>
                                                 </div>
                                                 <div className={classes.PackageName}>
@@ -198,7 +198,7 @@ const My_Subscription = () => {
                                         <div className={classes.PackageTime}>
                                             <div className={classes.Top_Item}>
                                                 <h3>{t("time")}</h3>
-                                                <span>{packageInfo.bundleDays} {t("days")}</span>
+                                                <span>{packageDays.length} {t("days")}</span>
                                             </div>
                                             <div className={classes.Top_Item}>
                                                 <h3>{t("start")}</h3>

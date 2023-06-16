@@ -10,8 +10,9 @@ import Spinner from "@/components/layout/spinner/Spinner";
 import axios from "axios";
 import {extractTokenFromCookie} from "@/helpers/extractToken";
 // REDUX
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import {toast} from "react-toastify";
+import {onInputChange} from "@/redux/slices/user/subscription_info";
 // TRANSLATION
 import {useTranslation} from "react-i18next";
 
@@ -23,7 +24,11 @@ const Choose_Starting_Date = () => {
     // STATE
     const [loading, setLoading] = useState(false);
 
+    // GET THE ID OF THE PACKAGE FROM THE URL
+    const {packageId: id_in_url} = router.query;
+
     //REDUX
+    const dispatch = useDispatch();
     const {
         package: {id},
         selectedDay,
@@ -33,10 +38,12 @@ const Choose_Starting_Date = () => {
     // EFFECTS
     // EFFECT TO CHECK UF THE ID IS EXIST
     useEffect(() => {
-        if (!id) {
+        if (!id && !id_in_url) {
             router.push('/user/packages')
         }
-    }, [router, id])
+
+        dispatch(onInputChange({key: 'package', value: {id: id || id_in_url}}))
+    }, [router, id, id_in_url, dispatch])
 
     // LANGUAGE
     const {t} = useTranslation('chooseStartingDate');
@@ -111,7 +118,7 @@ const Choose_Starting_Date = () => {
                         </div>
                         <button type={'submit'}>
                             <span>
-                                {loading ? <Spinner size={2} color={`#ffffff`} /> : t("button")}
+                                {loading ? <Spinner size={2} color={`#ffffff`}/> : t("button")}
                             </span>
                             <Image src={'/images/Send_Icon.svg'} alt={'Send'} width={20} height={20}/>
                         </button>

@@ -2,6 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 
 //Initial Value
 const initialValue = {
+    selectedImage: null,
     name: '',
     nameEn: '',
     textOnCard: '',
@@ -57,6 +58,7 @@ const createPackageSlice = createSlice({
             state.packageMeals = [];
         },
         clearAll: (state) => {
+            state.selectedImage = null;
             state.name = '';
             state.nameEn = '';
             state.textOnCard = '';

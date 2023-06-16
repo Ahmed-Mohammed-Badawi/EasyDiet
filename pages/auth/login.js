@@ -78,8 +78,13 @@ export default function Login({isAuthenticated}) {
                     router.push(`/admin/dashboard`)
                         .then(() => router.reload())
                 } else if (res.data.user.role === "client") {
-                    router.push(`/user/my_subscription`)
-                        .then(() => router.reload())
+                    if(localStorage.getItem('selectedPackageId')){
+                        router.push(`/user/choose_starting_date?packageId=${JSON.parse(localStorage.getItem('selectedPackageId'))}`)
+                            .then(() => router.reload())
+                    }else{
+                        router.push(`/user/my_subscription`)
+                            .then(() => router.reload())
+                    }
                 } else if (res.data.user.role === "manager") {
                     router.push(`/admin/branch`)
                         .then(() => router.reload())

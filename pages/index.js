@@ -76,8 +76,6 @@ export default function Home({isAuthenticated, userData}) {
                 }
             })
                 .then(res => {
-                    console.log(res.data);
-
                     dispatch(setAll({
                         subscriptionId: res.data.client?.subscriptionId,
                         has_subscription: res.data.client?.subscriped,
@@ -148,14 +146,14 @@ export default function Home({isAuthenticated, userData}) {
                                 <p className={classes?.Paragraph}>
                                     {t("message1")} <span
                                     className={'Colored'}>&#34;{i18n.language.includes('en') ? (bundleNameEn || bundleName) : bundleName}&#34;</span> {t("message2")}
-                                    <span className={'Colored'}>&#34;{new Date(subscriptionStartDate).toLocaleDateString({
+                                    <span className={'Colored'}>&#34;{new Date(subscriptionStartDate).toLocaleDateString(i18n.language.includes('en') ? 'en-US' : 'ar-EG', {
                                         day: 'numeric',
                                         month: 'long',
                                         year: 'numeric'
                                     })}&#34;</span>
                                     {t("message3")}
                                     <span className={'Colored'}>
-                                        &#34;{new Date(subscriptionEndDate).toLocaleDateString({
+                                        &#34;{new Date(subscriptionEndDate).toLocaleDateString(i18n.language.includes('en') ? 'en-US' : 'ar-EG', {
                                             day: 'numeric',
                                             month: 'long',
                                             year: 'numeric'

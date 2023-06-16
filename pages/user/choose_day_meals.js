@@ -34,9 +34,11 @@ const Choose_Day_Meals = () => {
     const [availableMeals, setAvailableMeals] = useState('');
     const [availableSnacks, setAvailableSnacks] = useState('');
     const [dateIdFromURL, setDateIdFromURL] = useState('');
-    const [packageAvailableMeals, setPackageAvailableMeals] = useState(["افطار", "غداء", "عشاء", "سناك"]);
+    const [packageAvailableMeals, setPackageAvailableMeals] = useState([]);
     const scrollableRef = useRef(null);
     const [loading, setLoading] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [effectRenderNumber, setEffectRenderNumber] = useState(0);
 
     //REDUX
     const dispatch = useDispatch();
@@ -53,21 +55,6 @@ const Choose_Day_Meals = () => {
 
         if (dateIdQuery || dateId) {
 
-            let theType;
-            if (packageAvailableMeals.includes("افطار") && !mealType) {
-                theType = "افطار"
-                setMealType("افطار")
-            } else if (packageAvailableMeals.includes("غداء") && !mealType) {
-                theType = "غداء"
-                setMealType("غداء")
-            } else if (packageAvailableMeals.includes("عشاء") && !mealType) {
-                theType = "عشاء"
-                setMealType("عشاء")
-            } else if (packageAvailableMeals.includes("سناك") && !mealType) {
-                theType = "سناك"
-                setMealType("سناك")
-            }
-
             // LOGIC
             try {
                 axios.get(`https://api.easydietkw.com/api/v1/filter/menu/meals`, {
@@ -75,15 +62,42 @@ const Choose_Day_Meals = () => {
                         Authorization: `Bearer ${token}`
                     },
                     params: {
-                        mealType: mealType || theType,
+                        mealType: mealType || 'الكل',
                         dateId: dateId || dateIdQuery
                     }
                 })
                     .then(res => {
-                        console.log(res.data)
                         dispatch(onInputChange({key: 'meals', value: res.data.filter}));
-                        setAvailableMeals(res.data.numberOfMeals);
-                        setAvailableSnacks(res.data.numberOfSnacks)
+
+                        setPackageAvailableMeals(res.data.bundleMealsTypes);
+
+                        if (!mealType) {
+                            setMealType(res.data.bundleMealsTypes[0])
+                        }
+
+                        if (Number(res.data.numberOfMeals) === 0 && Number(res.data.numberOfSnacks) === 0) {
+                            setAvailableMeals(Number(res.data.defaultMealsNumber));
+                            setAvailableSnacks(Number(res.data.defaultSnacksNumber));
+                            setIsEditing(true)
+                            // SET SELECTED MEALS
+                            const selectedMealsInDB = res.data?.selectedMeals.map(meal => {
+                                return {
+                                    image: meal.imagePath,
+                                    name: meal.mealTitle,
+                                    id: meal._id,
+                                    number: 1,
+                                    mealType: meal.mealType
+                                }
+                            })
+
+                            if (effectRenderNumber === 0) {
+                                dispatch(onInputChange({key: 'selectedMeals', value: selectedMealsInDB}));
+                                setEffectRenderNumber(1);
+                            }
+                        } else {
+                            setAvailableMeals(res.data.numberOfMeals);
+                            setAvailableSnacks(res.data.numberOfSnacks)
+                        }
                     })
                     .catch(err => {
                         toast.error(err.response?.data?.message || err.message)
@@ -93,7 +107,7 @@ const Choose_Day_Meals = () => {
             }
         }
 
-    }, [dispatch, packageAvailableMeals, dateId, router, mealType])
+    }, [dispatch, dateId, router, mealType, effectRenderNumber])
 
     // HIDE OVERLAY
     const hideOverlay = () => {
@@ -106,18 +120,13 @@ const Choose_Day_Meals = () => {
         let theType;
         if (packageAvailableMeals.includes("افطار") && !mealType) {
             theType = "افطار"
-            setMealType("افطار")
         } else if (packageAvailableMeals.includes("غداء") && !mealType) {
             theType = "غداء"
-            setMealType("غداء")
         } else if (packageAvailableMeals.includes("عشاء") && !mealType) {
             theType = "عشاء"
-            setMealType("عشاء")
         } else if (packageAvailableMeals.includes("سناك") && !mealType) {
             theType = "سناك"
-            setMealType("سناك")
         }
-
         setMealType(theType);
     }
 
@@ -150,7 +159,7 @@ const Choose_Day_Meals = () => {
         } else if (selectedMeals.length > 1 && mealType === 'افطار') {
             setLoading(false)
             return toast.error(i18n.language.includes('en') ? 'Please Select only one breakfast meal' : 'الرجاء اختيار وجبة واحدة فقط للفطور')
-        } else if (selectedMeals.length === 1 && mealType === 'افطار') {
+        } else if (selectedMeals.length === 1 && mealType === 'افطار' && packageAvailableMeals.includes('غداء')) {
             if (packageAvailableMeals.includes("غداء")) {
                 setMealType('غداء')
                 // Scroll to top of the scrollable div smoothly
@@ -161,10 +170,32 @@ const Choose_Day_Meals = () => {
                 setLoading(false)
                 return;
             }
-        } else if (selectedMeals.length === 1 && mealType === 'غداء') {
+        } else if (selectedMeals.length === 1 && mealType === 'افطار' && !packageAvailableMeals.includes('غداء') && packageAvailableMeals.includes('عشاء')) {
+            if (packageAvailableMeals.includes("عشاء")) {
+                setMealType('عشاء')
+                // Scroll to top of the scrollable div smoothly
+                scrollableRef.current.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                setLoading(false)
+                return;
+            }
+        } else if (selectedMeals.length === 1 && mealType === 'افطار' && !packageAvailableMeals.includes('غداء') && !packageAvailableMeals.includes('عشاء') && packageAvailableMeals.includes('سناك')) {
+            if (packageAvailableMeals.includes("سناك")) {
+                setMealType('سناك')
+                // Scroll to top of the scrollable div smoothly
+                scrollableRef.current.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                setLoading(false)
+                return;
+            }
+        } else if (selectedMeals.length === 1 && mealType === 'غداء' && packageAvailableMeals.includes('افطار')) {
             setLoading(false)
             return toast.error(i18n.language.includes('en') ? 'Please Select a lunch meat' : 'الرجاء اختيار وجبة الغداء')
-        } else if (selectedMeals.length === 1 && mealType === 'عشاء') {
+        } else if (selectedMeals.length === 1 && mealType === 'عشاء' && packageAvailableMeals.includes('افطار')) {
             setLoading(false)
             return toast.error(i18n.language.includes('en') ? 'Please Select a dinner meal' : 'الرجاء اختيار وجبة العشاء')
         } else if (selectedMeals.length === 1 && mealType === 'سناك') {
@@ -174,7 +205,17 @@ const Choose_Day_Meals = () => {
             setLoading(false)
             return toast.error(i18n.language.includes('en') ? 'The Lunch meals number is more than expected' : 'عدد وجبات الغداء اكثر من المتوقع')
         } else if (selectedMeals.length > 1 && selectedMeals.length < availableMeals && mealType === 'غداء') {
-
+            if (packageAvailableMeals.includes('عشاء')) {
+                setMealType('عشاء')
+                // Scroll to top of the scrollable div smoothly
+                scrollableRef.current.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                setLoading(false)
+                return;
+            }
+        } else if (selectedMeals.length >= 1 && selectedMeals.length < availableMeals && mealType === 'غداء' && !packageAvailableMeals.includes('افطار')) {
             if (packageAvailableMeals.includes('عشاء')) {
                 setMealType('عشاء')
                 // Scroll to top of the scrollable div smoothly
@@ -231,7 +272,7 @@ const Choose_Day_Meals = () => {
             meals: ArrayOfMeals,
         }
 
-        if (availableMeals === 0 && availableSnacks === 0) {
+        if (isEditing) {
             requestBody = {
                 ...requestBody,
                 flag: 'edit'

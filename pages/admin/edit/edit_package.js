@@ -22,10 +22,14 @@ const EditPackage = ({bundle}) => {
     // ROUTER
     const router = useRouter();
 
+    console.log(bundle)
+
     // LANGUAGE
     const {t} = useTranslation('editPackage');
 
     // STATES
+    const [selectedImage, setSelectedImage] = useState('');
+    const [preview, setPreview] = useState('');
     const [loading, setLoading] = useState(false);
 
     // REDUX
@@ -63,7 +67,8 @@ const EditPackage = ({bundle}) => {
                 bundleId: bundle._id,
                 name: bundle.bundleName,
                 nameEn: bundle.bundleNameEn,
-                textOnCard: bundle.bundleTextOnCard,
+                textOnCard: bundle.timeOnCard,
+                textOnCardEn: bundle.timeOnCardEn,
                 realTime: bundle.bundlePeriod,
                 packagePrice: bundle.bundlePrice,
                 numberOfMeals: bundle.mealsNumber,
@@ -103,16 +108,29 @@ const EditPackage = ({bundle}) => {
             dinner: dinner ? 'on' : 'off',
             snacksNumber: numberOfSnacks,
             bundlePeriod: realTime,
-            bundleOffer: offerDays,
+            bundleOffer: offerDays || 0,
             fridayOption: fridayIncluded,
             bundlePrice: packagePrice,
-            mealsIds: packageMeals,
             timeOnCard: textOnCard,
             timeOnCardEn: textOnCardEn
         }
 
+        const formData = new FormData();
+
+        // Append the image
+        formData.append("files", selectedImage);
+
+        for (let i = 0; i < packageMeals.length; i++) {
+            formData.append('mealsIds[]', packageMeals[i]);
+        }
+
+        Object.entries(editMeal_Obj).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
+
+
         // Send Create Request to the server
-        await axios.put(`https://api.easydietkw.com/api/v1/edit/bundle`, editMeal_Obj, {
+        await axios.put(`https://api.easydietkw.com/api/v1/edit/bundle`, formData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -135,6 +153,23 @@ const EditPackage = ({bundle}) => {
                 toast.error(err?.response?.data?.message || err?.message);
             })
     }
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+
+        if (file) {
+            // Set the Image State
+            setSelectedImage(file);
+
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setPreview(null);
+        }
+    };
 
     return (
         <>
@@ -165,6 +200,19 @@ const EditPackage = ({bundle}) => {
                     <h1>{t("title")}</h1>
                     <p>{t("underTitle")} ({name})</p>
                     <form onSubmit={submitHandler}>
+                        <div className={classes.Image_Uploader}>
+                            <label htmlFor={'meal_image'}>
+                                <div className={classes.Static}>
+                                    <Image src={'/images/Upload_Icon.svg'} alt={'Upload Icon'} width={30} height={30}/>
+                                    <span>{t("upload")}</span>
+                                </div>
+                                <div className={classes.ImagePreviewer}>
+                                    {preview && <Image src={preview} alt="Preview" width={80} height={50}/>}
+                                </div>
+                            </label>
+                            <input id={'meal_image'} onChange={handleImageChange} type={'file'} name={'Meal_Image'}
+                                   accept="image/*"/>
+                        </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
                                 <label htmlFor={'package_name'}>{t("name")}</label>
@@ -407,7 +455,9 @@ export const getServerSideProps = wrapper.getServerSideProps(_ => async ({req, q
     // get the Auth
     const cookies = req.headers.cookie;
     const token = cookies.split('=');
-
+    console.log('token!!!!!')
+    console.log(cookies)
+    console.log(token)
     //CHECK THE ROLE
     let tokenInfo;
     if (token) {
