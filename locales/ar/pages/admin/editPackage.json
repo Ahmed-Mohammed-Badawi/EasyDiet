@@ -19,5 +19,8 @@
   "select": "إختيار الوجبات",
   "arabic": "عربي",
   "english": "انجليزي",
-  "confirm": "تأكيد"
+  "confirm": "تأكيد",
+  "uploadMaleImage": "تحميل صورة ذكر",
+  "uploadFemaleImage": "تحميل صورة أنثى",
+  "stopThePackage": "إيقاف الباقة"
 }

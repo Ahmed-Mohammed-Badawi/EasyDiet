@@ -3,7 +3,7 @@
   "name": "اسم الباقة (عربي)",
   "nameEn": "اسم الباقة (انجليزي)",
   "textOnCard": "النص على الكارت (عربي)",
-    "textOnCardEn": "النص على الكارت (انجليزي)",
+  "textOnCardEn": "النص على الكارت (انجليزي)",
   "timeReal": "الوقت الفعلي",
   "price": "سعر الباقة",
   "numberOfMeals": "عدد الوجبات",
@@ -18,5 +18,7 @@
   "select": "إختيار الوجبات",
   "arabic": "عربي",
   "english": "انجليزي",
-  "confirm": "تأكيد"
+  "confirm": "تأكيد",
+  "uploadMaleImage": "تحميل صورة ذكر",
+  "uploadFemaleImage": "تحميل صورة أنثى"
 }

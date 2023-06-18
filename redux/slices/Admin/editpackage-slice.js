@@ -16,7 +16,8 @@ const initialValue = {
     packageMeals: [],
     breakfast: false,
     lunch: false,
-    dinner: false
+    dinner: false,
+    stopThePackage: false,
 };
 
 const editPackageSlice = createSlice({
@@ -84,6 +85,7 @@ const editPackageSlice = createSlice({
             state.breakfast = action.payload.breakfast;
             state.lunch = action.payload.lunch;
             state.dinner = action.payload.dinner;
+            state.stopThePackage = action.payload.stopThePackage;
         },
         clearAll: (state) => {
             state.name = '';
@@ -99,7 +101,8 @@ const editPackageSlice = createSlice({
             state.packageMeals = [];
             state.breakfast = false;
             state.lunch = false;
-            state.dinner = false
+            state.dinner = false;
+            state.stopThePackage = false;
         }
     },
 })

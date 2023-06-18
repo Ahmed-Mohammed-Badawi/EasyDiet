@@ -19,5 +19,8 @@
   "select": "SELECT MEALS",
   "arabic": "ARABIC",
   "english": "ENGLISH",
-  "confirm": "CONFIRM"
+  "confirm": "CONFIRM",
+  "uploadMaleImage": "UPLOAD MALE IMAGE",
+  "uploadFemaleImage": "UPLOAD FEMALE IMAGE",
+  "stopThePackage": "STOP THE PACKAGE"
 }

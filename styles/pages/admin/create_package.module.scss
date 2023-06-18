@@ -289,6 +289,44 @@
         }
 
         form {
+            .Image_Uploader {
+                width: 100%;
+                margin-bottom: 2rem;
+
+                label {
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 1rem 1rem 1rem 2rem;
+                    width: 100%;
+                    text-transform: uppercase;
+                    color: var(--color-gray-999);
+                    background-color: var(--color-uploader-background);
+                    border: 1px solid var(--color-uploader-border);
+                    border-radius: 3px;
+                    cursor: pointer;
+
+                    .Static {
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+                    }
+
+                    .ImagePreviewer {
+                        width: 8rem;
+                        height: 5rem;
+                        object-fit: cover;
+                        background-color: transparent;
+                        border: 1px solid var(--color-uploader-border);
+                        border-radius: 5px;
+                        overflow: hidden;
+                    }
+                }
+
+                input {
+                    display: none;
+                }
+            }
+
             .InputsContainer {
                 display: flex;
                 align-items: center;

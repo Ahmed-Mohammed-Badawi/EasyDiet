@@ -35,7 +35,10 @@ const My_Subscription = () => {
         bundleDays: '',
         startDate: '',
         endDate: '',
-        remainingDays: ''
+        remainingDays: '',
+        bundleImageMale: '',
+        bundleImageFemale: '',
+        clientGender: ''
     });
     const [packageDays, setPackageDays] = useState([]);
     const [realPackageDays, setRealPackageDays] = useState({
@@ -65,7 +68,9 @@ const My_Subscription = () => {
                         startDate: res.data.startDate,
                         endDate: res.data.endDate,
                         remainingDays: res.data.remainingDays,
-                        bundleImage: res.data.bundleImage
+                        bundleImageMale: res.data.bundleImageMale,
+                        bundleImageFemale: res.data.bundleImageFemale,
+                        clientGender: res.data.clientGender
                     })
 
                     setRealPackageDays({
@@ -180,7 +185,7 @@ const My_Subscription = () => {
                                         <div className={classes.PackageDetails}>
                                             <div className={classes.ImagePart}>
                                                 <div className={classes.PackageImage}>
-                                                    <Image src={packageInfo?.bundleImage || '/images/no_image.webp'} alt={"no image"} width={100}
+                                                    <Image src={(packageInfo.clientGender === "Male" ? packageInfo?.bundleImageMale : packageInfo?.bundleImageFemale) || '/images/no_image.webp'} alt={"no image"} width={100}
                                                            height={100}/>
                                                 </div>
                                                 <div className={classes.PackageName}>
@@ -191,7 +196,7 @@ const My_Subscription = () => {
                                             <div className={classes.UserDetails} onClick={() => {
                                                 router.push('/user/my_status')
                                             }}>
-                                                <Image src={'/fitness.jpg'} alt={'status'} width={100} height={100}/>
+                                                <Image src={(packageInfo.clientGender === "Male" ? '/fitness.jpg' : '/fitness_woman.jpg')} alt={'status'} width={100} height={100}/>
                                                 <p>{i18n.language.includes('en') ? 'STATUS CARD' : "كارت المتابعة"}</p>
                                             </div>
                                         </div>

@@ -14,6 +14,7 @@ import {useSelector, useDispatch} from "react-redux";
 import {onInputChange, clearAll} from '@/redux/slices/Admin/defaultmeals_slice';
 // LANGUAGE
 import {useTranslation} from "react-i18next";
+import i18n from "@/i18n";
 
 const DefaultMeals = ({role}) => {
 
@@ -21,7 +22,6 @@ const DefaultMeals = ({role}) => {
     const {t} = useTranslation('defaultMeals');
 
     // STATES
-    const [isOn, setIsOn] = useState(false);
     const [loading, setLoading] = useState(false);
     const [meals, setMeals] = useState(null);
     // PAGINATION STATES
@@ -35,16 +35,6 @@ const DefaultMeals = ({role}) => {
     const dispatch = useDispatch();
     const {meals: selectedMeals, selectedDay} = useSelector(state => state.defaultmeals)
 
-    const handleClick = (e) => {
-        setIsOn(e.target.checked);
-    };
-
-    const checkEmployees = () => {
-        setIsOn(true);
-    }
-    const checkClients = () => {
-        setIsOn(false);
-    }
 
     // PAGINATION LOGIC
     const prevPage = () => {
@@ -78,7 +68,6 @@ const DefaultMeals = ({role}) => {
                 },
                 params: {
                     page: pageNumber || 1,
-                    lang: isOn ? 'AR' : 'EN',
                 }
             })
                 .then(res => {
@@ -89,7 +78,7 @@ const DefaultMeals = ({role}) => {
         }catch (err) {
             toast.error(err.response?.data?.message || err.message)
         }
-    }, [isOn, pageNumber, role]);
+    }, [pageNumber, role]);
 
     // SUBMIT HANDLER
     const submitHandler = async () => {
@@ -166,22 +155,6 @@ const DefaultMeals = ({role}) => {
             <main className={classes.Main}>
                 <div className={classes.Container}>
                     <div className={classes.Top}>
-                        <div className={classes.Toggle_container}>
-                            <span onClick={checkClients}>{t("english")}</span>
-                            <div className={classes.UserToggler}>
-                                <label htmlFor={'users_type'}
-                                       className={[classes.toggle_container, isOn ? classes.Employees : ''].join(' ')}>
-                                </label>
-                                <input
-                                    id={'users_type'}
-                                    type="checkbox"
-                                    name="toggle"
-                                    checked={isOn}
-                                    onChange={handleClick}
-                                />
-                            </div>
-                            <span onClick={checkEmployees}>{t("arabic")}</span>
-                        </div>
                         <div className={classes.Day_container}>
                             <label htmlFor={'selectedDay'}>{t("day")}</label>
                             <input
@@ -199,11 +172,10 @@ const DefaultMeals = ({role}) => {
                         <table className={classes.table}>
                             <thead>
                             <tr>
-                                <th>IMAGE</th>
-                                <th>MEAL NAME</th>
-                                <th>CATEGORIES</th>
-                                <th>LANGUAGE</th>
-                                <th>SELECT</th>
+                                <th>{i18n.language.includes('en') ? 'IMAGE' : 'الصورة'}</th>
+                                <th>{i18n.language.includes('en') ? 'MEAL NAME' : 'اسم الوجبة'}</th>
+                                <th>{i18n.language.includes('en') ? 'CATEGORY' : 'نوع الوجبة'}</th>
+                                <th>{i18n.language.includes('en') ? 'SELECT' : 'اختيار'}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -216,11 +188,8 @@ const DefaultMeals = ({role}) => {
                                                        alt={'User Image'} width={40} height={40}/>
                                             </div>
                                         </td>
-                                        <td>{cur.mealTitle}</td>
+                                        <td>{i18n.language.includes('en') ? cur.mealTitleEn : cur.mealTitle}</td>
                                         <td>{cur.mealType}</td>
-                                        <td><span
-                                            className={classes.SubscriptionButton}>{cur.lang}</span>
-                                        </td>
                                         <td className={classes.Actions}>
                                             <MealCheckbox id={cur._id}/>
                                         </td>

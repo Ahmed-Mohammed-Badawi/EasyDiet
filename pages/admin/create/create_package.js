@@ -28,6 +28,8 @@ const CreatePackage = () => {
     // STATES
     const [selectedImage, setSelectedImage] = useState('');
     const [preview, setPreview] = useState('');
+    const [selectedImageFemale, setSelectedImageFemale] = useState('');
+    const [previewFemale, setPreviewFemale] = useState('');
     const [loading, setLoading] = useState(false);
 
     // REDUX
@@ -63,7 +65,7 @@ const CreatePackage = () => {
             return;
         }
 
-        if(!selectedImage){
+        if (!selectedImage) {
             toast.error(i18n.language.includes('en') ? `Please Select an Image` : `من فضلك اختر صورة`);
             return;
         }
@@ -93,6 +95,7 @@ const CreatePackage = () => {
 
         // Append the image
         formData.append("files", selectedImage);
+        formData.append("files", selectedImageFemale);
 
         for (let i = 0; i < packageMeals.length; i++) {
             formData.append('mealsIds[]', packageMeals[i]);
@@ -132,7 +135,6 @@ const CreatePackage = () => {
         if (file) {
             // Set the Image State
             setSelectedImage(file);
-            localStorage.setItem('selectedPackageImage', file);
 
             const reader = new FileReader();
             reader.onloadend = () => {
@@ -141,6 +143,22 @@ const CreatePackage = () => {
             reader.readAsDataURL(file);
         } else {
             setPreview(null);
+        }
+    };
+    const handleImageFemaleChange = (e) => {
+        const file = e.target.files[0];
+
+        if (file) {
+            // Set the Image State
+            setSelectedImageFemale(file);
+
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviewFemale(reader.result);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setPreviewFemale(null);
         }
     };
 
@@ -172,18 +190,41 @@ const CreatePackage = () => {
                 <div className={classes.FormContainer}>
                     <h1>{t("title")}</h1>
                     <form onSubmit={submitHandler}>
-                        <div className={classes.Image_Uploader}>
-                            <label htmlFor={'meal_image'}>
-                                <div className={classes.Static}>
-                                    <Image src={'/images/Upload_Icon.svg'} alt={'Upload Icon'} width={30} height={30}/>
-                                    <span>{t("upload")}</span>
+                        <div className={classes.InputsContainer}>
+                            <div className={classes.InputGroup}>
+                                <div className={classes.Image_Uploader}>
+                                    <label htmlFor={'meal_image'}>
+                                        <div className={classes.Static}>
+                                            <Image src={'/images/Upload_Icon.svg'} alt={'Upload Icon'} width={30}
+                                                   height={30}/>
+                                            <span>{t("uploadMaleImage")}</span>
+                                        </div>
+                                        <div className={classes.ImagePreviewer}>
+                                            {preview && <Image src={preview} alt="Preview" width={80} height={50}/>}
+                                        </div>
+                                    </label>
+                                    <input id={'meal_image'} onChange={handleImageChange} type={'file'}
+                                           name={'Meal_Image'}
+                                           accept="image/*"/>
                                 </div>
-                                <div className={classes.ImagePreviewer}>
-                                    {preview && <Image src={preview} alt="Preview" width={80} height={50}/>}
+                            </div>
+                            <div className={classes.InputGroup}>
+                                <div className={classes.Image_Uploader}>
+                                    <label htmlFor={'femal_image'}>
+                                        <div className={classes.Static}>
+                                            <Image src={'/images/Upload_Icon.svg'} alt={'Upload Icon'} width={30}
+                                                   height={30}/>
+                                            <span>{t("uploadFemaleImage")}</span>
+                                        </div>
+                                        <div className={classes.ImagePreviewer}>
+                                            {previewFemale && <Image src={previewFemale} alt="Preview" width={80} height={50}/>}
+                                        </div>
+                                    </label>
+                                    <input id={'femal_image'} onChange={handleImageFemaleChange} type={'file'}
+                                           name={'Meal_Image'}
+                                           accept="image/*"/>
                                 </div>
-                            </label>
-                            <input id={'meal_image'} onChange={handleImageChange} type={'file'} name={'Meal_Image'}
-                                   accept="image/*"/>
+                            </div>
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>

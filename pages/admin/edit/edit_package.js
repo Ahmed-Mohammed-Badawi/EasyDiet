@@ -30,6 +30,8 @@ const EditPackage = ({bundle}) => {
     // STATES
     const [selectedImage, setSelectedImage] = useState('');
     const [preview, setPreview] = useState('');
+    const [selectedImageFemale, setSelectedImageFemale] = useState('');
+    const [previewFemale, setPreviewFemale] = useState('');
     const [loading, setLoading] = useState(false);
 
     // REDUX
@@ -49,7 +51,8 @@ const EditPackage = ({bundle}) => {
         packageMeals,
         breakfast,
         lunch,
-        dinner
+        dinner,
+        stopThePackage
     } = useSelector(state => state.edit_package)
 
     // SET THE DEFAULT STATE
@@ -79,6 +82,7 @@ const EditPackage = ({bundle}) => {
                 breakfast: bundle.mealsType.includes('افطار'),
                 lunch: bundle.mealsType.includes('غداء'),
                 dinner: bundle.mealsType.includes('عشاء'),
+                stopThePackage: bundle.deActivate
             }))
         }
     }, [dispatch, bundle])
@@ -112,13 +116,15 @@ const EditPackage = ({bundle}) => {
             fridayOption: fridayIncluded,
             bundlePrice: packagePrice,
             timeOnCard: textOnCard,
-            timeOnCardEn: textOnCardEn
+            timeOnCardEn: textOnCardEn,
+            deActivate: stopThePackage
         }
 
         const formData = new FormData();
 
         // Append the image
         formData.append("files", selectedImage);
+        formData.append("files", selectedImageFemale);
 
         for (let i = 0; i < packageMeals.length; i++) {
             formData.append('mealsIds[]', packageMeals[i]);
@@ -171,6 +177,23 @@ const EditPackage = ({bundle}) => {
         }
     };
 
+    const handleImageFemaleChange = (e) => {
+        const file = e.target.files[0];
+
+        if (file) {
+            // Set the Image State
+            setSelectedImageFemale(file);
+
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviewFemale(reader.result);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setPreviewFemale(null);
+        }
+    };
+
     return (
         <>
             {/*SEO OPTIMIZATION*/}
@@ -200,18 +223,41 @@ const EditPackage = ({bundle}) => {
                     <h1>{t("title")}</h1>
                     <p>{t("underTitle")} ({name})</p>
                     <form onSubmit={submitHandler}>
-                        <div className={classes.Image_Uploader}>
-                            <label htmlFor={'meal_image'}>
-                                <div className={classes.Static}>
-                                    <Image src={'/images/Upload_Icon.svg'} alt={'Upload Icon'} width={30} height={30}/>
-                                    <span>{t("upload")}</span>
+                        <div className={classes.InputsContainer}>
+                            <div className={classes.InputGroup}>
+                                <div className={classes.Image_Uploader}>
+                                    <label htmlFor={'meal_image'}>
+                                        <div className={classes.Static}>
+                                            <Image src={'/images/Upload_Icon.svg'} alt={'Upload Icon'} width={30}
+                                                   height={30}/>
+                                            <span>{t("uploadMaleImage")}</span>
+                                        </div>
+                                        <div className={classes.ImagePreviewer}>
+                                            {preview && <Image src={preview} alt="Preview" width={80} height={50}/>}
+                                        </div>
+                                    </label>
+                                    <input id={'meal_image'} onChange={handleImageChange} type={'file'}
+                                           name={'Meal_Image'}
+                                           accept="image/*"/>
                                 </div>
-                                <div className={classes.ImagePreviewer}>
-                                    {preview && <Image src={preview} alt="Preview" width={80} height={50}/>}
+                            </div>
+                            <div className={classes.InputGroup}>
+                                <div className={classes.Image_Uploader}>
+                                    <label htmlFor={'femal_image'}>
+                                        <div className={classes.Static}>
+                                            <Image src={'/images/Upload_Icon.svg'} alt={'Upload Icon'} width={30}
+                                                   height={30}/>
+                                            <span>{t("uploadFemaleImage")}</span>
+                                        </div>
+                                        <div className={classes.ImagePreviewer}>
+                                            {previewFemale && <Image src={previewFemale} alt="Preview" width={80} height={50}/>}
+                                        </div>
+                                    </label>
+                                    <input id={'femal_image'} onChange={handleImageFemaleChange} type={'file'}
+                                           name={'Meal_Image'}
+                                           accept="image/*"/>
                                 </div>
-                            </label>
-                            <input id={'meal_image'} onChange={handleImageChange} type={'file'} name={'Meal_Image'}
-                                   accept="image/*"/>
+                            </div>
                         </div>
                         <div className={classes.InputsContainer}>
                             <div className={classes.InputGroup}>
@@ -422,6 +468,26 @@ const EditPackage = ({bundle}) => {
                                             onChange={(event) => {
                                                 dispatch(onInputChange({
                                                     key: 'fridayIncluded',
+                                                    value: event.target.checked
+                                                }))
+                                            }}
+                                        />
+                                        <div className={classes.slider}></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={classes.InputGroup}>
+                                <div className={classes.togglerInput}>
+                                    <label htmlFor="stopThePackage">{t("stopThePackage")}</label>
+                                    <div className={classes.toggler}>
+                                        <input
+                                            type="checkbox"
+                                            id="stopThePackage"
+                                            name="stopThePackage"
+                                            checked={stopThePackage}
+                                            onChange={(event) => {
+                                                dispatch(onInputChange({
+                                                    key: 'stopThePackage',
                                                     value: event.target.checked
                                                 }))
                                             }}

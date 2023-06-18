@@ -105,12 +105,33 @@ const My_Status = () => {
                                         <h3>{t("question")}</h3>
                                         <p>{message?.body}?</p>
 
-                                        <div className={classes.Response}>
+                                        {(message?.reply) && (<div className={classes.Response}>
                                             <h4>{t("doctorResponse")} ({message?.specialistId?.fullName})</h4>
                                             <p>
                                                 {message?.reply}
                                             </p>
-                                        </div>
+                                        </div>)}
+                                        {/*HEIGHT AND WEIGHT*/}
+                                        {(message?.bodyBMI?.weight && message?.bodyBMI?.tall) && (<div className={classes.BODY_BMI}>
+                                            <div className={classes.P1_Item}>
+                                                <div>
+                                                    <p>{t("weight")}</p>
+                                                    <span>{message?.bodyBMI?.weight || ''} {t("weightUnit")}</span>
+                                                </div>
+                                                <div className={classes.Image_Container}>
+                                                    <Image src={'/images/Global/weight.webp'} alt={'weight'} width={20} height={20}/>
+                                                </div>
+                                            </div>
+                                            <div className={classes.P1_Item}>
+                                                <div>
+                                                    <p>{t("height")}</p>
+                                                    <span>{message?.bodyBMI?.tall || ''} {t("heightUnit")}</span>
+                                                </div>
+                                                <div className={classes.Image_Container}>
+                                                    <Image src={'/images/Global/height.webp'} alt={'weight'} width={25} height={25}/>
+                                                </div>
+                                            </div>
+                                        </div>)}
 
                                         <div className={classes.Doctor}>
                                             <div className={classes.Doctor_Image_Container}>
