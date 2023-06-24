@@ -11,6 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {onCheck, onInputChange} from '@/redux/slices/Admin/branchManager-slice';
 // LANGUAGE
 import {useTranslation} from "react-i18next";
+import i18n from "@/i18n";
 
 const Branch_Manager = ({role}) => {
 
@@ -19,7 +20,7 @@ const Branch_Manager = ({role}) => {
 
     //REDUX
     const dispatch = useDispatch();
-    const {meals, checks: {All, Breakfast, Lunch, Dinner, Snacks}, activeTye} = useSelector(state => state.branch);
+    const {meals, selectedDay, checks: {All, Breakfast, Lunch, Dinner, Snacks}, activeTye} = useSelector(state => state.branch);
 
 
     async function handleSuccess(clientID, dateID, meal_ID) {
@@ -85,7 +86,8 @@ const Branch_Manager = ({role}) => {
                 Authorization: `Bearer ${token}`
             },
             params: {
-                mealsFilter: activeTye || 'all'
+                mealsFilter: activeTye || 'all',
+                mealsDate: selectedDay
             }
         })
             .then(res => {
@@ -96,7 +98,7 @@ const Branch_Manager = ({role}) => {
                 toast.error(err.response?.data?.message || err.message);
             })
 
-    }, [dispatch, activeTye, role]);
+    }, [dispatch, activeTye, role, selectedDay]);
 
     // HANDLE THE PRINTING OF THE MEALS
     function handlePrint() {
@@ -116,7 +118,8 @@ const Branch_Manager = ({role}) => {
                 Authorization: `Bearer ${token}`
             },
             params: {
-                mealFilter: activeTye || 'all'
+                mealFilter: activeTye || 'all',
+                mealsDate: selectedDay
             }
         })
             .then(res => {
@@ -229,6 +232,19 @@ const Branch_Manager = ({role}) => {
                                 </div>
                             </div>
                         </div>
+                        <div className={classes.Day_container}>
+                            <label htmlFor={'selectedDay'}>{(i18n.language.includes('en') ? "Choose Day:" : "اليوم:")}</label>
+                            <input
+                                id={'selectedDay'}
+                                type={'date'}
+                                name={'dayMeals'}
+                                value={selectedDay}
+                                onChange={(event) => {
+                                    dispatch(onInputChange({key: 'selectedDay', value: event.target.value}))
+                                }}
+                            />
+                        </div>
+
                         <div className={classes.Print}>
                             <button onClick={handlePrint}>
                                 <Image src={'/images/printer.png'} alt={'Add Icon'} width={18} height={18}/>

@@ -5,6 +5,7 @@ import Image from "next/image";
 import {useRouter} from "next/router";
 //IMPORTS
 import Spinner from "@/components/layout/spinner/Spinner";
+import CustomSelect from "@/components/pages/register/custom-select";
 // HELPERS
 import {toast} from "react-toastify";
 import axios from "axios";
@@ -32,6 +33,7 @@ const Profile = (props) => {
         firstName,
         lastName,
         phone,
+        gender,
         region,
         street,
         house,
@@ -53,6 +55,7 @@ const Profile = (props) => {
                 house: props.homeNumber || '',
                 floor: props.floorNumber || '',
                 apartment: props.appartment || '',
+                gender: props.gender || '',
             }))
         }
     }, [dispatch, props])
@@ -66,7 +69,7 @@ const Profile = (props) => {
         const token = extractTokenFromCookie(document.cookie);
 
         //Check the inputs
-        if (!userId || !firstName || !lastName || !phone || !region || !street || !house || !floor || !apartment) {
+        if (!userId || !firstName || !lastName || !phone || !region || !street || !house || !floor || !apartment || !gender) {
             toast.error(`Please fill All inputs`);
             return;
         }
@@ -82,6 +85,7 @@ const Profile = (props) => {
             floorNumber: floor,
             appartment: apartment,
             clientId: userId,
+            gender: gender,
         }
 
         // Send Create Request to the server
@@ -272,6 +276,14 @@ const Profile = (props) => {
                                         }))
                                     }}
                                 />
+                            </div>
+                        </div>
+                        <div className={classes.InputsContainer}>
+                            <div className={classes.InputGroup}>
+                                <label htmlFor={'gender'}>{t("gender")}</label>
+                                <CustomSelect defaultValue={gender || ''} changed={(values) => {
+                                    dispatch(onInputChange({key: 'gender', value: values?.value}))
+                                }}/>
                             </div>
                         </div>
                         <div className={classes.NavigationContainer}>

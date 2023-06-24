@@ -114,6 +114,9 @@
     width: calc(50% - .5rem);
     margin-bottom: 3rem;
 
+    & > label[for="gender"] + div{
+      width: 100%;
+    }
 
     @media screen and (max-width: 650px){
       width: 100%;

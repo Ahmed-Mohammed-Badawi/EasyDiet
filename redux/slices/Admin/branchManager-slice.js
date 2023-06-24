@@ -1,8 +1,17 @@
 import {createSlice} from "@reduxjs/toolkit";
 
+// Date of today formatted for input type date
+let today = new Date();
+const dd = String(today.getDate()).padStart(2, '0');
+const mm = String(today.getMonth() + 1).padStart(2, '0');
+const yyyy = today.getFullYear();
+today = yyyy + '-' + mm + '-' + dd;
+
+
 //Initial Value
 const initialValue = {
     activeTye: 'all',
+    selectedDay: today,
     checks: {
         All: true,
         Breakfast: false,

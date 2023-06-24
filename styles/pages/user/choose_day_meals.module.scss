@@ -202,7 +202,8 @@
     .Back_button {
       position: fixed;
       bottom: 1rem;
-      left: 1rem;
+      left: initial;
+      right: 1rem;
       width: 6rem;
       height: 6rem;
       padding: 1rem;
@@ -212,6 +213,7 @@
       border-radius: 10rem;
       background-color: #2ba461;
       border: 1px solid var(--color-input-border);
+      color: var(--color-white-text);
       cursor: pointer;
       font-family: var(--font-roboto);
 

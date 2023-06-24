@@ -6,6 +6,7 @@ const initialValue = {
     firstName: '',
     lastName: '',
     phone: '',
+    gender: '',
     region: '',
     street: '',
     house: '',
@@ -30,6 +31,7 @@ const profileSlice = createSlice({
             state.house = action.payload.house;
             state.floor = action.payload.floor;
             state.apartment = action.payload.apartment;
+            state.gender = action.payload.gender;
         },
     },
 })

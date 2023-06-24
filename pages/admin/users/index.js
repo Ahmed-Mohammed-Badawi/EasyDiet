@@ -13,8 +13,10 @@ import {setUsers, onInputChange} from '@/redux/slices/Admin/users-slice';
 //IMPORTS
 import Overlay from "@/components/pages/dashboard/ChangeUser_Name/overlay";
 import InputsContainer from "@/components/pages/dashboard/ChangeUser_Name/inputsContainer";
+import UserDataSection from "@/components/pages/dashboard/UserDataModel/UserDataSection";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
+import i18n from "@/i18n";
 
 const Users = () => {
     // ROUTER
@@ -25,6 +27,10 @@ const Users = () => {
 
     // STATES
     const [clientEditId, setClientEditId] = useState(false);
+    const [clientData, setClientData] = useState({
+        personalData: null,
+        subscriptionData: null,
+    });
     // PAGINATION STATES
     const [pageNumber, setPageNumber] = useState(1);
     const [hasNextPage, setHasNextPage] = useState(false);
@@ -261,15 +267,56 @@ const Users = () => {
                 })
                 .catch(err => console.log(err))
         }
-    }, [isOn, dispatch, pageNumber])
+    }, [isOn, dispatch, pageNumber]);
+
+    // HANDLER TO CLOSE THE MODEL
+    const handleUserModelClose = () => {
+        setClientData({
+            personalData: null,
+            subscriptionData: null,
+        })
+    }
+
+    const showUserDataHandler = (ID) => {
+        // GET THE USER DATA
+        const token = extractTokenFromCookie(document.cookie);
+
+        // GET THE CLIENT DATA
+        axios.get(`https://api.easydietkw.com/api/v1/client/details`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            params:{
+                clientId: ID
+            }
+        })
+            .then(res => {
+                console.log(res.data)
+
+                setClientData({
+                    personalData: res.data.clientData,
+                    subscriptionData: {
+                        plan: res.data.bundleName,
+                        planEn: res.data.bundleNameEn,
+                        startDate: res.data.startDate,
+                        endDate: res.data.endDate,
+                        remainingDays: res.data.remainingDays,
+                    },
+                })
+            })
+            .catch(err => console.log(err))
+
+    }
 
     return (
         <>
             {/*SEO OPTIMIZATION*/}
             <Head>
                 <title>EasyDiet | Users</title>
-                <meta name="description" content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
-                <meta name="keywords" content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
+                <meta name="description"
+                      content="Discover EasyDiet's healthy meal options that have been satisfying customers for over five years. Our experienced chefs prepare each meal with fresh, locally-sourced ingredients to ensure that you get the best quality and flavor. Choose EasyDiet for convenient and delicious meals that leave you feeling energized and healthy."/>
+                <meta name="keywords"
+                      content="healthy meals, meal delivery, fresh ingredients, locally-sourced, convenient meal options, energy-boosting, nutritious food, easy ordering, delicious and healthy, meal plans"/>
                 <meta name="author" content="EasyDiet"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 <meta name="robots" content="index, follow"/>
@@ -278,16 +325,18 @@ const Users = () => {
                 <meta name="revisit-after" content="2 days"/>
                 <meta name="generator" content="EasyDiet"/>
                 <meta name="og:title" content="EasyDiet"/>
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://easydietkw.com/" />
-                <meta property="og:image" content="/images/Auth/logo.svg" />
-                <meta property="og:site_name" content="EasyDiet" />
-                <meta property="og:description" content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet." />
+                <meta property="og:type" content="website"/>
+                <meta property="og:url" content="https://easydietkw.com/"/>
+                <meta property="og:image" content="/images/Auth/logo.svg"/>
+                <meta property="og:site_name" content="EasyDiet"/>
+                <meta property="og:description"
+                      content="EasyDiet has been offering healthy meal options for over 5 years. With a diverse menu of delicious and locally-sourced ingredients, their experienced chefs provide convenient and energizing meals. Experience a healthier lifestyle with EasyDiet."/>
             </Head>
             <main className={classes.Main}>
                 <div className={classes.Container}>
                     <div className={classes.Top}>
-                        <button onClick={() => isOn ? router.push(`/admin/create/create_employee`) : router.push(`/admin/create/create_user`)}>
+                        <button
+                            onClick={() => isOn ? router.push(`/admin/create/create_employee`) : router.push(`/admin/create/create_user`)}>
                             <Image src={'/images/Add_Icon.svg'} alt={'Add Icon'} width={18} height={18}/>
                             <span>{isOn ? t("createEmployee") : t("createClient")}</span>
                         </button>
@@ -321,7 +370,7 @@ const Users = () => {
                                 <thead>
                                 <tr>
                                     <th>USER ID</th>
-                                    <th>USER NAME</th>
+                                    <th>Full NAME</th>
                                     <th>MOBILE</th>
                                     <th>STATUS</th>
                                     <th>ACTIONS</th>
@@ -357,6 +406,12 @@ const Users = () => {
                                                         onClick={() => handleDelete(user._id)}>
                                                     <Image src={'/images/Delete_Icon.svg'} alt={'Delete'} width={14}
                                                            height={14}/> {t("delete")}
+                                                </button>
+                                                <button className={classes.UserData}
+                                                        onClick={() => showUserDataHandler(user._id)}>
+                                                    <Image src={'/images/user.svg'} alt={'User Data'} width={14}
+                                                           height={14}/>
+                                                    <span>{i18n.language.includes('en') ? `More Data` : `تفاصيل المشترك`}</span>
                                                 </button>
                                             </td>
                                         </tr>
@@ -428,6 +483,10 @@ const Users = () => {
             </main>
             <Overlay active={clientEditId.length > 5} clicked={clearTheIdOfUser}>
                 <InputsContainer clientId={clientEditId} clicked={clearTheIdOfUser}/>
+            </Overlay>
+            <Overlay active={(clientData.personalData !== null && clientData.subscriptionData !== null)}
+                     clicked={handleUserModelClose}>
+                <UserDataSection userData={clientData.personalData} subscriptionData={clientData.subscriptionData}/>
             </Overlay>
         </>
     )
