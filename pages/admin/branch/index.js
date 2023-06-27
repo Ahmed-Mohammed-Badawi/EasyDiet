@@ -131,6 +131,29 @@ const Branch_Manager = ({role}) => {
             })
     }
 
+    const handleDeliveredAll = () => {
+        // GET THE TOKEN
+        const token = extractTokenFromCookie(document.cookie);
+        axios.put(`https://api.easydietkw.com/api/v1/set/all/meals/delivered`, {
+            clients: meals
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then(res => {
+                // CLEAR THE MEALS IN REDUX
+                dispatch(onInputChange({key: 'meals', value: []}));
+                // SHOW SUCCESS MESSAGE
+                toast.success(res.data?.message || 'All meals have been delivered successfully');
+            })
+            .catch(err => {
+                console.log(err.response?.data?.message || err.message);
+                toast.error(err.response?.data?.message || err.message);
+            })
+
+    }
+
     return (
         <>
             {/*SEO OPTIMIZATION*/}
@@ -250,6 +273,9 @@ const Branch_Manager = ({role}) => {
                                 <Image src={'/images/printer.png'} alt={'Add Icon'} width={18} height={18}/>
                                 <span>{t("print")}</span>
                             </button>
+                            <button className={classes.ArrivedAll} onClick={handleDeliveredAll}>
+                                <span>{i18n.language.includes('en') ? 'Delivered All' : 'توصيل الكل'}</span>
+                            </button>
                         </div>
 
                     </div>
@@ -257,12 +283,12 @@ const Branch_Manager = ({role}) => {
                         <table className={classes.table}>
                             <thead>
                             <tr>
-                                <th>USER ID</th>
-                                <th>USER NAME</th>
-                                <th>MOBILE</th>
-                                <th>MEAL NAME</th>
-                                <th>TYPE</th>
-                                <th>ACTIONS</th>
+                                <th>{i18n.language.includes('en') ? 'MEMBERSHIP ID' : 'رقم العضوية'}</th>
+                                <th>{i18n.language.includes('en') ? 'NAME' : 'الاسم'}</th>
+                                <th>{i18n.language.includes('en') ? 'MOBILE' : 'الهاتف'}</th>
+                                <th>{i18n.language.includes('en') ? 'MEAL' : 'الوجبة'}</th>
+                                <th>{i18n.language.includes('en') ? 'TYPE' : 'النوع'}</th>
+                                <th>{i18n.language.includes('en') ? 'ACTIONS' : 'الإجراءات'}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -282,7 +308,7 @@ const Branch_Manager = ({role}) => {
                                                     <td className={classes.Actions}>
                                                         <button className={classes.Delete}
                                                                 onClick={() => handleSuccess(user.clientId, user.dateId, meal._id)}>
-                                                            {t("arrived")}
+                                                            {i18n.language.includes('en') ? 'Delivered' : 'تم التوصيل'}
                                                         </button>
                                                     </td>
                                                 </tr>

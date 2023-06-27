@@ -13,6 +13,7 @@ import DayItem from "@/components/pages/user/DayItem";
 import MySubscription from "@/components/pages/user/MySubscription/MySubscription";
 import GasLoader from "@/components/layout/GasLoader/gasLoader";
 import ScrollToTop from "@/components/layout/ScrollToTop/ScrollToTop";
+import Spinner from "@/components/layout/spinner/Spinner";
 // LANGUAGE
 import {useTranslation} from "react-i18next";
 import i18n from "@/i18n";
@@ -38,8 +39,11 @@ const My_Subscription = () => {
         remainingDays: '',
         bundleImageMale: '',
         bundleImageFemale: '',
-        clientGender: ''
+        clientGender: '',
+        subscriptionId: '',
+        clientId: ''
     });
+    const [loading, setLoading] = useState(false);
     const [packageDays, setPackageDays] = useState([]);
     const [realPackageDays, setRealPackageDays] = useState({
         start: '',
@@ -70,7 +74,9 @@ const My_Subscription = () => {
                         remainingDays: res.data.remainingDays,
                         bundleImageMale: res.data.bundleImageMale,
                         bundleImageFemale: res.data.bundleImageFemale,
-                        clientGender: res.data.clientGender
+                        clientGender: res.data.clientGender,
+                        subscriptionId: res.data.subscriptionId,
+                        clientId: res.data.clientId
                     })
 
                     setRealPackageDays({
@@ -146,6 +152,32 @@ const My_Subscription = () => {
     // CALCULATE THE REMAINING DAYS
     const {count, daysUntilNow} = countDays(new Date(realPackageDays.start), new Date(realPackageDays.end), false);
 
+    const handlePrint = () => {
+        const token = extractTokenFromCookie(document.cookie);
+        setLoading(true);
+        axios.get(`https://api.easydietkw.com/api/v1/get/contract`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            params: {
+                clientId: packageInfo.clientId,
+            }
+        })
+            .then(res => {
+                const url = res.data.url;
+                setTimeout(() => {
+
+                    window.open(url, '_blank');
+                    setLoading(false);
+                }, 1000)
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false);
+                toast.error(i18n.language.includes('en') ? 'Something went wrong, please try again later' : 'حدث خطأ ما، يرجى المحاولة مرة أخرى')
+            })
+    }
+
     return (
         <>
             {/*SEO OPTIMIZATION*/}
@@ -175,10 +207,14 @@ const My_Subscription = () => {
                     {
                         packageInfo?.bundleName && packageDays.length > 0 ? (
                             <>
-
                                 <div className={classes.Top} data-title={t("title1")}>
                                     {(realPackageDays?.start && realPackageDays?.end) && (
                                         <div className={classes.LoaderContainer}>
+                                            <button className={classes.ContractButton} onClick={handlePrint}>
+                                                <Image src={'/images/printer.png'} alt={'Add Icon'} width={18} height={18}/>
+                                                {i18n.language.includes('en') ? "Print Contract" : "طباعة العقد"}
+                                                {loading && <Spinner size={1} color={'#FFFFFF'}/>}
+                                            </button>
                                             <GasLoader availableDays={count - daysUntilNow} totalDays={packageDays.length}/>
                                         </div>)}
                                     <div className={classes.Top_Container}>
@@ -218,6 +254,10 @@ const My_Subscription = () => {
                                                     day: "numeric",
                                                     month: 'long'
                                                 })}</span>
+                                            </div>
+                                            <div className={classes.Top_Item}>
+                                                <h3>{i18n.language.includes('en') ? 'MEMBERSHIP ID' : 'رقم العضوية'}</h3>
+                                                <span>{packageInfo.subscriptionId}</span>
                                             </div>
                                         </div>
                                     </div>

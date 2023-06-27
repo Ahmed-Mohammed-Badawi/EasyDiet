@@ -1,5 +1,6 @@
 
 .LoaderContainer {
+  position: relative;
   width: 50rem;
   min-width: 31rem;
   display: flex;
@@ -10,6 +11,24 @@
   border: 1px solid var(--color-dashboard-border);
   padding: 2rem 4rem;
   border-radius: .5rem;
+
+  .ContractButton {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    height: 3.8rem;
+    padding: 0.7rem;
+    background-image: linear-gradient(to bottom, var(--color-black-background), var(--color-main));
+    border: 1px solid var(--color-dashboard-border);
+    color: var(--color-white-text);
+    font-family: var(--font-almarai);
+    border-radius: 4px;
+    cursor: pointer;
+  }
 
 
   @media screen and (max-width: 950px) {
@@ -25,6 +44,7 @@
 
   @media screen and (max-width: 460px) {
     height: 22rem;
+    padding-top: 3rem;
   }
 }
 
@@ -236,110 +256,22 @@
 }
 
 :global(.ARABIC) {
-  .Main {
 
-    @media screen and (max-width: 400px) {
-      padding: 0;
+  .LoaderContainer {
+    .ContractButton {
+      left: initial;
+      right: 1rem;
     }
-    
-    .Top_Container {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      width: 100%;
-      gap: 1rem;
-      background-color: var(--color-white-background);
-      border: 1px solid var(--color-dashboard-border);
-      padding: 2rem 4rem;
-      border-radius: .5rem;
+  }
+    .Main {
 
-
-      @media screen and (max-width: 650px) {
+      @media screen and (max-width: 400px) {
         padding: 0;
-        background-color: transparent;
-        border: none;
       }
 
-
-      .PackageDetails {
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
-      }
-
-      .ImagePart {
+      .Top_Container {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        gap: 1rem;
-        background-color: var(--color-white-background);
-        border: 1px solid var(--color-dashboard-border);
-        padding: 2rem 4rem;
-        border-radius: .5rem;
-        flex: 1;
-
-        @media screen and (max-width: 435px) {
-          padding: 2rem 1rem;
-          align-items: center;
-        }
-      }
-
-      .UserDetails {
-        // STYLE IT AS A BUTTON
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        gap: 1rem;
-        background-color: var(--color-white-background);
-        border: 1px solid var(--color-dashboard-border);
-        padding: 2rem 4rem;
-        border-radius: .5rem;
-        cursor: pointer;
-        transition: all .15s ease-in-out;
-
-        &:active {
-          box-shadow: inset 0 0 5px 2px rgba(0, 0, 0, 0.2);
-          transform: scale(0.99);
-        }
-
-        @media screen and (max-width: 435px) {
-          padding: 2rem 1rem;
-          flex: 1;
-          align-items: center;
-        }
-      }
-
-      .PackageImage {
-
-      }
-
-      .PackageName {
-        margin-right: 3rem;
-
-        .NameTitle {
-          font-family: var(--font-almarai);
-          color: var(--color-gray-333);
-          font-size: 1.3rem;
-        }
-
-        .NameContent {
-          font-size: 2rem;
-          font-weight: 500;
-          font-family: var(--font-cairo);
-          text-transform: uppercase;
-          margin-bottom: 1rem;
-        }
-
-        @media screen and (max-width: 435px) {
-          margin-right: 0;
-        }
-      }
-
-      .PackageTime {
-        display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
         width: 100%;
@@ -347,46 +279,141 @@
         background-color: var(--color-white-background);
         border: 1px solid var(--color-dashboard-border);
         padding: 2rem 4rem;
+        border-radius: .5rem;
+
+
+        @media screen and (max-width: 650px) {
+          padding: 0;
+          background-color: transparent;
+          border: none;
+        }
+
+
+        .PackageDetails {
+          display: flex;
+          justify-content: space-between;
+          gap: 1rem;
+        }
+
+        .ImagePart {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          gap: 1rem;
+          background-color: var(--color-white-background);
+          border: 1px solid var(--color-dashboard-border);
+          padding: 2rem 4rem;
+          border-radius: .5rem;
+          flex: 1;
+
+          @media screen and (max-width: 435px) {
+            padding: 2rem 1rem;
+            align-items: center;
+          }
+        }
+
+        .UserDetails {
+          // STYLE IT AS A BUTTON
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          gap: 1rem;
+          background-color: var(--color-white-background);
+          border: 1px solid var(--color-dashboard-border);
+          padding: 2rem 4rem;
+          border-radius: .5rem;
+          cursor: pointer;
+          transition: all .15s ease-in-out;
+
+          &:active {
+            box-shadow: inset 0 0 5px 2px rgba(0, 0, 0, 0.2);
+            transform: scale(0.99);
+          }
+
+          @media screen and (max-width: 435px) {
+            padding: 2rem 1rem;
+            flex: 1;
+            align-items: center;
+          }
+        }
+
+        .PackageImage {
+
+        }
+
+        .PackageName {
+          margin-right: 3rem;
+
+          .NameTitle {
+            font-family: var(--font-almarai);
+            color: var(--color-gray-333);
+            font-size: 1.3rem;
+          }
+
+          .NameContent {
+            font-size: 2rem;
+            font-weight: 500;
+            font-family: var(--font-cairo);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+          }
+
+          @media screen and (max-width: 435px) {
+            margin-right: 0;
+          }
+        }
+
+        .PackageTime {
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          width: 100%;
+          gap: 1rem;
+          background-color: var(--color-white-background);
+          border: 1px solid var(--color-dashboard-border);
+          padding: 2rem 4rem;
+        }
       }
-    }
 
-    .Top_Item {
-      width: calc(20% - .85rem);
-      min-width: 16rem;
+      .Top_Item {
+        width: calc(20% - .85rem);
+        min-width: 16rem;
 
-      h3 {
-        font-size: 1.8rem;
-        font-weight: 500;
-        font-family: var(--font-cairo);
-        text-transform: uppercase;
+        h3 {
+          font-size: 1.8rem;
+          font-weight: 500;
+          font-family: var(--font-cairo);
+          text-transform: uppercase;
+        }
+
+        span {
+          font-family: var(--font-almarai);
+          color: var(--color-gray-666);
+          font-size: 1.4rem;
+        }
       }
 
-      span {
-        font-family: var(--font-almarai);
-        color: var(--color-gray-666);
-        font-size: 1.4rem;
-      }
-    }
+      .Bottom {
+        position: relative;
+        border-radius: .5rem;
 
-    .Bottom {
-      position: relative;
-      border-radius: .5rem;
-
-      &:before {
-        content: attr(data-title);
-        position: absolute;
-        top: 0;
-        left: initial;
-        right: 0;
-        font-family: var(--font-cairo);
-        font-weight: 400;
-        background: -webkit-linear-gradient(-170deg, var(--color-main), var(--color-black-text));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        display: inline-block;
-        font-size: 20px;
-        transform: translate(-2rem, -50%);
+        &:before {
+          content: attr(data-title);
+          position: absolute;
+          top: 0;
+          left: initial;
+          right: 0;
+          font-family: var(--font-cairo);
+          font-weight: 400;
+          background: -webkit-linear-gradient(-170deg, var(--color-main), var(--color-black-text));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          display: inline-block;
+          font-size: 20px;
+          transform: translate(-2rem, -50%);
+        }
       }
     }
   }
-}

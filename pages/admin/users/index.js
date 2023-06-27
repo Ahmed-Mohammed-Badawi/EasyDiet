@@ -369,11 +369,11 @@ const Users = () => {
                             <table className={classes.table}>
                                 <thead>
                                 <tr>
-                                    <th>USER ID</th>
-                                    <th>Full NAME</th>
-                                    <th>MOBILE</th>
-                                    <th>STATUS</th>
-                                    <th>ACTIONS</th>
+                                    <th>{i18n.language.includes('en') ? `MEMBERSHIP ID` : `رقم العضوية`}</th>
+                                    <th>{i18n.language.includes('en') ? `FULL NAME` : `الاسم`}</th>
+                                    <th>{i18n.language.includes('en') ? `MOBILE` : `رقم الهاتف`}</th>
+                                    <th>{i18n.language.includes('en') ? `STATUS` : `الحالة`}</th>
+                                    <th>{i18n.language.includes('en') ? `ACTIONS` : `إجراءات`}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
