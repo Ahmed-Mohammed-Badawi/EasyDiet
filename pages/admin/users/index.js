@@ -134,7 +134,7 @@ const Users = () => {
     async function handleFreeze(ID) {
         const token = extractTokenFromCookie(document.cookie);
 
-        window.confirm(`Please not that by accepting you will freeze the subscription for this user. Are you sure you want to continue?`)
+        if(window.confirm(`Please not that by accepting you will freeze the subscription for this user. Are you sure you want to continue?`))
         {
             // GET THE EMPLOYEES
             axios.post(`https://api.easydietkw.com/api/v1/client/pause`, {
@@ -145,7 +145,21 @@ const Users = () => {
                 }
             })
                 .then(_ => {
-                    toast.success(`Account Froze Successfully`)
+                    toast.success(`Account Froze Successfully`);
+                    // GET A COPY OF THE USERS
+                    const usersCopy = [...users];
+                    // CHANGE THE STATUS OF THE USER
+                    const index = usersCopy.findIndex(item => item._id === ID);
+
+                    if (index !== -1) {
+                        const objectCopy = {...usersCopy[index]}
+                        const clientStatusCopy = {...objectCopy.clientStatus}
+                        clientStatusCopy.paused = true;
+                        clientStatusCopy.numPause = clientStatusCopy.numPause - 1;
+                        objectCopy.clientStatus = clientStatusCopy;
+                        usersCopy[index] = objectCopy;
+                        dispatch(setUsers({users: usersCopy, usersType: 'clients'}))
+                    }
                 })
                 .catch(err => {
                     toast.error(err.response?.data?.message || err.message);
@@ -156,7 +170,7 @@ const Users = () => {
 
     async function handleUnfreeze(ID) {
         const token = extractTokenFromCookie(document.cookie);
-        window.confirm(`Please not that by accepting you will unfreeze the subscription for this user. Are you sure you want to continue?`)
+        if(window.confirm(`Please not that by accepting you will unfreeze the subscription for this user. Are you sure you want to continue?`))
         {
             // GET THE EMPLOYEES
             axios.put(`https://api.easydietkw.com/api/v1/activate/client`, {
@@ -169,6 +183,19 @@ const Users = () => {
                 .then(_ => {
                     // SET THE USERS IN REDUX
                     toast.success(`Account unFroze Successfully`)
+                    // GET A COPY OF THE USERS
+                    const usersCopy = [...users];
+                    // CHANGE THE STATUS OF THE USER
+                    const index = usersCopy.findIndex(item => item._id === ID);
+
+                    if (index !== -1) {
+                        const objectCopy = {...usersCopy[index]}
+                        const clientStatusCopy = {...objectCopy.clientStatus}
+                        clientStatusCopy.paused = false;
+                        objectCopy.clientStatus = clientStatusCopy;
+                        usersCopy[index] = objectCopy;
+                        dispatch(setUsers({users: usersCopy, usersType: 'clients'}))
+                    }
                 })
                 .catch(err => {
                     toast.error(err.response?.data?.message || err.message);
@@ -391,11 +418,12 @@ const Users = () => {
                                             </td>
                                             <td className={classes.Actions}>
                                                 <button className={classes.Freeze}
-                                                        disabled={user.clientStatus.paused && user.clientStatus.numPause === 0}
                                                         onClick={() => {
-                                                            if (user.clientStatus.paused !== true) {
+                                                            if (user.clientStatus.paused !== true && user.clientStatus.numPause > 0) {
+                                                                console.log('IN FREEZE')
                                                                 handleFreeze(user._id, user.isActive)
                                                             } else {
+                                                                console.log('IN UNFREEZE')
                                                                 handleUnfreeze(user._id)
                                                             }
                                                         }}>
