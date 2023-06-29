@@ -4,10 +4,10 @@
   "lastName": "الاسم الأخير",
   "phoneNumber": "رقم الهاتف",
   "region": "المنطقة",
-  "street": "الشارع",
-  "house": "المنزل",
-  "floor": "الطابق",
-  "apartment": "الشقة",
+  "street": "قطعة",
+  "house": "الشارع",
+  "floor": "المنزل",
+  "apartment": "الطابق - الشقة",
   "statusButton": "الحالة",
   "updateButton": "تحديث"
 }

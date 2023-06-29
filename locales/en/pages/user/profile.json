@@ -4,10 +4,10 @@
   "lastName": "LAST NAME",
   "phoneNumber": "PHONE NUMBER",
   "region": "REGION",
-  "street": "STREET",
-  "house": "HOUSE",
-  "floor": "FLOOR",
-  "apartment": "APARTMENT",
+  "street": "DISTRICT",
+  "house": "STREET",
+  "floor": "HOUSE",
+  "apartment": "FLOOR - APARTMENT",
   "statusButton": "STATUS",
   "updateButton": "UPDATE"
 }

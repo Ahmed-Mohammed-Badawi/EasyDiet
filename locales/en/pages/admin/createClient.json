@@ -7,10 +7,10 @@
   "email": "EMAIL",
   "password": "PASSWORD",
   "region": "REGION",
-  "street": "STREET",
-  "house": "HOUSE",
-  "floor": "FLOOR",
-  "apartment": "APARTMENT",
+  "street": "DISTRICT",
+  "house": "STREET",
+  "floor": "HOUSE",
+  "apartment": "FLOOR - APARTMENT",
   "payment": "PAYMENT DONE",
   "button": "CREATE"
 }
